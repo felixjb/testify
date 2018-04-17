@@ -8,8 +8,11 @@ function codeParser(sourceCode) {
     }
     const tokens = [...tokenizer(sourceCode, parserOptions)]
 
-    return tokens.map(({value, loc}, index) => {
-        if (testTokens.indexOf(value) === - 1) return
+    return tokens.map(({ value, loc, type }, index) => {
+        if (testTokens.indexOf(value) === -1) return
+        if (type.label !== 'name') return
+        const nextToken = tokens[index + 1]
+        if (!nextToken.type.startsExpr) return
 
         return {
             loc,

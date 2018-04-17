@@ -2,7 +2,7 @@
     "name": "javascript-test-runner",
     "displayName": "JavaScript Test Runner",
     "description": "Run JavaScript tests easily using CodeLens",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "publisher": "legfrey",
     "engines": {
         "vscode": "^1.18.0"
