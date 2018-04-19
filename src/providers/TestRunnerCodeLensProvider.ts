@@ -1,6 +1,7 @@
 import { CodeLensProvider, TextDocument, CancellationToken, CodeLens, Position, Range, Uri, workspace } from "vscode"
 
 import TestRunnerCodeLens from "../codelens/TestRunnerCodeLens"
+import TestDebugRunnerCodeLens from "../codelens/TestDebugRunnerCodeLens"
 import { codeParser } from "../parser/codeParser"
 
 function _getRootPath({uri}) {
@@ -20,14 +21,21 @@ export default class TestRunnerCodeLensProvider implements CodeLensProvider {
         const rootPath = _getRootPath(document)
 
         return codeParser(document.getText())
-            .map(({loc, testName}) => (
-                new TestRunnerCodeLens(
+            .reduce((acc, {loc, testName}) => {
+                acc.push(new TestRunnerCodeLens(
                     createRangeObject(loc.start),
                     testName,
                     rootPath,
                     document.fileName
-                )
-            ))
+                ))
+                acc.push(new TestDebugRunnerCodeLens(
+                    createRangeObject(loc.start),
+                    testName,
+                    rootPath,
+                    document.fileName
+                ))
+                return acc
+            }, [])
     }
 
     public resolveCodeLens?(codeLens: CodeLens, token: CancellationToken): CodeLens | Thenable<CodeLens> {

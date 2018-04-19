@@ -10,6 +10,7 @@ export function activate(context: ExtensionContext) {
     )
 
     commands.registerCommand('javascript-test-runner.run.test', runTestCommand)
+    commands.registerCommand('javascript-test-runner.debug.test', runTestCommand)
 }
 
 // this method is called when your extension is deactivated
