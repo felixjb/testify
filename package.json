@@ -41,6 +41,13 @@
                         "type": "string",
                         "default": "",
                         "description": "CLI args to pass to test runner. Example : --watch"
+                    },
+                    "javascript-test-runner.envVars": {
+                        "type": "object",
+                        "default": {
+                            "NODE_ENV": "test"
+                        },
+                        "description": "Environment variables to set before running a test."
                     }
                 }
             }

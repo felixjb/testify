@@ -1,16 +1,20 @@
-import { window, workspace, Terminal, debug } from 'vscode'
+import { window, workspace, Terminal, TerminalOptions, debug } from 'vscode'
 
 import { getTestRunner } from '../utils/runner'
 import { TestRunner } from '../types/TestRunner'
 
 let term: Terminal = null
 
-function _getNewTerminal(): Terminal {
+function _getNewTerminal(envVars: {}): Terminal {
+    const terminalOptions: TerminalOptions = {
+        env: envVars
+    }
+
     if (term) {
         term.dispose()
     }
 
-    term = window.createTerminal()
+    term = window.createTerminal(terminalOptions)
 
     return term
 }
@@ -18,7 +22,8 @@ function _getNewTerminal(): Terminal {
 async function runTest (testName, rootPath, fileName, isDebug = false) {
     const testRunner = await getTestRunner(rootPath)
     const additionalArgs: string = workspace.getConfiguration("javascript-test-runner").get("additionalArgs")
-    const term = _getNewTerminal()
+    const envVars = workspace.getConfiguration("javascript-test-runner").get("envVars")
+    const term = _getNewTerminal(envVars)
 
     if (isDebug) {
         debug.startDebugging(rootPath, {
@@ -31,11 +36,12 @@ async function runTest (testName, rootPath, fileName, isDebug = false) {
             args: [
                 fileName,
                 testRunner === TestRunner.jest ? "--testNamePattern" : "--grep",
-                testRunner === TestRunner.jest ? "--runInBand" : "--no-timeouts",
                 testName,
+                testRunner === TestRunner.jest ? "--runInBand" : "--no-timeouts",
                 ...additionalArgs.split(' ')
             ],
-            internalConsoleOptions: "openOnSessionStart"
+            internalConsoleOptions: "openOnSessionStart",
+            env: envVars,
         })
     } else {
         const commandLine = testRunner === TestRunner.jest
