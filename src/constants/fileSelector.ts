@@ -4,7 +4,15 @@ export default [
     scheme: "file"
   },
   {
+    language: "typescriptreact",
+    scheme: "file"
+  },
+  {
     language: "javascript",
     scheme: "file"
+  },
+  {
+    language: "javascriptreact",
+    scheme: "file"
   }
-];
+]
