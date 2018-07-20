@@ -1,72 +1,91 @@
 {
-    "name": "javascript-test-runner",
-    "displayName": "JavaScript Test Runner",
-    "description": "Run JavaScript tests easily using CodeLens",
-    "version": "0.2.0",
-    "publisher": "legfrey",
-    "engines": {
-        "vscode": "^1.18.0"
-    },
-    "license": "MIT",
-    "categories": [
-        "Other"
+  "name": "javascript-test-runner",
+  "displayName": "JavaScript Test Runner",
+  "description": "Run JavaScript tests easily using CodeLens",
+  "version": "0.2.0",
+  "publisher": "legfrey",
+  "engines": {
+    "vscode": "^1.18.0"
+  },
+  "license": "MIT",
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "mocha",
+    "jest",
+    "test",
+    "unit"
+  ],
+  "preview": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/g3offrey/javascript-test-runner"
+  },
+  "icon": "ressources/icon.png",
+  "main": "./out/extension",
+  "activationEvents": [
+    "*"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "javascript-test-runner.run.test",
+        "title": "Run Test"
+      }
     ],
-    "keywords": [
-        "mocha",
-        "jest",
-        "test",
-        "unit"
+    "configuration": [
+      {
+        "properties": {
+          "javascript-test-runner.additionalArgs": {
+            "type": "string",
+            "default": "",
+            "description": "CLI args to pass to test runner. Example : --watch"
+          },
+          "javascript-test-runner.envVars": {
+            "type": "object",
+            "default": {
+                "NODE_ENV": "test"
+            },
+            "description": "Environment variables to set before running a test."
+           }
+        }
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "test": "npm run compile && node ./node_modules/vscode/bin/test",
+    "lint": "tslint -c tslint.json src/**/*.ts",
+    "format": "prettier --write src/**/*.{ts,json} package.json",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{json}": [
+      "prettier --write",
+      "git add"
     ],
-    "preview": true,
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/g3offrey/javascript-test-runner"
-    },
-    "icon": "ressources/icon.png",
-    "main": "./out/extension",
-    "activationEvents": [
-        "*"
-    ],
-    "contributes": {
-        "commands": [
-            {
-                "command": "javascript-test-runner.run.test",
-                "title": "Run Test"
-            }
-        ],
-        "configuration": [
-            {
-                "properties": {
-                    "javascript-test-runner.additionalArgs": {
-                        "type": "string",
-                        "default": "",
-                        "description": "CLI args to pass to test runner. Example : --watch"
-                    },
-                    "javascript-test-runner.envVars": {
-                        "type": "object",
-                        "default": {
-                            "NODE_ENV": "test"
-                        },
-                        "description": "Environment variables to set before running a test."
-                    }
-                }
-            }
-        ]
-    },
-    "scripts": {
-        "vscode:prepublish": "npm run compile",
-        "compile": "tsc -p ./",
-        "watch": "tsc -watch -p ./",
-        "postinstall": "node ./node_modules/vscode/bin/install",
-        "test": "npm run compile && node ./node_modules/vscode/bin/test"
-    },
-    "devDependencies": {
-        "@types/mocha": "^2.2.42",
-        "@types/node": "^7.0.43",
-        "typescript": "^2.6.1",
-        "vscode": "^1.1.6"
-    },
-    "dependencies": {
-        "acorn": "^5.3.0"
-    }
+    "*.{ts}": [
+      "tslint -c tslint.json",
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "devDependencies": {
+    "@types/mocha": "^2.2.42",
+    "@types/node": "^7.0.43",
+    "husky": "^0.14.3",
+    "lint-staged": "^7.2.0",
+    "prettier": "1.13.7",
+    "tslint": "^5.10.0",
+    "tslint-config-prettier": "^1.13.0",
+    "typescript": "^2.6.1",
+    "vscode": "^1.1.6"
+  },
+  "dependencies": {
+    "acorn": "^5.3.0"
+  }
 }
