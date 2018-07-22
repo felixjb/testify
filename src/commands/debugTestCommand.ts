@@ -1,5 +1,5 @@
 import { relative } from "path";
-import { workspace, WorkspaceFolder } from "vscode";
+import { WorkspaceFolder } from "vscode";
 
 import { getTestRunner } from "../runners/TestRunnerFactory";
 

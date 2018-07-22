@@ -54,14 +54,15 @@ export class MochaTestRunner implements ITestRunnerInterface {
     debug.startDebugging(rootPath, {
       args: [
         fileName,
-        `--grep "${testName}"`,
+        "--grep",
+        testName,
         "--no-timeout",
         ...additionalArguments.split(" ")
       ],
       console: "integratedTerminal",
       env: environmentVariables,
       name: "Debug Test",
-      program: this.binPath,
+      program: "${workspaceFolder}/node_modules/mocha/bin/_mocha",
       request: "launch",
       type: "node",
       windows: {
