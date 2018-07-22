@@ -22,6 +22,12 @@ This extension works currently with :
 * Mocha
 * Jest
 
+## Need help?
+
+Visit the [Troubleshooting Guide](https://github.com/g3offrey/javascript-test-runner/wiki/Troubleshooting).
+
+
+
 ## Contribute
 
 Please feel free to fork, improve, make pull requests or fill issues.
