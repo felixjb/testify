@@ -1,14 +1,19 @@
-import { tokenizer } from "acorn";
+import { parse } from "@babel/parser";
 
 const testTokens = ["describe", "it", "test"];
 
 function codeParser(sourceCode) {
   const parserOptions = {
-    locations: true
+    plugins: [
+      "jsx",
+      "typescript"
+    ],
+    sourceType: "module",
+    tokens: true,
   };
-  const tokens = [...tokenizer(sourceCode, parserOptions)];
+  const ast = parse(sourceCode, parserOptions);
 
-  return tokens
+  return ast.tokens
     .map(({ value, loc, type }, index) => {
       if (testTokens.indexOf(value) === -1) {
         return;
@@ -16,14 +21,14 @@ function codeParser(sourceCode) {
       if (type.label !== "name") {
         return;
       }
-      const nextToken = tokens[index + 1];
+      const nextToken = ast.tokens[index + 1];
       if (!nextToken.type.startsExpr) {
         return;
       }
 
       return {
         loc,
-        testName: tokens[index + 2].value
+        testName: ast.tokens[index + 2].value
       };
     })
     .filter(Boolean);

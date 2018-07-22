@@ -28,4 +28,27 @@ suite('codeParser Tests', () => {
         `
         assert.equal(0, codeParser(code).length)
     })
+
+    test('Jsx syntax', () => {
+        const code = `
+        describe("JsonFormTextField", () => {
+
+            test("Test render", () => {
+                const config: ITextFieldConfig = {
+                    fieldType: "text",
+                    name: "Owner",
+                };
+                const wrapper = mount(<FormWrapper>
+                    <JsonFormTextField
+                        config={config}
+                        value={null} />
+                </FormWrapper>);
+                const ownerInput = wrapper.find("input[type='text'][id='Owner']");
+                expect(ownerInput.length).toBe(1);
+                ownerInput.simulate("change");
+            });
+        });
+        `
+        assert.equal(2, codeParser(code).length)
+    })
 })
