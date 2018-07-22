@@ -1,4 +1,5 @@
-import { debug, Terminal, workspace, WorkspaceFolder } from "vscode";
+import { join } from "path";
+import { debug, WorkspaceFolder } from "vscode";
 
 import { ITestRunnerInterface } from "../interfaces/ITestRunnerInterface";
 import { ITestRunnerOptions } from "../interfaces/ITestRunnerOptions";
@@ -7,49 +8,56 @@ import { TerminalProvider } from "../providers/TerminalProvider";
 
 export class JestTestRunner implements ITestRunnerInterface {
   public name: string = "jest";
-  public rootPath: WorkspaceFolder = null;
   public terminalProvider: TerminalProvider = null;
   public configurationProvider: ConfigurationProvider = null;
 
   get binPath(): string {
-    return `${this.rootPath}/node_modules/.bin/jest`;
+    return join("node_modules", ".bin", "jest");
   }
 
-  constructor({
-    rootPath,
-    terminalProvider,
-    configurationProvider
-  }: ITestRunnerOptions) {
-    this.rootPath = rootPath;
+  constructor({ terminalProvider, configurationProvider }: ITestRunnerOptions) {
     this.terminalProvider = terminalProvider;
     this.configurationProvider = configurationProvider;
   }
 
-  public runTest(testName: string, fileName: string) {
+  public runTest(
+    rootPath: WorkspaceFolder,
+    fileName: string,
+    testName: string
+  ) {
     const additionalArguments = this.configurationProvider.additionalArguments;
     const environmentVariables = this.configurationProvider
       .environmentVariables;
+    // We force slash instead of backslash for Windows
+    const cleanedFileName = fileName.replace(/\\/g, "/");
 
     const command = `${
       this.binPath
-    } ${fileName} --testNamePattern="${testName}" ${additionalArguments}`;
+    } ${cleanedFileName} --testNamePattern="${testName}" ${additionalArguments}`;
 
-    const terminal = this.terminalProvider.get({
-      env: environmentVariables
-    });
+    const terminal = this.terminalProvider.get(
+      { env: environmentVariables },
+      rootPath
+    );
 
     terminal.sendText(command, true);
     terminal.show(true);
   }
 
-  public debugTest(testName: string, fileName: string) {
+  public debugTest(
+    rootPath: WorkspaceFolder,
+    fileName: string,
+    testName: string
+  ) {
     const additionalArguments = this.configurationProvider.additionalArguments;
     const environmentVariables = this.configurationProvider
       .environmentVariables;
+    // We force slash instead of backslash for Windows
+    const cleanedFileName = fileName.replace(/\\/g, "/");
 
-    debug.startDebugging(this.rootPath, {
+    debug.startDebugging(rootPath, {
       args: [
-        fileName,
+        cleanedFileName,
         `--testNamePattern`,
         testName,
         "--runInBand",
@@ -58,9 +66,12 @@ export class JestTestRunner implements ITestRunnerInterface {
       console: "integratedTerminal",
       env: environmentVariables,
       name: "Debug Test",
-      program: this.binPath,
+      program: "${workspaceFolder}/node_modules/.bin/jest",
       request: "launch",
-      type: "node"
+      type: "node",
+      windows: {
+        program: "${workspaceFolder}/node_modules/jest/bin/jest"
+      }
     });
   }
 }

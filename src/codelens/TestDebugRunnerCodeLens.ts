@@ -1,8 +1,8 @@
-import { CodeLens, Range } from "vscode";
+import { CodeLens, Range, WorkspaceFolder } from "vscode";
 
 export default class TestDebugRunnerCodeLens extends CodeLens {
   constructor(
-    rootPath: string,
+    rootPath: WorkspaceFolder,
     fileName: string,
     testName: string,
     range: Range

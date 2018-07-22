@@ -1,4 +1,5 @@
 import { exists } from "fs";
+import { join } from "path";
 import { WorkspaceFolder } from "vscode";
 
 import { ITestRunnerInterface } from "../interfaces/ITestRunnerInterface";
@@ -8,7 +9,6 @@ import { JestTestRunner } from "./JestTestRunner";
 import { MochaTestRunner } from "./MochaTestRunner";
 
 const terminalProvider = new TerminalProvider();
-const configurationProvider = new ConfigurationProvider();
 
 function doesFileExist(filePath: string): Promise<boolean> {
   return new Promise(resolve => {
@@ -19,10 +19,13 @@ function doesFileExist(filePath: string): Promise<boolean> {
 }
 
 async function getAvailableTestRunner(
-  testRunners: ITestRunnerInterface[]
+  testRunners: ITestRunnerInterface[],
+  rootPath: WorkspaceFolder
 ): Promise<ITestRunnerInterface> {
   for (const runner of testRunners) {
-    const doesRunnerExist = await doesFileExist(runner.binPath);
+    const doesRunnerExist = await doesFileExist(
+      join(rootPath.uri.path, runner.binPath)
+    );
 
     if (doesRunnerExist) {
       return runner;
@@ -35,16 +38,16 @@ async function getAvailableTestRunner(
 export async function getTestRunner(
   rootPath: WorkspaceFolder
 ): Promise<ITestRunnerInterface> {
+  const configurationProvider = new ConfigurationProvider(rootPath);
+
   const jestTestRunner = new JestTestRunner({
     configurationProvider,
-    rootPath,
     terminalProvider
   });
   const mochaTestRunner = new MochaTestRunner({
     configurationProvider,
-    rootPath,
     terminalProvider
   });
 
-  return getAvailableTestRunner([jestTestRunner, mochaTestRunner]);
+  return getAvailableTestRunner([jestTestRunner, mochaTestRunner], rootPath);
 }

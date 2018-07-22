@@ -15,4 +15,4 @@ export default [
     language: "javascriptreact",
     scheme: "file"
   }
-]
+];

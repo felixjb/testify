@@ -40,14 +40,16 @@
           "javascript-test-runner.additionalArgs": {
             "type": "string",
             "default": "",
-            "description": "CLI args to pass to test runner. Example : --watch"
+            "description": "CLI args to pass to test runner. Example : --watch",
+            "scope": "resource"
           },
           "javascript-test-runner.envVars": {
             "type": "object",
             "default": {
               "NODE_ENV": "test"
             },
-            "description": "Environment variables to set before running a test."
+            "description": "Environment variables to set before running a test.",
+            "scope": "resource"
           }
         }
       }
@@ -55,8 +57,8 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
+    "compile": "tsc --noUnusedParameters --noUnusedLocals -p ./",
+    "watch": "tsc -watch  --noUnusedParameters --noUnusedLocals  -p ./",
     "postinstall": "node ./node_modules/vscode/bin/install",
     "test": "npm run compile && node ./node_modules/vscode/bin/test",
     "lint": "tslint -c tslint.json src/**/*.ts",
@@ -66,13 +68,12 @@
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.{json}": [
+    "*.{ts,json}": [
       "prettier --write",
       "git add"
     ],
-    "*.{ts}": [
+    "*.{ts,}": [
       "tslint -c tslint.json",
-      "prettier --write",
       "git add"
     ]
   },

@@ -1,9 +1,9 @@
-import { ExtensionContext, window, languages, commands } from "vscode";
+import { commands, ExtensionContext, languages } from "vscode";
 
+import debugTestCommand from "./commands/debugTestCommand";
+import runTestCommand from "./commands/runTestCommand";
 import FILE_SELECTOR from "./constants/fileSelector";
 import TestRunnerCodeLensProvider from "./providers/TestRunnerCodeLensProvider";
-import runTestCommand from "./commands/runTestCommand";
-import debugTestCommand from "./commands/debugTestCommand";
 
 export function activate(context: ExtensionContext) {
   context.subscriptions.push(
@@ -19,6 +19,3 @@ export function activate(context: ExtensionContext) {
     debugTestCommand
   );
 }
-
-// this method is called when your extension is deactivated
-export function deactivate() {}

@@ -1,25 +1,17 @@
-import {
-  CancellationToken,
-  CodeLens,
-  CodeLensProvider,
-  TextDocument,
-  Uri,
-  workspace
-} from "vscode";
+import { CodeLens, CodeLensProvider, TextDocument, workspace } from "vscode";
 
 import TestRunnerDebugCodeLens from "../codelens/TestDebugRunnerCodeLens";
 import TestRunnerCodeLens from "../codelens/TestRunnerCodeLens";
 import { codeParser } from "../parser/codeParser";
 
 function getRootPath({ uri }) {
-  const fileUri = Uri.parse(uri.path);
-  const activeWorkspace = workspace.getWorkspaceFolder(fileUri);
+  const activeWorkspace = workspace.getWorkspaceFolder(uri);
 
   if (activeWorkspace) {
-    return activeWorkspace.uri.path;
+    return activeWorkspace;
   }
 
-  return workspace.rootPath;
+  return workspace;
 }
 
 function getCodeLens(rootPath, fileName, testName, startPosition) {
@@ -42,8 +34,7 @@ function getCodeLens(rootPath, fileName, testName, startPosition) {
 
 export default class TestRunnerCodeLensProvider implements CodeLensProvider {
   public provideCodeLenses(
-    document: TextDocument,
-    token: CancellationToken
+    document: TextDocument
   ): CodeLens[] | Thenable<CodeLens[]> {
     const createRangeObject = ({ line }) => document.lineAt(line - 1).range;
     const rootPath = getRootPath(document);
@@ -62,10 +53,7 @@ export default class TestRunnerCodeLensProvider implements CodeLensProvider {
     );
   }
 
-  public resolveCodeLens?(
-    codeLens: CodeLens,
-    token: CancellationToken
-  ): CodeLens | Thenable<CodeLens> {
+  public resolveCodeLens?(): CodeLens | Thenable<CodeLens> {
     return;
   }
 }

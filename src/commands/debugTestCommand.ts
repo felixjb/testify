@@ -1,9 +1,17 @@
+import { relative } from "path";
+import { workspace, WorkspaceFolder } from "vscode";
+
 import { getTestRunner } from "../runners/TestRunnerFactory";
 
-async function debugTest(rootPath, fileName, testName) {
+async function debugTest(
+  rootPath: WorkspaceFolder,
+  fileName: string,
+  testName: string
+) {
+  const relativeFilename = relative(rootPath.uri.path, fileName);
   const testRunner = await getTestRunner(rootPath);
 
-  testRunner.debugTest(testName, fileName);
+  testRunner.debugTest(rootPath, relativeFilename, testName);
 }
 
 export default debugTest;
