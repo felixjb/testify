@@ -12,8 +12,11 @@ Currently it works **out of the box** for **Mocha** and **Jest** test runner.
 
 ## Available configuration
 
-`javascript-test-runner.additionalArgs` : add any additional cli args here, they will be sent to Mocha or Jest when you'll run test
+`javascript-test-runner.additionalArgs` : CLI args to pass to test runner.
 _Example_ : "--watch"
+
+`javascript-test-runner.envVars` : Environment variables to set before running a test.
+_Example_ : { NODE_ENV": "test" }
 
 ## Compatibility
 
@@ -25,8 +28,6 @@ This extension works currently with :
 ## Need help?
 
 Visit the [Troubleshooting Guide](https://github.com/g3offrey/javascript-test-runner/wiki/Troubleshooting).
-
-
 
 ## Contribute
 
