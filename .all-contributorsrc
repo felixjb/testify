@@ -1,0 +1,126 @@
+{
+  "projectName": "javascript-test-runner",
+  "projectOwner": "g3offrey",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "contributors": [
+   {
+     "login": "g3offrey",
+     "name": "Geoffrey",
+     "avatar_url": "https://avatars1.githubusercontent.com/u/11151445?v=4",
+     "profile": "https://github.com/g3offrey",
+     "contributions": [
+        "code",
+        "ideas"
+      ]
+    },
+    {
+      "login": "ooga",
+      "name": "Johan Rouve",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/3911114?v=4",
+      "profile": "https://github.com/ooga",
+      "contributions": [
+        "code",
+        "bug"
+      ]
+    },
+    {
+      "login": "nkreshchenko",
+      "name": "Kreshchenko Nickolay",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/26111050?v=4",
+      "profile": "https://github.com/nkreshchenko",
+      "contributions": [
+        "code",
+        "ideas"
+      ]
+    },
+    {
+      "login": "roggenbrot",
+      "name": "roggenbrot",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/41467575?v=4",
+      "profile": "https://github.com/roggenbrot",
+      "contributions": [
+        "code",
+        "bug",
+        "ideas"
+      ]
+    },
+    {
+      "login": "fallanic",
+      "name": "Fabien Allanic",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/1240520?v=4",
+      "profile": "http://allanic.org",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "dantman",
+      "name": "Daniel Friesen",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/53399?v=4",
+      "profile": "http://danielfriesen.name/",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "GoGoris",
+      "name": "Steven Goris",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/2930063?v=4",
+      "profile": "https://github.com/GoGoris",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "nfour",
+      "name": "Sam J",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/2108452?v=4",
+      "profile": "http://nfour.me",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "JostCrow",
+      "name": "Jorik Kraaikamp",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/390575?v=4",
+      "profile": "https://github.com/JostCrow",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "PeikangHu",
+      "name": "Peter Hu",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/16585242?v=4",
+      "profile": "https://github.com/PeikangHu",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "marqu3z",
+      "name": "Marco Andreotti",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/1413476?v=4",
+      "profile": "https://github.com/marqu3z",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "xqin",
+      "name": "小秦",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/1265888?v=4",
+      "profile": "https://xqin.net/",
+      "contributions": [
+        "code"
+      ]
+    }
+  ]
+}

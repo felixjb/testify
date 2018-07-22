@@ -61,6 +61,8 @@
     "test": "npm run compile && node ./node_modules/vscode/bin/test",
     "lint": "tslint -c tslint.json src/**/*.ts",
     "format": "prettier --write src/**/*.{ts,json} package.json",
+    "contributors:add": "all-contributors add",
+    "contributors:generate": "all-contributors generate",
     "precommit": "lint-staged"
   },
   "lint-staged": {
@@ -77,6 +79,7 @@
   "devDependencies": {
     "@types/mocha": "^2.2.42",
     "@types/node": "^7.0.43",
+    "all-contributors-cli": "^5.3.0",
     "husky": "^0.14.3",
     "lint-staged": "^7.2.0",
     "prettier": "1.13.7",
