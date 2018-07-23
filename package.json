@@ -50,6 +50,36 @@
             },
             "description": "Environment variables to set before running a test.",
             "scope": "resource"
+          },
+          "javascript-test-runner.jestTestFilePatterns": {
+            "type": "array",
+            "description": "File pattern(s) used to detect Jest test files. If not specified the pattern is retrieved from the jest configuration",
+            "scope": "resource"
+          },
+          "javascript-test-runner.jestIgnorePatterns": {
+            "type": "array",
+            "description": "File pattern(s) used to exclude Jest test files. If not specified the pattern is retrieved from the jest configuration",
+            "scope": "resource"
+          },
+          "javascript-test-runner.jestExecutable": {
+            "type": "string",
+            "description": "Absolute path to the jest executable",
+            "scope": "resource"
+          },
+          "javascript-test-runner.mochaExecutable": {
+            "type": "string",
+            "description": "Absolute path to the mocha executable",
+            "scope": "resource"
+          },
+          "javascript-test-runner.mochaFilePatterns": {
+            "type": "array",
+            "description": "File pattern(s) used to detect Mocha test files. If not specified all files in folder test will be included",
+            "scope": "resource"
+          },
+          "javascript-test-runner.mochaIgnorePatterns": {
+            "type": "array",
+            "description": "File pattern(s) used to exclude Mocha test files",
+            "scope": "resource"
           }
         }
       }
@@ -78,6 +108,7 @@
     ]
   },
   "devDependencies": {
+    "@types/micromatch": "^3.1.0",
     "@types/mocha": "^2.2.42",
     "@types/node": "^7.0.43",
     "all-contributors-cli": "^5.3.0",
@@ -93,6 +124,7 @@
     "@babel/core": "^7.0.0-beta.54",
     "@babel/parser": "^7.0.0-beta.54",
     "@babel/plugin-syntax-jsx": "^7.0.0-beta.54",
-    "@babel/plugin-syntax-typescript": "^7.0.0-beta.54"
+    "@babel/plugin-syntax-typescript": "^7.0.0-beta.54",
+    "micromatch": "^3.1.10"
   }
 }

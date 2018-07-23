@@ -1,16 +1,17 @@
+import * as mm from "micromatch";
+import * as path from "path";
 import {
   CodeLens,
   CodeLensProvider,
   TextDocument,
-  window,
-  workspace,
-  WorkspaceFoldersChangeEvent
+  Uri,
+  workspace
 } from "vscode";
 
 import TestRunnerDebugCodeLens from "../codelens/TestDebugRunnerCodeLens";
 import TestRunnerCodeLens from "../codelens/TestRunnerCodeLens";
+import { PluginConfig } from "../config/PluginConfig";
 import { codeParser } from "../parser/codeParser";
-import { parseTestFrameworks } from "../parser/testFrameworkParser";
 
 function getRootPath({ uri }) {
   const activeWorkspace = workspace.getWorkspaceFolder(uri);
@@ -41,35 +42,10 @@ function getCodeLens(rootPath, fileName, testName, startPosition) {
 }
 
 export default class TestRunnerCodeLensProvider implements CodeLensProvider {
-  constructor() {
-    // Register workspace folder change listener to detect added/removed workspaces during runtime
-    workspace.onDidChangeWorkspaceFolders(this.onWorkspaceChanged);
-    // Check existing workspace for mocha/jest dependency
-    workspace.workspaceFolders.forEach(ws => {
-      parseTestFrameworks(ws)
-        .then(r => {
-          window.showInformationMessage(
-            "Found " +
-              r.enabledFrameworks.length +
-              " enabled test frameworks in workspace folder " +
-              ws.uri.path
-          );
-        })
-        .catch(e =>
-          window.showErrorMessage(
-            "Error while trying to retrieve test frameworks for workspace folder " +
-              ws.uri.path +
-              ": " +
-              e
-          )
-        );
-    });
-    const packageJsonWatcher = workspace.createFileSystemWatcher(
-      "**/package.json"
-    );
-    packageJsonWatcher.onDidChange(this.onPackageJsonChanged);
-    packageJsonWatcher.onDidCreate(this.onPackageJsonCreated);
-    packageJsonWatcher.onDidDelete(this.onPackageJsonDeleted);
+  private config: PluginConfig;
+
+  constructor(config: PluginConfig) {
+    this.config = config;
   }
 
   public provideCodeLenses(
@@ -78,37 +54,63 @@ export default class TestRunnerCodeLensProvider implements CodeLensProvider {
     const createRangeObject = ({ line }) => document.lineAt(line - 1).range;
     const rootPath = getRootPath(document);
 
-    return codeParser(document.getText()).reduce(
-      (acc, { loc, testName }) => [
-        ...acc,
-        ...getCodeLens(
-          rootPath,
-          document.fileName,
-          testName,
-          createRangeObject(loc.start)
-        )
-      ],
-      []
-    );
+    // Check if the file should be parsed
+    if (this.isTestFile(document.uri)) {
+      return codeParser(document.getText()).reduce(
+        (acc, { loc, testName }) => [
+          ...acc,
+          ...getCodeLens(
+            rootPath,
+            document.fileName,
+            testName,
+            createRangeObject(loc.start)
+          )
+        ],
+        []
+      );
+    } else {
+      return [];
+    }
   }
 
   public resolveCodeLens?(): CodeLens | Thenable<CodeLens> {
     return;
   }
 
-  private onWorkspaceChanged(event: WorkspaceFoldersChangeEvent) {
-    window.showInformationMessage("Worspace was changed");
-  }
-
-  private onPackageJsonChanged(uri) {
-    window.showInformationMessage(uri + " was changed");
-  }
-
-  private onPackageJsonCreated(uri) {
-    window.showInformationMessage(uri + " was created");
-  }
-
-  private onPackageJsonDeleted(uri) {
-    window.showInformationMessage(uri + " was deleted");
+  private isTestFile(uri: Uri) {
+    const workspaceFolder = workspace.getWorkspaceFolder(uri);
+    const workspaceConfig = this.config.getWorkspaceConfig(workspaceFolder);
+    const relativePath = path.relative(workspaceFolder.uri.path, uri.path);
+    if (workspaceConfig) {
+      for (const c of workspaceConfig.frameworkConfigs) {
+        for (const ignorePattern of c.ignorePatterns) {
+          if (
+            typeof ignorePattern === "string" &&
+            mm.isMatch(relativePath, ignorePattern)
+          ) {
+            return false;
+          } else if (
+            typeof ignorePattern === "object" &&
+            ignorePattern.test(relativePath)
+          ) {
+            return false;
+          }
+        }
+        for (const pattern of c.patterns) {
+          if (
+            typeof pattern === "string" &&
+            mm.isMatch(relativePath, pattern)
+          ) {
+            return true;
+          } else if (
+            typeof pattern === "object" &&
+            pattern.test(relativePath)
+          ) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
   }
 }
