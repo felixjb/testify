@@ -3,12 +3,10 @@ import * as os from "os";
 import { join } from "path";
 import { window, workspace, WorkspaceFolder } from "vscode";
 
-import { IPackage } from "../interfaces/IPackage";
 import { ITestFrameworkConfig } from "../interfaces/IWorkspaceConfig";
 
 export function parseConfig(
-  ws: WorkspaceFolder,
-  packageJson: IPackage
+  ws: WorkspaceFolder
 ): Promise<ITestFrameworkConfig> {
   return new Promise<ITestFrameworkConfig>((resolve, reject) => {
     const configuration = workspace.getConfiguration(

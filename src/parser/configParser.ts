@@ -51,10 +51,10 @@ function parseDevDependencies(
     for (const devDependency of Object.keys(packageJson.devDependencies)) {
       switch (devDependency) {
         case "jest":
-          p.push(parseJestConfig(ws, packageJson));
+          p.push(parseJestConfig(ws));
           break;
         case "mocha":
-          p.push(parseMochaConfig(ws, packageJson));
+          p.push(parseMochaConfig(ws));
           break;
       }
     }
