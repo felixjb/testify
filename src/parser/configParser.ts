@@ -14,26 +14,30 @@ import { parseConfig as parseMochaConfig } from "./mochaConfigParser";
 export function parseConfig(ws: WorkspaceFolder): Promise<IWorkspaceConfig> {
   return new Promise((resolve, reject) => {
     try {
-      fs.readFile(join(ws.uri.path, "package.json"), "utf-8", (error, data) => {
-        if (error) {
-          reject(error);
-        } else {
-          const packageJson: IPackage = JSON.parse(data);
-          parseDevDependencies(ws, packageJson)
-            .then(frameworkConfigs => {
-              resolve({ frameworkConfigs });
-            })
-            .catch(e => {
-              window.showErrorMessage(
-                "Error while trying to retrieve test frameworks for workspace folder " +
-                  ws.uri.path +
-                  ": " +
-                  e
-              );
-              reject(e);
-            });
+      fs.readFile(
+        join(ws.uri.fsPath, "package.json"),
+        "utf-8",
+        (error, data) => {
+          if (error) {
+            reject(error);
+          } else {
+            const packageJson: IPackage = JSON.parse(data);
+            parseDevDependencies(ws, packageJson)
+              .then(frameworkConfigs => {
+                resolve({ frameworkConfigs });
+              })
+              .catch(e => {
+                window.showErrorMessage(
+                  "Error while trying to retrieve test frameworks for workspace folder " +
+                    ws.uri.fsPath +
+                    ": " +
+                    e
+                );
+                reject(e);
+              });
+          }
         }
-      });
+      );
     } catch (ex) {
       reject(ex);
     }

@@ -58,7 +58,7 @@ export class PluginConfig {
   public getTestFrameworkConfig(uri: Uri): ITestFrameworkConfig {
     const workspaceFolder = workspace.getWorkspaceFolder(uri);
     const workspaceConfig = this.getWorkspaceConfig(workspaceFolder);
-    const relativePath = path.relative(workspaceFolder.uri.path, uri.path);
+    const relativePath = path.relative(workspaceFolder.uri.fsPath, uri.fsPath);
     if (workspaceConfig) {
       for (const c of workspaceConfig.frameworkConfigs) {
         if (this.isTestFrameworkFile(relativePath, c)) {
@@ -76,7 +76,7 @@ export class PluginConfig {
   public isTestFile(uri: Uri) {
     const workspaceFolder = workspace.getWorkspaceFolder(uri);
     const workspaceConfig = this.getWorkspaceConfig(workspaceFolder);
-    const relativePath = path.relative(workspaceFolder.uri.path, uri.path);
+    const relativePath = path.relative(workspaceFolder.uri.fsPath, uri.fsPath);
     if (workspaceConfig) {
       for (const c of workspaceConfig.frameworkConfigs) {
         if (this.isTestFrameworkFile(relativePath, c)) {

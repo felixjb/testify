@@ -15,7 +15,7 @@ export default async function debugTest(
   if (testRunner) {
     testRunner.debugTest(
       rootPath,
-      relative(rootPath.uri.path, fileName),
+      relative(rootPath.uri.fsPath, fileName),
       testName
     );
   } else {
