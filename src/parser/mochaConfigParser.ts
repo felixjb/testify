@@ -1,4 +1,3 @@
-import * as os from "os";
 import { join } from "path";
 import { workspace, WorkspaceFolder } from "vscode";
 
@@ -16,11 +15,7 @@ export function parseConfig(
     );
     let executable: string = configuration.get("mochaExecutable");
     if (!executable) {
-      if (os.type() === "Windows_NT") {
-        executable = join("node_modules", "bin", "mocha");
-      } else {
-        executable = join("node_modules", ".bin", "mocha");
-      }
+      executable = join("node_modules", ".bin", "mocha");
     }
     resolve({
       executable,

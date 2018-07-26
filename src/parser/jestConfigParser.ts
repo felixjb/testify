@@ -1,5 +1,4 @@
 import * as fs from "fs";
-import * as os from "os";
 import { join } from "path";
 import {
   window,
@@ -63,11 +62,7 @@ export function parseConfig(
 function getExecutable(configuration: WorkspaceConfiguration) {
   const executable: string = configuration.get("jestExecutable");
   if (!executable) {
-    if (os.type() === "Windows_NT") {
-      return join("node_modules", "bin", "jest");
-    } else {
-      return join("node_modules", ".bin", "jest");
-    }
+    return join("node_modules", ".bin", "jest");
   }
   return executable;
 }
