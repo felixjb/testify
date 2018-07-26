@@ -1,17 +1,24 @@
-import { relative } from "path";
-import { WorkspaceFolder } from "vscode";
+import { join, relative } from "path";
+import { Uri, WorkspaceFolder } from "vscode";
 
-import { getTestRunner } from "../runners/TestRunnerFactory";
+import { PluginConfig } from "../config/PluginConfig";
 
-async function runTest(
+export default async function runTest(
   rootPath: WorkspaceFolder,
   fileName: string,
-  testName: string
+  testName: string,
+  config: PluginConfig
 ) {
-  const relativeFilename = relative(rootPath.uri.path, fileName);
-  const testRunner = await getTestRunner(rootPath);
-
-  testRunner.runTest(rootPath, relativeFilename, testName);
+  const testRunner = config.getTestRunner(
+    Uri.file(join(rootPath.uri.fsPath, fileName))
+  );
+  if (testRunner) {
+    testRunner.runTest(
+      rootPath,
+      relative(rootPath.uri.path, fileName),
+      testName
+    );
+  } else {
+    throw new Error("No test runner in your project. Please install one.");
+  }
 }
-
-export default runTest;

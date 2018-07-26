@@ -7,10 +7,8 @@ import {
   ITestFrameworkConfig,
   IWorkspaceConfig
 } from "../interfaces/IWorkspaceConfig";
-import {
-  parseConfig as parseJestConfig,
-  parseConfig as parseMochaConfig
-} from "./jestConfigParser";
+import { parseConfig as parseJestConfig } from "./jestConfigParser";
+import { parseConfig as parseMochaConfig } from "./mochaConfigParser";
 
 // tslint:disable:no-console
 export function parseConfig(ws: WorkspaceFolder): Promise<IWorkspaceConfig> {
@@ -51,7 +49,7 @@ function parseDevDependencies(
     for (const devDependency of Object.keys(packageJson.devDependencies)) {
       switch (devDependency) {
         case "jest":
-          p.push(parseJestConfig(ws));
+          p.push(parseJestConfig(ws, packageJson));
           break;
         case "mocha":
           p.push(parseMochaConfig(ws));

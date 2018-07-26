@@ -1,23 +1,25 @@
-import { join } from "path";
+import * as path from "path";
 import { debug, WorkspaceFolder } from "vscode";
 
 import { ITestRunnerInterface } from "../interfaces/ITestRunnerInterface";
-import { ITestRunnerOptions } from "../interfaces/ITestRunnerOptions";
-import { ConfigurationProvider } from "../providers/ConfigurationProvider";
 import { TerminalProvider } from "../providers/TerminalProvider";
 
 export class JestTestRunner implements ITestRunnerInterface {
-  public name: string = "jest";
-  public terminalProvider: TerminalProvider = null;
-  public configurationProvider: ConfigurationProvider = null;
+  private terminalProvider: TerminalProvider;
+  private executable: string;
+  private additionalArguments: string[];
+  private environmentVariables: { [key: string]: string };
 
-  get binPath(): string {
-    return join("node_modules", ".bin", "jest");
-  }
-
-  constructor({ terminalProvider, configurationProvider }: ITestRunnerOptions) {
+  constructor(
+    terminalProvider: TerminalProvider,
+    executable: string,
+    additionalArguments: string[],
+    environmentVariables: { [key: string]: string }
+  ) {
     this.terminalProvider = terminalProvider;
-    this.configurationProvider = configurationProvider;
+    this.executable = executable;
+    this.additionalArguments = additionalArguments;
+    this.environmentVariables = environmentVariables;
   }
 
   public runTest(
@@ -25,18 +27,17 @@ export class JestTestRunner implements ITestRunnerInterface {
     fileName: string,
     testName: string
   ) {
-    const additionalArguments = this.configurationProvider.additionalArguments;
-    const environmentVariables = this.configurationProvider
-      .environmentVariables;
     // We force slash instead of backslash for Windows
     const cleanedFileName = fileName.replace(/\\/g, "/");
 
     const command = `${
-      this.binPath
-    } ${cleanedFileName} --testNamePattern="${testName}" ${additionalArguments}`;
+      this.executable
+    } ${cleanedFileName} --testNamePattern="${testName}" ${this.convertArguments(
+      this.additionalArguments
+    ).join(" ")}`;
 
     const terminal = this.terminalProvider.get(
-      { env: environmentVariables },
+      { env: this.environmentVariables },
       rootPath
     );
 
@@ -49,9 +50,6 @@ export class JestTestRunner implements ITestRunnerInterface {
     fileName: string,
     testName: string
   ) {
-    const additionalArguments = this.configurationProvider.additionalArguments;
-    const environmentVariables = this.configurationProvider
-      .environmentVariables;
     // We force slash instead of backslash for Windows
     const cleanedFileName = fileName.replace(/\\/g, "/");
 
@@ -61,17 +59,26 @@ export class JestTestRunner implements ITestRunnerInterface {
         `--testNamePattern`,
         testName,
         "--runInBand",
-        ...additionalArguments.split(" ")
+        ...this.convertArguments(this.additionalArguments)
       ],
       console: "integratedTerminal",
-      env: environmentVariables,
+      env: this.environmentVariables,
       name: "Debug Test",
-      program: "${workspaceFolder}/node_modules/.bin/jest",
+      program: path.join(rootPath.uri.fsPath, this.executable),
       request: "launch",
-      type: "node",
-      windows: {
-        program: "${workspaceFolder}/node_modules/jest/bin/jest"
-      }
+      type: "node"
     });
+  }
+
+  /**
+   * Convert legacy arguments to array
+   *
+   * @param args
+   */
+  private convertArguments(args: any) {
+    if (args instanceof Array) {
+      return args;
+    }
+    return [args];
   }
 }

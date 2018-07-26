@@ -37,8 +37,14 @@
     "configuration": [
       {
         "properties": {
-          "testify.additionalArgs": {
+          "testify.packageJson": {
             "type": "string",
+            "default": "package.json",
+            "description": "Relative path to package.json",
+            "scope": "resource"
+          },
+          "javascript-test-runner.additionalArgs": {
+            "type": "array",
             "default": "",
             "description": "CLI args to pass to test runner.",
             "scope": "resource"

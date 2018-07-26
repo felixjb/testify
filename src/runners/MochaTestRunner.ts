@@ -1,23 +1,25 @@
-import { join } from "path";
+import * as path from "path";
 import { debug, WorkspaceFolder } from "vscode";
 
 import { ITestRunnerInterface } from "../interfaces/ITestRunnerInterface";
-import { ITestRunnerOptions } from "../interfaces/ITestRunnerOptions";
-import { ConfigurationProvider } from "../providers/ConfigurationProvider";
 import { TerminalProvider } from "../providers/TerminalProvider";
 
 export class MochaTestRunner implements ITestRunnerInterface {
-  public name: string = "mocha";
-  public terminalProvider: TerminalProvider = null;
-  public configurationProvider: ConfigurationProvider = null;
+  private terminalProvider: TerminalProvider;
+  private executable: string;
+  private additionalArguments: string[];
+  private environmentVariables: { [key: string]: string };
 
-  get binPath(): string {
-    return join("node_modules", ".bin", "mocha");
-  }
-
-  constructor({ terminalProvider, configurationProvider }: ITestRunnerOptions) {
+  constructor(
+    terminalProvider: TerminalProvider,
+    executable: string,
+    additionalArguments: string[],
+    environmentVariables: { [key: string]: string }
+  ) {
     this.terminalProvider = terminalProvider;
-    this.configurationProvider = configurationProvider;
+    this.executable = executable;
+    this.additionalArguments = additionalArguments;
+    this.environmentVariables = environmentVariables;
   }
 
   public runTest(
@@ -25,16 +27,14 @@ export class MochaTestRunner implements ITestRunnerInterface {
     fileName: string,
     testName: string
   ) {
-    const additionalArguments = this.configurationProvider.additionalArguments;
-    const environmentVariables = this.configurationProvider
-      .environmentVariables;
-
     const command = `${
-      this.binPath
-    } ${fileName} --grep="${testName}" ${additionalArguments}`;
+      this.executable
+    } ${fileName} --grep="${testName}" ${this.convertArguments(
+      this.additionalArguments
+    ).join(" ")}`;
 
     const terminal = this.terminalProvider.get(
-      { env: environmentVariables },
+      { env: this.environmentVariables },
       rootPath
     );
 
@@ -47,27 +47,31 @@ export class MochaTestRunner implements ITestRunnerInterface {
     fileName: string,
     testName: string
   ) {
-    const additionalArguments = this.configurationProvider.additionalArguments;
-    const environmentVariables = this.configurationProvider
-      .environmentVariables;
-
     debug.startDebugging(rootPath, {
       args: [
         fileName,
         "--grep",
         testName,
         "--no-timeout",
-        ...additionalArguments.split(" ")
+        ...this.convertArguments(this.additionalArguments)
       ],
       console: "integratedTerminal",
-      env: environmentVariables,
+      env: this.environmentVariables,
       name: "Debug Test",
-      program: "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+      program: path.join(rootPath.uri.fsPath, this.executable),
       request: "launch",
-      type: "node",
-      windows: {
-        program: "${workspaceFolder}/node_modules/mocha/bin/_mocha"
-      }
+      type: "node"
     });
+  }
+
+  /**
+   * Convert legacy arguments to array
+   * @param args
+   */
+  private convertArguments(args: any) {
+    if (args instanceof Array) {
+      return args;
+    }
+    return [args];
   }
 }

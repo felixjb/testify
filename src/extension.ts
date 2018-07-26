@@ -1,4 +1,4 @@
-import { commands, ExtensionContext, languages } from "vscode";
+import { commands, ExtensionContext, languages, WorkspaceFolder } from "vscode";
 
 import debugTestCommand from "./commands/debugTestCommand";
 import runTestCommand from "./commands/runTestCommand";
@@ -16,6 +16,16 @@ export function activate(context: ExtensionContext) {
     )
   );
 
-  commands.registerCommand("testify.run.test", runTestCommand);
-  commands.registerCommand("testify.debug.test", debugTestCommand);
+  commands.registerCommand(
+    "testify.run.test",
+    (rootPath: WorkspaceFolder, fileName: string, testName: string) =>
+      runTestCommand(rootPath, fileName, testName, pluginConfig),
+    pluginConfig
+  );
+  commands.registerCommand(
+    "testify.debug.test",
+    (rootPath: WorkspaceFolder, fileName: string, testName: string) =>
+      debugTestCommand(rootPath, fileName, testName, pluginConfig),
+    pluginConfig
+  );
 }

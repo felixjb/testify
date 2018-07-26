@@ -3,6 +3,8 @@ import { join } from "path";
 import { workspace, WorkspaceFolder } from "vscode";
 
 import { ITestFrameworkConfig } from "../interfaces/IWorkspaceConfig";
+import { TerminalProvider } from "../providers/TerminalProvider";
+import { MochaTestRunner } from "../runners/MochaTestRunner";
 
 export function parseConfig(
   ws: WorkspaceFolder
@@ -23,12 +25,16 @@ export function parseConfig(
     resolve({
       executable,
       framework: "mocha",
-      ignorePatterns: configuration.get("mochaIgnorePatterns")
-        ? configuration.get<string[]>("mochaIgnorePatterns")
-        : [],
-      patterns: configuration.get("mochaTestFilePatterns")
-        ? configuration.get<string[]>("mochaTestFilePatterns")
-        : [new RegExp("test/**/*")]
+      ignorePatterns: configuration.get<string[]>("mochaIgnorePatterns", []),
+      patterns: configuration.get<string[]>("mochaTestFilePatterns", [
+        "test/**/*"
+      ]),
+      runner: new MochaTestRunner(
+        new TerminalProvider(),
+        executable,
+        configuration.get<string[]>("additionalArgs"),
+        configuration.get<{ [key: string]: string }>("envVars")
+      )
     });
   });
 }
