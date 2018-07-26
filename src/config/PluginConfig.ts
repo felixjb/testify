@@ -1,6 +1,7 @@
 import * as mm from "micromatch";
 import * as path from "path";
 import {
+  ConfigurationChangeEvent,
   FileSystemWatcher,
   Uri,
   window,
@@ -18,11 +19,14 @@ import TestRunnerCodeLensProvider from "../providers/TestRunnerCodeLensProvider"
 
 export class PluginConfig {
   private testFrameworkConfig: { [key: number]: IWorkspaceConfig } = {};
-  private fileWatchers: { [key: number]: FileSystemWatcher } = {};
+  private fileWatchers: {
+    [key: number]: { watcher: FileSystemWatcher; pattern: string };
+  } = {};
 
   constructor() {
     // Register workspace folder change listener to detect added/removed workspaces during runtime
-    workspace.onDidChangeWorkspaceFolders(this.onWorkspaceChanged);
+    workspace.onDidChangeWorkspaceFolders(this.onWorkspaceChanged.bind(this));
+    workspace.onDidChangeConfiguration(this.onConfigurationChanged.bind(this));
     // Check existing workspace for mocha/jest dependency
     if (workspace.workspaceFolders) {
       const p = [];
@@ -118,26 +122,27 @@ export class PluginConfig {
 
   private updateWorkspace(ws: WorkspaceFolder) {
     const config = workspace.getConfiguration("javascript-test-runner", ws.uri);
-    if (!this.fileWatchers[ws.index]) {
+    const pattern = config.get("packageJson", "package.json");
+    if (
+      !this.fileWatchers[ws.index] ||
+      this.fileWatchers[ws.index].pattern !== pattern
+    ) {
+      if (this.fileWatchers[ws.index]) {
+        this.fileWatchers[ws.index].watcher.dispose();
+      }
       const fileWatcher = workspace.createFileSystemWatcher(
-        path.join(ws.uri.fsPath, config.get("packageJson", "package.json"))
+        path.join(ws.uri.fsPath, pattern)
       );
       fileWatcher.onDidChange((uri: Uri) => {
-        // tslint:disable-next-line:no-console
-        console.log("Update package.json");
         this.updateWorkspace(workspace.getWorkspaceFolder(uri));
       });
       fileWatcher.onDidCreate((uri: Uri) => {
-        // tslint:disable-next-line:no-console
-        console.log("create package.json");
         this.updateWorkspace(workspace.getWorkspaceFolder(uri));
       });
       fileWatcher.onDidDelete((uri: Uri) => {
-        // tslint:disable-next-line:no-console
-        console.log("delete package.json");
         this.updateWorkspace(workspace.getWorkspaceFolder(uri));
       });
-      this.fileWatchers[ws.index] = fileWatcher;
+      this.fileWatchers[ws.index] = { pattern, watcher: fileWatcher };
     }
     return this.parseWorkspaceConfig(ws);
   }
@@ -161,11 +166,10 @@ export class PluginConfig {
    * @param event
    */
   private onWorkspaceChanged(event: WorkspaceFoldersChangeEvent) {
-    window.showInformationMessage("Worspace was changed " + event);
     if (event.removed) {
       event.removed.forEach(ws => {
         delete this.testFrameworkConfig[ws.index];
-        this.fileWatchers[ws.index].dispose();
+        this.fileWatchers[ws.index].watcher.dispose();
         delete this.fileWatchers[ws.index];
       });
     }
@@ -174,6 +178,20 @@ export class PluginConfig {
         this.updateWorkspace(ws);
       });
     }
+  }
+
+  /**
+   * Event handler when configuration is changed
+   *
+   * Updateds the internal plugin config if any extension related property was changed
+   * @param event
+   */
+  private onConfigurationChanged(event: ConfigurationChangeEvent) {
+    workspace.workspaceFolders.forEach(ws => {
+      if (event.affectsConfiguration("javascript-test-runner", ws.uri)) {
+        this.updateWorkspace(ws);
+      }
+    });
   }
 
   /**
