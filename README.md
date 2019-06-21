@@ -5,7 +5,7 @@ Currently it works **out of the box** for **Mocha** and **Jest** test runner.
 
 ## Demo
 
-![demo](./resources//demo.gif)
+![demo](resources/demo.gif)
 
 ## Configuration
 
