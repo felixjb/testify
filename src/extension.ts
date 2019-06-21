@@ -13,9 +13,6 @@ export function activate(context: ExtensionContext) {
     )
   );
 
-  commands.registerCommand("javascript-test-runner.run.test", runTestCommand);
-  commands.registerCommand(
-    "javascript-test-runner.debug.test",
-    debugTestCommand
-  );
+  commands.registerCommand("testify.run.test", runTestCommand);
+  commands.registerCommand("testify.debug.test", debugTestCommand);
 }
