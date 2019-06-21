@@ -1,15 +1,12 @@
-import { parse } from "@babel/parser";
+import { parse, ParserOptions } from "@babel/parser";
 
 const testTokens = ["describe", "it", "test"];
 
 function codeParser(sourceCode) {
-  const parserOptions = {
-    plugins: [
-      "jsx",
-      "typescript"
-    ],
+  const parserOptions: ParserOptions = {
+    plugins: ["jsx", "typescript"],
     sourceType: "module",
-    tokens: true,
+    tokens: true
   };
   const ast = parse(sourceCode, parserOptions);
 
