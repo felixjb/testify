@@ -1,9 +1,9 @@
 {
-  "name": "javascript-test-runner",
-  "displayName": "JavaScript Test Runner",
+  "name": "testify",
+  "displayName": "Testify",
   "description": "Run JavaScript tests easily using CodeLens",
   "version": "1.0.0",
-  "publisher": "legfrey",
+  "publisher": "felixjb",
   "engines": {
     "vscode": "^1.18.0"
   },
@@ -20,9 +20,9 @@
   "preview": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/g3offrey/javascript-test-runner"
+    "url": "https://github.com/felixjb/testify"
   },
-  "icon": "ressources/icon.png",
+  "icon": "resources/icon.png",
   "main": "./out/extension",
   "activationEvents": [
     "*"
@@ -30,20 +30,20 @@
   "contributes": {
     "commands": [
       {
-        "command": "javascript-test-runner.run.test",
+        "command": "testify.run.test",
         "title": "Run Test"
       }
     ],
     "configuration": [
       {
         "properties": {
-          "javascript-test-runner.additionalArgs": {
+          "testify.additionalArgs": {
             "type": "string",
             "default": "",
-            "description": "CLI args to pass to test runner. Example : --watch",
+            "description": "CLI args to pass to test runner.",
             "scope": "resource"
           },
-          "javascript-test-runner.envVars": {
+          "testify.envVars": {
             "type": "object",
             "default": {
               "NODE_ENV": "test"

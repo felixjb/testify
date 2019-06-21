@@ -9,7 +9,7 @@ export default class TestDebugRunnerCodeLens extends CodeLens {
   ) {
     super(range, {
       arguments: [rootPath, fileName, testName],
-      command: "javascript-test-runner.debug.test",
+      command: "testify.debug.test",
       title: "Debug Test"
     });
   }
