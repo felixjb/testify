@@ -4,33 +4,33 @@
 //
 
 // The module 'assert' provides assertion methods from node
-import * as assert from 'assert'
+import * as assert from "assert";
 
-import { codeParser } from '../../parser/codeParser'
+import { codeParser } from "../../parser/codeParser";
 
 // Defines a Mocha test suite to group tests of similar kind together
-suite('codeParser Tests', () => {
-    // Defines a Mocha unit test
-    test('Valid Token', () => {
-        const code = `
+suite("codeParser Tests", () => {
+  // Defines a Mocha unit test
+  test("Valid Token", () => {
+    const code = `
             describe('Fake test', () => {});
-        `
-        assert.equal(1, codeParser(code).length)
-    })
+        `;
+    assert.equal(1, codeParser(code).length);
+  });
 
-    test('Invalid Tokens', () => {
-        const code = `
+  test("Invalid Tokens", () => {
+    const code = `
             var test = 'Fluo';
             let src = {test: true, type: 'BANK'};
             if (!src.test && src.type === 'BANK') {
                 let firstName = 'test';
             }
-        `
-        assert.equal(0, codeParser(code).length)
-    })
+        `;
+    assert.equal(0, codeParser(code).length);
+  });
 
-    test('Jsx syntax', () => {
-        const code = `
+  test("Jsx syntax", () => {
+    const code = `
         describe("JsonFormTextField", () => {
 
             test("Test render", () => {
@@ -48,7 +48,25 @@ suite('codeParser Tests', () => {
                 ownerInput.simulate("change");
             });
         });
-        `
-        assert.equal(2, codeParser(code).length)
-    })
-})
+        `;
+    assert.equal(2, codeParser(code).length);
+  });
+
+  test("Rest Spread syntax", () => {
+    const code = `
+        describe("TestWithRestSpread", () => {
+          it('just works!', () => {
+            const obj = {
+              name: 'Testify',
+              catchphrase: 'Witness Me!',
+            };
+
+            const newObject = { ...obj };
+
+            expect(newObject.catchphrase).toBe('Witness Me!');
+          });
+        });
+      `;
+    assert.equal(2, codeParser(code).length);
+  });
+});
