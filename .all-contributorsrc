@@ -9,15 +9,24 @@
   "imageSize": 100,
   "commit": true,
   "contributors": [
-   {
-     "login": "felixjb",
-     "name": "Felix J. Batista",
-     "avatar_url": "https://avatars2.githubusercontent.com/u/16679401?s=460&v=4",
-     "profile": "https://github.com/felixjb",
-     "contributions": [
+    {
+      "login": "felixjb",
+      "name": "Felix J. Batista",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/16679401?s=460&v=4",
+      "profile": "https://github.com/felixjb",
+      "contributions": [
         "code",
         "ideas"
       ]
     },
+    {
+      "login": "silvawillian",
+      "name": "Willian Silva",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/11415256?v=4",
+      "profile": "https://github.com/silvawillian",
+      "contributions": [
+        "code"
+      ]
+    }
   ]
 }
