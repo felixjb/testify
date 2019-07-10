@@ -37,6 +37,16 @@
         "code",
         "ideas"
       ]
+    },
+    {
+      "login": "ooga",
+      "name": "Johan Rouve",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/3911114?v=4",
+      "profile": "https://github.com/ooga",
+      "contributions": [
+        "bug",
+        "code"
+      ]
     }
   ]
 }
