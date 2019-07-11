@@ -49,22 +49,22 @@
       ]
     },
     {
+      "login": "nkreshchenko",
+      "name": "Kreshchenko Nickolay",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/26111050?v=4",
+      "profile": "https://github.com/nkreshchenko",
+      "contributions": [
+        "code",
+        "ideas"
+      ]
+    },
+    {
       "login": "roggenbrot",
       "name": "Sascha Dais",
       "avatar_url": "https://avatars1.githubusercontent.com/u/41467575?v=4",
       "profile": "https://github.com/roggenbrot",
       "contributions": [
         "bug",
-        "code",
-        "ideas"
-      ]
-    },
-    {
-      "login": "nkreshchenko",
-      "name": "Kreshchenko Nickolay",
-      "avatar_url": "https://avatars0.githubusercontent.com/u/26111050?v=4",
-      "profile": "https://github.com/nkreshchenko",
-      "contributions": [
         "code",
         "ideas"
       ]
