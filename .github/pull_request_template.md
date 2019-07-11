@@ -19,6 +19,17 @@ List related issue(s) which the pull request fixes. Pull requests should always 
 
 <!--
 Tip: commits in the `fixes #<issue number>, fixes #<issue_number>, (...)` format, will close the issue(s) when the pull request gets merged.
+
+Other possible keywords:
+- close
+- closes
+- closed
+- fix
+- fixes
+- fixed
+- resolve
+- resolves
+- resolved
 -->
 
 ### Commits
