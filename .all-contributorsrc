@@ -27,6 +27,47 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "g3offrey",
+      "name": "Geoffrey",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/11151445?v=4",
+      "profile": "https://github.com/g3offrey",
+      "contributions": [
+        "code",
+        "ideas"
+      ]
+    },
+    {
+      "login": "ooga",
+      "name": "Johan Rouve",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/3911114?v=4",
+      "profile": "https://github.com/ooga",
+      "contributions": [
+        "bug",
+        "code"
+      ]
+    },
+    {
+      "login": "nkreshchenko",
+      "name": "Kreshchenko Nickolay",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/26111050?v=4",
+      "profile": "https://github.com/nkreshchenko",
+      "contributions": [
+        "code",
+        "ideas"
+      ]
+    },
+    {
+      "login": "roggenbrot",
+      "name": "Sascha Dais",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/41467575?v=4",
+      "profile": "https://github.com/roggenbrot",
+      "contributions": [
+        "bug",
+        "code",
+        "ideas"
+      ]
     }
   ]
 }
