@@ -66,16 +66,16 @@
     ]
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
     "compile": "tsc --noUnusedParameters --noUnusedLocals -p ./",
-    "watch": "tsc -watch  --noUnusedParameters --noUnusedLocals  -p ./",
-    "postinstall": "node ./node_modules/vscode/bin/install",
-    "test": "npm run compile && node ./node_modules/vscode/bin/test",
-    "lint": "tslint -c tslint.json src/**/*.ts",
-    "format": "prettier --write src/**/*.{ts,json} package.json",
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate",
-    "precommit": "lint-staged"
+    "format": "prettier --write src/**/*.{ts,json} package.json",
+    "lint": "tslint -c tslint.json src/**/*.ts",
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "precommit": "lint-staged",
+    "test": "npm run compile && node ./node_modules/vscode/bin/test",
+    "vscode:prepublish": "npm run compile",
+    "watch": "tsc -watch  --noUnusedParameters --noUnusedLocals  -p ./"
   },
   "lint-staged": {
     "*.{ts,json}": [
@@ -94,8 +94,8 @@
     "husky": "^0.14.3",
     "lint-staged": "^7.2.0",
     "prettier": "1.13.7",
-    "tslint": "^5.10.0",
     "tslint-config-prettier": "^1.13.0",
+    "tslint": "^5.10.0",
     "typescript": "^2.6.1",
     "vscode": "^1.1.6"
   },
