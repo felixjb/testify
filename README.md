@@ -43,6 +43,10 @@ Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
+Also, a big special **thank you to Barbara Iamauchi** who designed the amazing new icon for this project!
+
+[<img src="https://media.licdn.com/dms/image/C5103AQHx1YaYR23COg/profile-displayphoto-shrink_800_800/0?e=1570665600&v=beta&t=p93yp1lZXWJXBKLjTp9cq__flzRvTpMxTnAHzLSKFRQ" width="100px;" alt="Barbara Iamauchi"/><br /><sub><b>Barbara Iamauchi</b></sub>](https://www.linkedin.com/in/barbara-iamauchi-772732121/)<br />
+
 This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind welcome!
 
 ## Authors
@@ -50,7 +54,7 @@ This project follows the [all-contributors](https://github.com/kentcdodds/all-co
 -   **Geoffrey** - _Initial work_ - Github: [@g3offrey](https://github.com/g3offrey)
 -   **Felix J. Batista** - _Forked project_ - Github: [@felixjb](https://github.com/felixjb)
 
-_based on [JavaScript Test Runner](https://github.com/g3offrey/javascript-test-runner) by_ **Geoffrey**
+based on [JavaScript Test Runner](https://github.com/g3offrey/javascript-test-runner) by **Geoffrey**
 
 ## License
 
