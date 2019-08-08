@@ -7,11 +7,15 @@ export class ConfigurationProvider {
     this.configuration = workspace.getConfiguration("testify", rootPath.uri);
   }
 
+  get additionalArguments(): string {
+    return this.configuration.get("additionalArgs");
+  }
+
   get environmentVariables(): {} {
     return this.configuration.get("envVars");
   }
 
-  get additionalArguments(): string {
-    return this.configuration.get("additionalArgs");
+  get skipFiles(): [] {
+    return this.configuration.get("skipFiles");
   }
 }

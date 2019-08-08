@@ -50,6 +50,12 @@
             },
             "description": "Environment variables to set before running a test.",
             "scope": "resource"
+          },
+          "testify.skipFiles": {
+            "type": "array",
+            "default": [],
+            "description": "Array of glob patterns for script paths to skip.",
+            "scope": "resource"
           }
         }
       }
