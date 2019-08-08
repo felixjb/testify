@@ -32,6 +32,10 @@
       {
         "command": "testify.run.test",
         "title": "Run Test"
+      },
+      {
+        "command": "testify.debug.test",
+        "title": "Debug Test"
       }
     ],
     "configuration": [
