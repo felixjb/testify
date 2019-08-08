@@ -15,7 +15,7 @@ export class ConfigurationProvider {
     return this.configuration.get("envVars");
   }
 
-  get skipFiles(): [] {
+  get skipFiles(): string[] {
     return this.configuration.get("skipFiles");
   }
 }
