@@ -52,6 +52,8 @@ export class JestTestRunner implements ITestRunnerInterface {
     const additionalArguments = this.configurationProvider.additionalArguments;
     const environmentVariables = this.configurationProvider
       .environmentVariables;
+    const skipFiles = this.configurationProvider.skipFiles;
+
     // We force slash instead of backslash for Windows
     const cleanedFileName = fileName.replace(/\\/g, "/");
 
@@ -68,6 +70,7 @@ export class JestTestRunner implements ITestRunnerInterface {
       name: "Debug Test",
       program: "${workspaceFolder}/node_modules/.bin/jest",
       request: "launch",
+      skipFiles,
       type: "node",
       windows: {
         program: "${workspaceFolder}/node_modules/jest/bin/jest"

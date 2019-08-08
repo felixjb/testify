@@ -50,6 +50,7 @@ export class MochaTestRunner implements ITestRunnerInterface {
     const additionalArguments = this.configurationProvider.additionalArguments;
     const environmentVariables = this.configurationProvider
       .environmentVariables;
+    const skipFiles = this.configurationProvider.skipFiles;
 
     debug.startDebugging(rootPath, {
       args: [
@@ -64,6 +65,7 @@ export class MochaTestRunner implements ITestRunnerInterface {
       name: "Debug Test",
       program: "${workspaceFolder}/node_modules/mocha/bin/_mocha",
       request: "launch",
+      skipFiles,
       type: "node",
       windows: {
         program: "${workspaceFolder}/node_modules/mocha/bin/_mocha"
