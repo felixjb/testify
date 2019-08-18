@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 -   Fix windows file path recognition.
 
+### Changed
+-   Update `skipFile` configuration to use new VSCode's string arrays format.
+
 ## [1.2.0] - 2019-08-10
 
 ### Added
@@ -18,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.1.0] - 2019-06-24
 
 ### Added
--   Add support to tests with spread operator (...).
+-   Add support to tests with spread operator `(...)`.
 
 ## [1.0.0] - 2019-06-21
 
