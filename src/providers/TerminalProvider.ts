@@ -12,7 +12,7 @@ export class TerminalProvider {
     }
 
     this.activeTerminal = window.createTerminal(terminalOptions);
-    this.activeTerminal.sendText(`cd ${rootPath.uri.path}`, true);
+    this.activeTerminal.sendText(`cd ${rootPath.uri.fsPath}`, true);
 
     return this.activeTerminal;
   }
