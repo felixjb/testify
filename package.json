@@ -1,12 +1,12 @@
 {
   "name": "testify",
   "displayName": "Testify",
-  "description": "Run JavaScript tests easily using CodeLens",
   "version": "1.2.0",
-  "publisher": "felixjb",
-  "engines": {
-    "vscode": "^1.18.0"
+  "author": {
+    "name": "felixjb"
   },
+  "publisher": "felixjb",
+  "description": "Run JavaScript tests easily using CodeLens",
   "license": "MIT",
   "categories": [
     "Other"
@@ -18,24 +18,31 @@
     "unit"
   ],
   "preview": true,
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/felixjb/testify"
-  },
   "icon": "resources/icon.png",
   "main": "./out/extension",
   "activationEvents": [
     "*"
   ],
+  "engines": {
+    "vscode": "^1.18.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/felixjb/testify"
+  },
+  "bugs": {
+    "url": "https://github.com/felixjb/testify/issues",
+    "email": "felixjbcomp@gmail.com"
+  },
   "contributes": {
     "commands": [
       {
-        "command": "testify.run.test",
-        "title": "Run Test"
-      },
-      {
         "command": "testify.debug.test",
         "title": "Debug Test"
+      },
+      {
+        "command": "testify.run.test",
+        "title": "Run Test"
       }
     ],
     "configuration": [
@@ -65,18 +72,6 @@
       }
     ]
   },
-  "scripts": {
-    "compile": "tsc --noUnusedParameters --noUnusedLocals -p ./",
-    "contributors:add": "all-contributors add",
-    "contributors:generate": "all-contributors generate",
-    "format": "prettier --write src/**/*.{ts,json} package.json",
-    "lint": "tslint -c tslint.json src/**/*.ts",
-    "postinstall": "node ./node_modules/vscode/bin/install",
-    "precommit": "lint-staged",
-    "test": "npm run compile && node ./node_modules/vscode/bin/test",
-    "vscode:prepublish": "npm run compile",
-    "watch": "tsc -watch  --noUnusedParameters --noUnusedLocals  -p ./"
-  },
   "lint-staged": {
     "*.{ts,json}": [
       "prettier --write",
@@ -86,6 +81,24 @@
       "tslint -c tslint.json",
       "git add"
     ]
+  },
+  "scripts": {
+    "contributors:add": "all-contributors add",
+    "contributors:generate": "all-contributors generate",
+    "format": "prettier --write src/**/*.{ts,json} package.json",
+    "lint": "tslint -c tslint.json src/**/*.ts",
+    "test": "npm run compile && node ./node_modules/vscode/bin/test",
+    "precommit": "lint-staged",
+    "compile": "tsc --noUnusedParameters --noUnusedLocals -p ./",
+    "watch": "tsc -watch  --noUnusedParameters --noUnusedLocals  -p ./",
+    "vscode:prepublish": "npm run compile",
+    "postinstall": "node ./node_modules/vscode/bin/install"
+  },
+  "dependencies": {
+    "@babel/core": "^7.0.0-beta.54",
+    "@babel/parser": "^7.0.0-beta.54",
+    "@babel/plugin-syntax-jsx": "^7.0.0-beta.54",
+    "@babel/plugin-syntax-typescript": "^7.0.0-beta.54"
   },
   "devDependencies": {
     "@types/mocha": "^2.2.42",
@@ -98,11 +111,5 @@
     "tslint": "^5.10.0",
     "typescript": "^2.6.1",
     "vscode": "^1.1.6"
-  },
-  "dependencies": {
-    "@babel/core": "^7.0.0-beta.54",
-    "@babel/parser": "^7.0.0-beta.54",
-    "@babel/plugin-syntax-jsx": "^7.0.0-beta.54",
-    "@babel/plugin-syntax-typescript": "^7.0.0-beta.54"
   }
 }
