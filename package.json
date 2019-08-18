@@ -64,6 +64,9 @@
           },
           "testify.skipFiles": {
             "type": "array",
+            "items": {
+              "type": "string"
+            },
             "default": [],
             "description": "Array of glob patterns for script paths to skip.",
             "scope": "resource"
