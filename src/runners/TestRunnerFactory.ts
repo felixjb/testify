@@ -24,7 +24,7 @@ async function getAvailableTestRunner(
 ): Promise<ITestRunnerInterface> {
   for (const runner of testRunners) {
     const doesRunnerExist = await doesFileExist(
-      join(rootPath.uri.path, runner.binPath)
+      join(rootPath.uri.fsPath, runner.binPath)
     );
 
     if (doesRunnerExist) {

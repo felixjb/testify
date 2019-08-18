@@ -33,7 +33,7 @@ Also, this project adheres to [Keep a Changelog](http://keepachangelog.com/).
 
 ## Contributing
 
-Please read the [CONTRIBUTING](https://gist.github.com/felixjb/f06bd4b0888ccb9aace87c6ae2a3cd2d) document for details on our code of conduct, and the process for submitting pull requests to us.
+Please read the [CONTRIBUTING](https://github.com/felixjb/testify/blob/master/CONTRIBUTING.md), and, specially, the [CODE OF CONDUCT](https://github.com/felixjb/testify/blob/master/CODE_OF_CONDUCT.md) documents.
 
 Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):
 
