@@ -8,6 +8,10 @@ before_install:
   - |
     export DISPLAY=':99.0'
     /usr/bin/Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+  # temporarily disabled until travis-ci release body bug is fixed
+  # - sudo apt-get update -q
+  # - sudo apt-get install -y jq
+  # - npm i -g changelog-parser
 
 cache: npm
 
@@ -19,16 +23,17 @@ script:
 before_deploy:
   - npm install -g vsce
   - vsce package
-  - curl https://github.com/lindell/github-release-cli/releases/download/LATEST_RELEASE/github-releaser-travis -L --output github-releaser && chmod +x github-releaser
-  - export RELEASE_DESCRIPTION=$(envsubst < ./CHANGELOG.md)
   - export RELEASE_TITLE="v$(node -p "require('./package.json').version")"
+  # temporarily disabled until travis-ci release body bug is fixed
+  # - export RELEASE_DESCRIPTION="$(changelog-parser CHANGELOG.md | jq -r '.versions | .[0] | .body')"
 
 deploy:
   - provider: releases
     api_key:
       secure: $GITHUB_ACCESS_TOKEN
     name: $RELEASE_TITLE
-    body: $RELEASE_DESCRIPTION
+    # temporarily disabled until travis-ci release body bug is fixed
+    # body: $RELEASE_DESCRIPTION
     file_glob: true
     file: "*.vsix"
     skip_cleanup: true
