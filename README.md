@@ -1,6 +1,12 @@
+[![Build Status](https://travis-ci.com/felixjb/testify.svg?branch=master)](https://travis-ci.com/felixjb/testify)
+
 # Testify
 
-[![Build Status](https://travis-ci.com/felixjb/testify.svg?branch=master)](https://travis-ci.com/felixjb/testify)
+<p align="center">
+    <a title="Run JavaScript & TypeScript tests easily using CodeLens" href="https://marketplace.visualstudio.com/items?itemName=felixjb.testify">
+        <img src="resources/icon.png" alt="Testify"/>
+    </a>
+</p>
 
 Testify is a JavaScript and Typescript test runner extension for VSCode. It adds codelens near `describe`, `it`, and `test` keywords enabling VSCode to run associated tests and output the results in the integrated terminal.
 Currently it works **out of the box** for **Mocha** and **Jest** test runner.
