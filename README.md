@@ -4,7 +4,7 @@
 
 <p align="center">
     <a title="Run JavaScript & TypeScript tests easily using CodeLens" href="https://marketplace.visualstudio.com/items?itemName=felixjb.testify">
-        <img src="resources/icon.png" alt="Testify"/>
+        <img src="https://raw.githubusercontent.com/felixjb/testify/master/resources/icon.png" alt="Testify"/>
     </a>
 </p>
 
