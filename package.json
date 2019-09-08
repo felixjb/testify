@@ -17,6 +17,7 @@
     "test",
     "unit"
   ],
+  "preview": true,
   "icon": "resources/icon.png",
   "main": "./out/extension",
   "activationEvents": [
