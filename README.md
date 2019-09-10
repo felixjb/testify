@@ -1,12 +1,6 @@
-[![Build Status](https://travis-ci.com/felixjb/testify.svg?branch=master)](https://travis-ci.com/felixjb/testify)
-
 # Testify
 
-<p align="center">
-    <a title="Run JavaScript & TypeScript tests easily using CodeLens" href="https://marketplace.visualstudio.com/items?itemName=felixjb.testify">
-        <img src="https://raw.githubusercontent.com/felixjb/testify/master/resources/icon.png" alt="Testify"/>
-    </a>
-</p>
+[![Build Status](https://travis-ci.com/felixjb/testify.svg?branch=master)](https://travis-ci.com/felixjb/testify)
 
 Testify is a JavaScript and Typescript test runner extension for VSCode. It adds codelens near `describe`, `it`, and `test` keywords enabling VSCode to run associated tests and output the results in the integrated terminal.
 Currently it works **out of the box** for **Mocha** and **Jest** test runner.
@@ -19,12 +13,11 @@ Currently it works **out of the box** for **Mocha** and **Jest** test runner.
 
 The following configuration properties are available:
 
-| Property                 | Description                                        | Example                       |
-| ------------------------ | -------------------------------------------------- | ----------------------------- |
-| `testify.additionalArgs` | CLI args to pass to test runner                    | "--watch"                     |
-| `testify.envVars`        | Environment variables to set before running a test | { "NODE_ENV": "test" }        |
-| `testify.skipFiles`      | Array of glob patterns for script paths to skip    | ["<node_internals>/**/*.js"]  |
-| `testify.testRunnerPath` | Path to test runner                                | "src/node_modules/.bin/mocha" |
+| Property                 | Description                                        | Example                      |
+| ------------------------ | -------------------------------------------------- | ---------------------------- |
+| `testify.additionalArgs` | CLI args to pass to test runner                    | "--watch"                    |
+| `testify.envVars`        | Environment variables to set before running a test | { "NODE_ENV": "test" }       |
+| `testify.skipFiles`      | Array of glob patterns for script paths to skip    | ["<node_internals>/**/*.js"] |
 
 ## Compatibility
 

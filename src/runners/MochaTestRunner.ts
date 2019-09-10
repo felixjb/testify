@@ -1,27 +1,23 @@
 import { join } from "path";
 import { debug, WorkspaceFolder } from "vscode";
+
 import { ITestRunnerInterface } from "../interfaces/ITestRunnerInterface";
+import { ITestRunnerOptions } from "../interfaces/ITestRunnerOptions";
 import { ConfigurationProvider } from "../providers/ConfigurationProvider";
 import { TerminalProvider } from "../providers/TerminalProvider";
 
-// TODO: Make a more generic test runner class and extend it
 export class MochaTestRunner implements ITestRunnerInterface {
   public name: string = "mocha";
-  public path: string = join("node_modules", this.name, "bin", this.name);
   public terminalProvider: TerminalProvider = null;
   public configurationProvider: ConfigurationProvider = null;
 
-  constructor(
-    configurationProvider: ConfigurationProvider,
-    terminalProvider: TerminalProvider,
-    path?: string
-  ) {
+  get binPath(): string {
+    return join("node_modules", ".bin", "mocha");
+  }
+
+  constructor({ terminalProvider, configurationProvider }: ITestRunnerOptions) {
     this.terminalProvider = terminalProvider;
     this.configurationProvider = configurationProvider;
-
-    if (path) {
-      this.path = path;
-    }
   }
 
   public runTest(
@@ -34,7 +30,7 @@ export class MochaTestRunner implements ITestRunnerInterface {
       .environmentVariables;
 
     const command = `${
-      this.path
+      this.binPath
     } ${fileName} --grep="${testName}" ${additionalArguments}`;
 
     const terminal = this.terminalProvider.get(
@@ -67,10 +63,13 @@ export class MochaTestRunner implements ITestRunnerInterface {
       console: "integratedTerminal",
       env: environmentVariables,
       name: "Debug Test",
-      program: join(rootPath.uri.fsPath, this.path),
+      program: "${workspaceFolder}/node_modules/mocha/bin/_mocha",
       request: "launch",
       skipFiles,
-      type: "node"
+      type: "node",
+      windows: {
+        program: "${workspaceFolder}/node_modules/mocha/bin/_mocha"
+      }
     });
   }
 }

@@ -18,8 +18,4 @@ export class ConfigurationProvider {
   get skipFiles(): string[] {
     return this.configuration.get("skipFiles");
   }
-
-  get testRunnerPath(): string {
-    return this.configuration.get("testRunnerPath");
-  }
 }
