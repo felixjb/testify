@@ -19,11 +19,12 @@ Currently it works **out of the box** for **Mocha** and **Jest** test runner.
 
 The following configuration properties are available:
 
-| Property                 | Description                                        | Example                      |
-| ------------------------ | -------------------------------------------------- | ---------------------------- |
-| `testify.additionalArgs` | CLI args to pass to test runner                    | "--watch"                    |
-| `testify.envVars`        | Environment variables to set before running a test | { "NODE_ENV": "test" }       |
-| `testify.skipFiles`      | Array of glob patterns for script paths to skip    | ["<node_internals>/**/*.js"] |
+| Property                 | Description                                        | Example                       |
+| ------------------------ | -------------------------------------------------- | ----------------------------- |
+| `testify.additionalArgs` | CLI args to pass to test runner                    | "--watch"                     |
+| `testify.envVars`        | Environment variables to set before running a test | { "NODE_ENV": "test" }        |
+| `testify.skipFiles`      | Array of glob patterns for script paths to skip    | ["<node_internals>/**/*.js"]  |
+| `testify.testRunnerPath` | Path to test runner                                | "src/node_modules/.bin/mocha" |
 
 ## Compatibility
 
