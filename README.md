@@ -1,6 +1,12 @@
+[![Build Status](https://travis-ci.com/felixjb/testify.svg?branch=master)](https://travis-ci.com/felixjb/testify)
+
 # Testify
 
-[![Build Status](https://travis-ci.com/felixjb/testify.svg?branch=master)](https://travis-ci.com/felixjb/testify)
+<p align="center">
+    <a title="Run JavaScript & TypeScript tests easily using CodeLens" href="https://marketplace.visualstudio.com/items?itemName=felixjb.testify">
+        <img src="https://raw.githubusercontent.com/felixjb/testify/master/resources/icon.png" alt="Testify"/>
+    </a>
+</p>
 
 Testify is a JavaScript and Typescript test runner extension for VSCode. It adds codelens near `describe`, `it`, and `test` keywords enabling VSCode to run associated tests and output the results in the integrated terminal.
 Currently it works **out of the box** for **Mocha** and **Jest** test runner.
@@ -33,7 +39,7 @@ Also, this project adheres to [Keep a Changelog](http://keepachangelog.com/).
 
 ## Contributing
 
-Please read the [CONTRIBUTING](https://gist.github.com/felixjb/f06bd4b0888ccb9aace87c6ae2a3cd2d) document for details on our code of conduct, and the process for submitting pull requests to us.
+Please read the [CONTRIBUTING](https://github.com/felixjb/testify/blob/master/CONTRIBUTING.md), and, specially, the [CODE OF CONDUCT](https://github.com/felixjb/testify/blob/master/CODE_OF_CONDUCT.md) documents.
 
 Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):
 
