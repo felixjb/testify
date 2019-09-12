@@ -1,23 +1,27 @@
 import { join } from "path";
 import { debug, WorkspaceFolder } from "vscode";
-
 import { ITestRunnerInterface } from "../interfaces/ITestRunnerInterface";
-import { ITestRunnerOptions } from "../interfaces/ITestRunnerOptions";
 import { ConfigurationProvider } from "../providers/ConfigurationProvider";
 import { TerminalProvider } from "../providers/TerminalProvider";
 
+// TODO: Make a more generic test runner class and extend it
 export class JestTestRunner implements ITestRunnerInterface {
   public name: string = "jest";
+  public path: string = join("node_modules", ".bin", this.name);
   public terminalProvider: TerminalProvider = null;
   public configurationProvider: ConfigurationProvider = null;
 
-  get binPath(): string {
-    return join("node_modules", ".bin", "jest");
-  }
-
-  constructor({ terminalProvider, configurationProvider }: ITestRunnerOptions) {
+  constructor(
+    configurationProvider: ConfigurationProvider,
+    terminalProvider: TerminalProvider,
+    path?: string
+  ) {
     this.terminalProvider = terminalProvider;
     this.configurationProvider = configurationProvider;
+
+    if (path) {
+      this.path = path;
+    }
   }
 
   public runTest(
@@ -28,12 +32,10 @@ export class JestTestRunner implements ITestRunnerInterface {
     const additionalArguments = this.configurationProvider.additionalArguments;
     const environmentVariables = this.configurationProvider
       .environmentVariables;
-    // We force slash instead of backslash for Windows
-    const cleanedFileName = fileName.replace(/\\/g, "/");
 
-    const command = `${
-      this.binPath
-    } ${cleanedFileName} --testNamePattern="${testName}" ${additionalArguments}`;
+    const command = `${this.path} ${this.transformFileName(
+      fileName
+    )} --testNamePattern="${testName}" ${additionalArguments}`;
 
     const terminal = this.terminalProvider.get(
       { env: environmentVariables },
@@ -54,12 +56,9 @@ export class JestTestRunner implements ITestRunnerInterface {
       .environmentVariables;
     const skipFiles = this.configurationProvider.skipFiles;
 
-    // We force slash instead of backslash for Windows
-    const cleanedFileName = fileName.replace(/\\/g, "/");
-
     debug.startDebugging(rootPath, {
       args: [
-        cleanedFileName,
+        this.transformFileName(fileName),
         `--testNamePattern`,
         testName,
         "--runInBand",
@@ -68,13 +67,15 @@ export class JestTestRunner implements ITestRunnerInterface {
       console: "integratedTerminal",
       env: environmentVariables,
       name: "Debug Test",
-      program: "${workspaceFolder}/node_modules/.bin/jest",
+      program: join(rootPath.uri.fsPath, this.path),
       request: "launch",
       skipFiles,
-      type: "node",
-      windows: {
-        program: "${workspaceFolder}/node_modules/jest/bin/jest"
-      }
+      type: "node"
     });
+  }
+
+  // We force slash instead of backslash for Windows
+  private transformFileName(fileName: string) {
+    return fileName.replace(/\\/g, "/");
   }
 }
