@@ -1,6 +1,6 @@
 import { parse, ParserOptions } from "@babel/parser";
 
-const testTokens = ["describe", "it", "test"];
+const testTokens = ["suite", "describe", "context", "it", "specify", "test"];
 
 function codeParser(sourceCode) {
   const parserOptions: ParserOptions = {
