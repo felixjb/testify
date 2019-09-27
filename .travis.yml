@@ -40,11 +40,9 @@ deploy:
     on:
       repo: felixjb/testify
       branch: master
-      tags: true
   - provider: script
     script: vsce publish -p $VSCE_MKT_PLACE_ACCESS_TOKEN
     skip_cleanup: true
     on:
       repo: felixjb/testify
       branch: master
-      tags: true
