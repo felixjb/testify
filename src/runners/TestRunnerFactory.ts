@@ -9,6 +9,8 @@ import { TerminalProvider } from "../providers/TerminalProvider";
 import { JestTestRunner } from "./JestTestRunner";
 import { MochaTestRunner } from "./MochaTestRunner";
 
+const terminalProvider = new TerminalProvider();
+
 function doesFileExist(filePath: string): Promise<boolean> {
   return new Promise(resolve => {
     exists(filePath, doesExist => {
@@ -54,7 +56,6 @@ async function getAvailableTestRunner(
 export async function getTestRunner(
   rootPath: WorkspaceFolder
 ): Promise<ITestRunnerInterface> {
-  const terminalProvider = new TerminalProvider();
   const configurationProvider = new ConfigurationProvider(rootPath);
   const customTestRunnerPath = configurationProvider.testRunnerPath;
 
