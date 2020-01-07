@@ -33,9 +33,13 @@ export class JestTestRunner implements ITestRunnerInterface {
     const environmentVariables = this.configurationProvider
       .environmentVariables;
 
-    const command = `${this.path} ${this.transformFileName(
-      fileName
-    )} --testNamePattern="${testName}" ${additionalArguments}`;
+    let command = `${this.path} ${this.transformFileName(fileName)}`;
+
+    if (!testName) {
+      command += ` --testNamePattern="${testName}"`;
+    }
+
+    command += ` ${additionalArguments}`;
 
     const terminal = this.terminalProvider.get(
       { env: environmentVariables },

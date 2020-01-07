@@ -10,8 +10,17 @@ function codeParser(sourceCode) {
   };
   const ast = parse(sourceCode, parserOptions);
 
-  return ast.tokens
+  let firstLine;
+
+  const result = ast.tokens
     .map(({ value, loc, type }, index) => {
+      if (index === 0) {
+        firstLine = {
+          loc,
+          testName: ""
+        };
+      }
+
       if (testTokens.indexOf(value) === -1) {
         return;
       }
@@ -29,6 +38,12 @@ function codeParser(sourceCode) {
       };
     })
     .filter(Boolean);
+
+  if (result.length) {
+    result.unshift(firstLine);
+  }
+
+  return result;
 }
 
 export { codeParser };
