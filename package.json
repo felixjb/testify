@@ -1,7 +1,7 @@
 {
   "name": "testify",
   "displayName": "Testify",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "author": {
     "name": "felixjb"
   },
@@ -15,7 +15,8 @@
     "mocha",
     "jest",
     "test",
-    "unit"
+    "unit",
+    "ava"
   ],
   "preview": false,
   "icon": "resources/icon.png",
