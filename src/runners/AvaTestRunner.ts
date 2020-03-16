@@ -51,24 +51,27 @@ export class AvaTestRunner implements ITestRunnerInterface {
     fileName: string,
     testName: string
   ) {
-    // const additionalArguments = this.configurationProvider.additionalArguments;
+    const additionalArguments = this.configurationProvider.additionalArguments;
     const environmentVariables = this.configurationProvider
       .environmentVariables;
     const skipFiles = this.configurationProvider.skipFiles;
 
     debug.startDebugging(rootPath, {
-      args: [
-        this.transformFileName(fileName),
-        `--debug`,
-        testName
-        // "--runInBand",
-        // ...additionalArguments.split(" ")
-      ],
       console: "integratedTerminal",
       env: environmentVariables,
       name: "Debug Test",
-      program: join(rootPath.uri.fsPath, this.path),
+      outputCapture: "std",
+      port: 9229,
       request: "launch",
+      runtimeArgs: [
+        "debug",
+        "--break",
+        "--serial",
+        this.transformFileName(fileName),
+        `--match ${testName}`,
+        ...additionalArguments.split(" ")
+      ],
+      runtimeExecutable: join(rootPath.uri.fsPath, this.path),
       skipFiles,
       type: "node"
     });
