@@ -68,7 +68,7 @@ export class AvaTestRunner implements ITestRunnerInterface {
         "--break",
         "--serial",
         this.transformFileName(fileName),
-        `--match ${testName}`,
+        `--match="${testName}"`,
         ...additionalArguments.split(" ")
       ],
       runtimeExecutable: join(rootPath.uri.fsPath, this.path),
