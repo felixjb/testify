@@ -77,6 +77,12 @@
             "description": "Path to test runner.",
             "scope": "resource",
             "type": "string"
+          },
+          "testify.testFilePattern": {
+            "default": "**/test/**/*.{js,ts,jsx,tsx}",
+            "description": "Testify will only activate when an open file matches the above pattern, defaults to all files inside a 'test' directory.",
+            "scope": "resource",
+            "type": "string"
           }
         }
       }
