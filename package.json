@@ -1,11 +1,7 @@
 {
   "name": "testify",
   "displayName": "Testify",
-<<<<<<< HEAD
   "version": "1.5.0",
-=======
-  "version": "1.4.1",
->>>>>>> 36a580fc5384b84221081f910a3d05b4366689e6
   "author": {
     "name": "felixjb"
   },
