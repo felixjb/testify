@@ -35,7 +35,7 @@ export class MochaTestRunner implements ITestRunnerInterface {
 
     const command = `${
       this.path
-    } ${fileName} --grep="${testName}" ${additionalArguments}`;
+    } ${fileName} --fgrep="${testName}" ${additionalArguments}`;
 
     const terminal = this.terminalProvider.get(
       { env: environmentVariables },
@@ -57,13 +57,7 @@ export class MochaTestRunner implements ITestRunnerInterface {
     const skipFiles = this.configurationProvider.skipFiles;
 
     debug.startDebugging(rootPath, {
-      args: [
-        fileName,
-        "--grep",
-        testName,
-        "--no-timeout",
-        ...additionalArguments.split(" ")
-      ],
+      args: [fileName, "--fgrep", testName, ...additionalArguments.split(" ")],
       console: "integratedTerminal",
       env: environmentVariables,
       name: "Debug Test",
