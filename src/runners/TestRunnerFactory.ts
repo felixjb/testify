@@ -6,7 +6,6 @@ import { WorkspaceFolder } from "vscode";
 import { ITestRunnerInterface } from "../interfaces/ITestRunnerInterface";
 import { ConfigurationProvider } from "../providers/ConfigurationProvider";
 import { TerminalProvider } from "../providers/TerminalProvider";
-import { AvaTestRunner } from "./AvaTestRunner";
 import { JestTestRunner } from "./JestTestRunner";
 import { MochaTestRunner } from "./MochaTestRunner";
 
@@ -78,12 +77,6 @@ export async function getTestRunner(
         terminalProvider,
         customTestRunnerPath
       );
-    } else if (customTestRunnerName === "ava") {
-      return new AvaTestRunner(
-        configurationProvider,
-        terminalProvider,
-        customTestRunnerPath
-      );
     }
   }
 
@@ -95,13 +88,6 @@ export async function getTestRunner(
     configurationProvider,
     terminalProvider
   );
-  const avaTestRunner = new AvaTestRunner(
-    configurationProvider,
-    terminalProvider
-  );
 
-  return getAvailableTestRunner(
-    [jestTestRunner, mochaTestRunner, avaTestRunner],
-    rootPath
-  );
+  return getAvailableTestRunner([jestTestRunner, mochaTestRunner], rootPath);
 }
