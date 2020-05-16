@@ -22,4 +22,8 @@ export class ConfigurationProvider {
   get testRunnerPath(): string {
     return this.configuration.get("testRunnerPath");
   }
+
+  get testFilePattern(): string {
+    return this.configuration.get("testRunnerPath");
+  }
 }
