@@ -8,15 +8,7 @@
     </a>
 </p>
 
-Testify is a JavaScript and Typescript test runner extension for VSCode. It adds codelens near the framework's keywords, such as
-- `suite`,
-- `describe`,
-- `context`,
-- `it`,
-- `specify`
-- `test`
-
-enabling VSCode to run associated tests and output the results in the integrated terminal.
+Testify is a JavaScript and Typescript test runner extension for VSCode. It adds codelens near `describe`, `it`, and `test` keywords enabling VSCode to run associated tests and output the results in the integrated terminal.
 Currently it works **out of the box** for **Mocha** and **Jest** test runner.
 
 ## Demo
