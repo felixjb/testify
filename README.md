@@ -32,6 +32,7 @@ This extension works currently with :
 
 -   Mocha
 -   Jest
+-   AVA
 
 ## Versioning
 
