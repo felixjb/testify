@@ -1,12 +1,12 @@
 {
   "name": "testify",
   "displayName": "Testify",
-  "version": "1.5.0",
+  "version": "1.4.0",
   "author": {
     "name": "felixjb"
   },
   "publisher": "felixjb",
-  "description": "Run JavaScript & TypeScript tests easily using CodeLens",
+  "description": "Run JavaScript tests easily using CodeLens",
   "license": "MIT",
   "categories": [
     "Other"
