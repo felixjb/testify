@@ -69,4 +69,43 @@ suite("codeParser Tests", () => {
       `;
     assert.equal(2, codeParser(code).length);
   });
+
+  test("Optional Chaining syntax", () => {
+    const code = `
+      describe("TestWithOptionalChaining", () => {
+        it("just works", () => {
+          type OptionalParams = {
+            name?: string;
+            catchphrase?: string;
+          }
+
+          const obj: OptionalParams = {
+            name: 'Testify',
+          };
+
+          const newObject = { ...obj };
+
+          expect(newObject?.name).to.be.equal('Testify');
+          expect(newObject?.catchphrase).toBeUndefined();
+        })
+      })`;
+
+    assert.equal(2, codeParser(code).length);
+  });
+
+  test("Nullish Coalescing syntax", () => {
+    const code = `
+      describe("TestWithNullishCoalescing", () => {
+        it("just works", () => {
+          const createUser = username => {
+            return username ?? 'No Name';
+          }
+
+          expect(createUser()).to.be.equal('No Name');
+          expect(createUser('silvawillian')).to.be.equal('silvawillian');
+        })
+      })`;
+
+    assert.equal(2, codeParser(code).length);
+  });
 });
