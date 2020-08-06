@@ -68,6 +68,15 @@
         "code",
         "ideas"
       ]
+    },
+    {
+      "login": "LoveSponge",
+      "name": "Guy",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/12626802?v=4",
+      "profile": "https://github.com/LoveSponge",
+      "contributions": [
+        "code"
+      ]
     }
   ]
 }
