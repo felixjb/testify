@@ -5,17 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.1] - 2020-08-06
+
+### Changed
+
+-   Migrate CI from Travis to GitHub Actions
+-   Rename default branch to "main"
+
+### Fixed
+
+-   Fix package vulnerabilities
+
 ## [1.6.0] - 2020-08-05
 
 ### Added
 
--   Support for AVA test runner.
+-   Support for AVA test runner. Thanks to @LoveSponge
+-   Add @LoveSponge as a contributor.
+
+### Fixed
+
+-   Add missing contributor picture to README.
 
 ## [1.5.0] - 2020-08-05
 
 ### Changed
 
--   Enable optionalChaining and nullishCoalescing syntaxes.
+-   Enable optional chaining and nullish coalescing TypeScript syntaxes. Thanks to @silvawillian
 
 ## [1.4.1] - 2019-05-13
 
@@ -60,7 +76,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
--   Add support to tests with spread operator `(...)`.
+-   Add support to tests with spread operator `(...)`. Thanks to @silvawillian
 
 ## [1.0.0] - 2019-06-21
 
