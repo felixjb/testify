@@ -2,10 +2,10 @@ name: CI
 
 on:
   push:
-    branches: [master]
+    branches: [main]
     tags: ['v*']
   pull_request:
-    branches: [master, develop]
+    branches: [main, develop]
 
 jobs:
   build:
@@ -30,7 +30,7 @@ jobs:
         run: npm test
   deploy:
     needs: build
-    if: github.event == 'push'
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     steps:
       - name: Publish to Marketplace
