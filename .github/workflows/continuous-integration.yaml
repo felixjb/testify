@@ -2,10 +2,10 @@ name: CI
 
 on:
   push:
-    branches: [master]
-    tags: ['v*']
+    branches: [main]
+    tags: ["v*"]
   pull_request:
-    branches: [master, develop]
+    branches: [main, develop]
 
 jobs:
   build:
@@ -14,25 +14,27 @@ jobs:
         os: [macos-latest, ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Setup Node.js
-      uses: actions/setup-node@v1
-      with:
-        node-version: '12.x'
-    - name: Clean install dependencies
-      run: npm ci
-    - name: Run Lint
-      run: npm run lint
-    - name: Run Tests
-      uses: GabrielBB/xvfb-action@v1.0
-      with:
-        run: npm test
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
+      - name: Clean install dependencies
+        run: npm ci
+      - name: Run Lint
+        run: npm run lint
+      - name: Run Tests
+        uses: GabrielBB/xvfb-action@v1.0
+        with:
+          run: npm test
   deploy:
     needs: build
-    if: github.event == 'push'
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: Publish to Marketplace
         uses: lannonbr/vsce-action@master
         with:

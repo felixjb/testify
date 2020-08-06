@@ -1,10 +1,10 @@
-[![Build Status](https://github.com/felixjb/testify/workflows/CI/badge.svg?branch=master)](https://github.com/felixjb/testify/actions)
+[![Build Status](https://github.com/felixjb/testify/workflows/CI/badge.svg?branch=main)](https://github.com/felixjb/testify/actions)
 
 # Testify
 
 <p align="center">
     <a title="Run JavaScript & TypeScript tests easily using CodeLens" href="https://marketplace.visualstudio.com/items?itemName=felixjb.testify">
-        <img src="https://raw.githubusercontent.com/felixjb/testify/master/resources/icon.png" alt="Testify"/>
+        <img src="https://raw.githubusercontent.com/felixjb/testify/main/resources/icon.png" alt="Testify"/>
     </a>
 </p>
 
@@ -50,7 +50,7 @@ Also, this project adheres to [Keep a Changelog](http://keepachangelog.com/).
 
 ## Contributing
 
-Please read the [CONTRIBUTING](https://github.com/felixjb/testify/blob/master/CONTRIBUTING.md), and, specially, the [CODE OF CONDUCT](https://github.com/felixjb/testify/blob/master/CODE_OF_CONDUCT.md) documents.
+Please read the [CONTRIBUTING](https://github.com/felixjb/testify/blob/main/CONTRIBUTING.md), and, specially, the [CODE OF CONDUCT](https://github.com/felixjb/testify/blob/main/CODE_OF_CONDUCT.md) documents.
 
 Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):
 
@@ -63,7 +63,7 @@ Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds
 
 Also, a special **thank you to Barbara Iamauchi** who designed the amazing new icon for this project!
 
-[<img src="https://raw.githubusercontent.com/felixjb/testify/master/resources/babi.jpg" width="100px;" alt="Barbara Iamauchi"/><br /><sub><b>Barbara Iamauchi</b></sub>](https://www.linkedin.com/in/barbara-iamauchi-772732121/)<br />
+[<img src="https://raw.githubusercontent.com/felixjb/testify/main/resources/babi.jpg" width="100px;" alt="Barbara Iamauchi"/><br /><sub><b>Barbara Iamauchi</b></sub>](https://www.linkedin.com/in/barbara-iamauchi-772732121/)<br />
 
 This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind welcome!
 
@@ -76,4 +76,4 @@ based on [JavaScript Test Runner](https://github.com/g3offrey/javascript-test-ru
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](https://github.com/felixjb/testify/blob/master/LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/felixjb/testify/blob/main/LICENSE) file for details.
