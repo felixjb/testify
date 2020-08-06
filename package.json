@@ -6,7 +6,7 @@
     "name": "felixjb"
   },
   "publisher": "felixjb",
-  "description": "Run JavaScript & TypeScript tests easily using CodeLens",
+  "description": "Run JavaScript tests easily using CodeLens",
   "license": "MIT",
   "categories": [
     "Other"
@@ -15,7 +15,8 @@
     "mocha",
     "jest",
     "test",
-    "unit"
+    "unit",
+    "ava"
   ],
   "preview": false,
   "icon": "resources/icon.png",
