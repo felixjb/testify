@@ -16,7 +16,7 @@ opinion in the discussion or actively solving a problem. All forms of community
 interaction are welcomed contributions, so writing blog posts and tutorials or
 making citations at presentations and workshops are appreciated too.
 
-**But...** Be sure to also read and respect our 
-[CODE OF CONDUCT](https://github.com/felixjb/testify/blob/master/CODE_OF_CONDUCT.md).
+**But...** Be sure to also read and respect our
+[CODE OF CONDUCT](https://github.com/felixjb/testify/blob/main/CODE_OF_CONDUCT.md).
 
 This guide was adapted from [Turbine project](https://github.com/villasv/turbine).
