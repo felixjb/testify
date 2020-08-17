@@ -29,6 +29,17 @@ suite("codeParser Tests", () => {
     assert.equal(0, codeParser(code).length);
   });
 
+  test("RegExp test syntax", () => {
+    const code = `
+      const regex = /hello/;
+      const str = 'hello world';
+      const result = regex.test(str);
+
+      console.log(result);
+    `;
+    assert.equal(0, codeParser(code).length);
+  });
+
   test("Jsx syntax", () => {
     const code = `
         describe("JsonFormTextField", () => {

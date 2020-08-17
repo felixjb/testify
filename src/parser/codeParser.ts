@@ -24,6 +24,10 @@ function codeParser(sourceCode) {
       if (type.label !== "name") {
         return;
       }
+      const previousToken = ast.tokens[index - 1];
+      if (previousToken && previousToken.type.label === ".") {
+        return;
+      }
       const nextToken = ast.tokens[index + 1];
       if (!nextToken.type.startsExpr) {
         return;
