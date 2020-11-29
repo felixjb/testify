@@ -5,11 +5,12 @@ const testTokens = ["suite", "describe", "context", "it", "specify", "test"];
 function codeParser(sourceCode) {
   const parserOptions: ParserOptions = {
     plugins: [
-      "jsx",
       "typescript",
-      "objectRestSpread",
-      "optionalChaining",
-      "nullishCoalescingOperator"
+      ["decorators", { decoratorsBeforeExport: false }],
+      "classPrivateMethods",
+      "classPrivateProperties",
+      "topLevelAwait",
+      "jsx"
     ],
     sourceType: "module",
     tokens: true
