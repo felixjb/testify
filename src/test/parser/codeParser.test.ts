@@ -52,6 +52,33 @@ suite("codeParser Tests", () => {
     assert.equal(2, codeParser(code).length);
   });
 
+  test("Decorator syntax", () => {
+    const code = `
+      describe("TestWithOptionalChaining", () => {
+        it("just works", () => {
+          type OptionalParams = {
+            name?: string;
+            catchphrase?: string;
+          }
+          function decorator(target: any) {
+            void 0
+          }
+          @decorator
+          class Obj {
+            name: string
+            constructor({ name, catchPhrase }: OptionalParams = { name: 'Testify' }){
+              this.name = name
+            }
+          }
+          const newObject = new Obj();
+          expect(newObject?.name).to.be.equal('Testify');
+          expect(newObject?.catchphrase).toBeUndefined();
+        })
+      })`;
+
+    assert.equal(2, codeParser(code).length);
+  });
+
   test("Rest Spread syntax", () => {
     const code = `
         describe("TestWithRestSpread", () => {
