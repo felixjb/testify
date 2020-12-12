@@ -35,6 +35,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Clean install dependencies
+        run: npm ci
       - name: Publish to Marketplace
         uses: lannonbr/vsce-action@master
         with:
