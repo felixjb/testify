@@ -77,6 +77,18 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "calebboyd",
+      "name": "Caleb Boyd",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/5818726?v=4",
+      "profile": "https://github.com/calebboyd",
+      "contributions": [
+        "bug",
+        "code",
+        "maintenance"
+      ]
     }
-  ]
+  ],
+  "commitConvention": "none"
 }
