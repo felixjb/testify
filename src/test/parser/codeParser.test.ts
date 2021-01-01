@@ -139,7 +139,7 @@ suite("codeParser Tests", () => {
     const code = `
       describe("TestWithNullishCoalescing", () => {
 
-        each\`p1 | p2\`.test("just works", () => {
+        each\`p1 | p2\`.test("just works $p1 \${p2}", () => {
           const createUser = username => {
             return username ?? 'No Name';
           }
@@ -151,6 +151,7 @@ suite("codeParser Tests", () => {
     const p = codeParser(code);
     assert.equal(2, p.length);
     assert.equal("each", p[1].loc.identifierName);
+    assert.equal("just works .* .*", p[1].testName);
   });
 
   test("jest-each tests with array syntax", () => {
