@@ -4,8 +4,7 @@
 //
 
 // The module 'assert' provides assertion methods from node
-import * as assert from "assert";
-
+import assert from "assert";
 import { codeParser } from "../../parser/codeParser";
 
 // Defines a Mocha test suite to group tests of similar kind together
@@ -134,5 +133,61 @@ suite("codeParser Tests", () => {
       })`;
 
     assert.equal(2, codeParser(code).length);
+  });
+
+  test("jest-each tests with template syntax", () => {
+    const code = `
+      describe("TestWithNullishCoalescing", () => {
+
+        each\`p1 | p2\`.test("just works $p1 \${p2}", () => {
+          const createUser = username => {
+            return username ?? 'No Name';
+          }
+
+          expect(createUser()).to.be.equal('No Name');
+          expect(createUser('silvawillian')).to.be.equal('silvawillian');
+        })
+      })`;
+    const p = codeParser(code);
+    assert.equal(2, p.length);
+    assert.equal("each", p[1].loc.identifierName);
+    assert.equal("just works .* .*", p[1].testName);
+  });
+
+  test("jest-each tests with array syntax", () => {
+    const code = `
+      describe("TestWithNullishCoalescing", () => {
+
+        each(["1","2"]).test("just works", (param) => {
+          const createUser = username => {
+            return username ?? 'No Name';
+          }
+
+          expect(createUser()).to.be.equal('No Name');
+          expect(createUser('silvawillian')).to.be.equal('silvawillian');
+        })
+      })`;
+    const p = codeParser(code);
+    assert.equal(2, p.length);
+    assert.equal("each", p[1].loc.identifierName);
+  });
+
+  test("is not triggered by regex test #32", () => {
+    const code = `
+      describe("TestWithNullishCoalescing", () => {
+
+        test("just works", (param) => {
+          const createUser = username => {
+            return username ?? 'No Name';
+          }
+          const t = /test/g.test("test");
+
+          expect(createUser()).to.be.equal('No Name');
+          expect(createUser('silvawillian')).to.be.equal('silvawillian');
+        })
+      })`;
+    const p = codeParser(code);
+    assert.equal(2, p.length);
+    assert.equal("test", p[1].loc.identifierName);
   });
 });
