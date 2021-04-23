@@ -9,6 +9,7 @@ import { TerminalProvider } from "../providers/TerminalProvider";
 import { AvaTestRunner } from "./AvaTestRunner";
 import { JestTestRunner } from "./JestTestRunner";
 import { MochaTestRunner } from "./MochaTestRunner";
+import { TapTestRunner } from "./TapTestRunner";
 
 const terminalProvider = new TerminalProvider();
 
@@ -84,6 +85,12 @@ export async function getTestRunner(
         terminalProvider,
         customTestRunnerPath
       );
+    } else if (customTestRunnerName === "tap") {
+      return new TapTestRunner(
+        configurationProvider,
+        terminalProvider,
+        customTestRunnerPath
+      );
     }
   }
 
@@ -99,9 +106,13 @@ export async function getTestRunner(
     configurationProvider,
     terminalProvider
   );
+  const tapTestRunner = new TapTestRunner(
+    configurationProvider,
+    terminalProvider
+  );
 
   return getAvailableTestRunner(
-    [jestTestRunner, mochaTestRunner, avaTestRunner],
+    [jestTestRunner, mochaTestRunner, avaTestRunner, tapTestRunner],
     rootPath
   );
 }
