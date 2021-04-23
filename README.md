@@ -16,9 +16,17 @@ Testify is a JavaScript and Typescript test runner extension for VSCode. It adds
 -   `it`,
 -   `specify`
 -   `test`
+-   `t.test`
 
 enabling VSCode to run associated tests and output the results in the integrated terminal.
-Currently it works **out of the box** for **Mocha** and **Jest** test runner.
+## Compatibility
+
+This extension works currently with:
+
+-   Mocha
+-   Jest
+-   AVA
+-   Tap
 
 ## Demo
 
@@ -34,14 +42,6 @@ The following configuration properties are available:
 | `testify.envVars`        | Environment variables to set before running a test | { "NODE_ENV": "test" }        |
 | `testify.skipFiles`      | Array of glob patterns for script paths to skip    | ["<node_internals>/**/*.js"]  |
 | `testify.testRunnerPath` | Path to test runner                                | "src/node_modules/.bin/mocha" |
-
-## Compatibility
-
-This extension works currently with :
-
--   Mocha
--   Jest
--   AVA
 
 ## Versioning
 

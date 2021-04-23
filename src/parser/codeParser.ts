@@ -33,7 +33,6 @@ function codeParser(sourceCode) {
         // Callee is a direct call to a test function
         identifier = node.callee;
       } else if (node.callee.type === "MemberExpression") {
-        //
         if (
           node.callee.property.type === "Identifier" &&
           testTokens.includes(node.callee.property.name)
@@ -41,6 +40,11 @@ function codeParser(sourceCode) {
           // Callee seems to be a test function. Check if known parent object
           // is present
           if (
+            node.callee.object.type === "Identifier" &&
+            node.callee.object.name === "t"
+          ) {
+            identifier = node.callee.property;
+          } else if (
             node.callee.object.type === "CallExpression" &&
             node.callee.object.callee.type === "Identifier" &&
             parentTokens.includes(node.callee.object.callee.name)

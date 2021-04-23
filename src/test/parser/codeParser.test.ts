@@ -172,6 +172,20 @@ suite("codeParser Tests", () => {
     assert.equal("each", p[1].loc.identifierName);
   });
 
+  test("tap tests with t.test", () => {
+    const code = `
+      t.test('some suite', (t) => {
+        t.equal(1,1, 'they should be equal')
+      })
+      t.test('some other suite', (t) => {
+        t.equal(1,1, 'they should be equal')
+      })
+    `;
+    const p = codeParser(code);
+    assert.equal(2, p.length);
+    assert.equal("some suite", p[0].testName);
+  });
+
   test("is not triggered by regex test #32", () => {
     const code = `
       describe("TestWithNullishCoalescing", () => {
