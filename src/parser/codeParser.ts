@@ -10,6 +10,7 @@ function codeParser(sourceCode) {
     plugins: [
       "typescript",
       ["decorators", { decoratorsBeforeExport: false }],
+      "classProperties",
       "classPrivateMethods",
       "classPrivateProperties",
       "topLevelAwait",

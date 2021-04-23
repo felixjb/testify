@@ -64,6 +64,7 @@ suite("codeParser Tests", () => {
           }
           @decorator
           class Obj {
+            property = true
             name: string
             constructor({ name, catchPhrase }: OptionalParams = { name: 'Testify' }){
               this.name = name

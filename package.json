@@ -105,12 +105,13 @@
     "postinstall": "node ./node_modules/vscode/bin/install"
   },
   "dependencies": {
-    "@babel/core": "^7.12.10",
-    "@babel/parser": "^7.12.11",
-    "@babel/plugin-syntax-decorators": "^7.12.1",
-    "@babel/plugin-syntax-jsx": "^7.12.1",
-    "@babel/plugin-syntax-typescript": "^7.12.1",
-    "@babel/traverse": "^7.12.12"
+    "@babel/core": "^7.13.16",
+    "@babel/parser": "^7.13.16",
+    "@babel/plugin-proposal-class-properties": "^7.13.0",
+    "@babel/plugin-syntax-decorators": "^7.12.13",
+    "@babel/plugin-syntax-jsx": "^7.12.13",
+    "@babel/plugin-syntax-typescript": "^7.12.13",
+    "@babel/traverse": "^7.13.17"
   },
   "devDependencies": {
     "@types/babel__traverse": "^7.11.0",
@@ -124,6 +125,6 @@
     "tslint": "^5.10.0",
     "tslint-config-prettier": "^1.13.0",
     "typescript": "^3",
-    "vscode": "^1.1.6"
+    "vscode": "^1.1.37"
   }
 }
