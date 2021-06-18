@@ -57,33 +57,6 @@ export class PlaywrightTestRunner implements ITestRunnerInterface {
       this.configurationProvider.environmentVariables;
     const skipFiles = this.configurationProvider.skipFiles;
 
-    /*debug.startDebugging(rootPath, {
-      preLaunchTasks: [
-        {
-          label: "Start Test",
-          type: "shell",
-          cwd: rootPath,
-          env: {
-              ...{PLAYWRIGHT_CHROMIUM_DEBUG_PORT: 9222, PWDEBUG: true},
-              ...environmentVariables
-          },
-          command: join(rootPath.uri.fsPath, this.path),
-          args: [
-            "test",
-            "-g",
-            testName,
-            ...additionalArguments.split(" "),
-            this.transformFileName(fileName),
-          ],
-
-        }
-      ],
-      name: "Debug Test",
-      request: "attach",
-      type: "pwa-chrome",
-      port: 9222
-    });*/
-
     debug.startDebugging(rootPath, {
       args: [
         "test",
