@@ -9,12 +9,13 @@ import { TerminalProvider } from "../providers/TerminalProvider";
 import { AvaTestRunner } from "./AvaTestRunner";
 import { JestTestRunner } from "./JestTestRunner";
 import { MochaTestRunner } from "./MochaTestRunner";
+import { PlaywrightTestRunner } from "./PlaywrightTestRunner";
 
 const terminalProvider = new TerminalProvider();
 
 function doesFileExist(filePath: string): Promise<boolean> {
-  return new Promise(resolve => {
-    exists(filePath, doesExist => {
+  return new Promise((resolve) => {
+    exists(filePath, (doesExist) => {
       resolve(doesExist);
     });
   });
@@ -29,9 +30,7 @@ async function getCustomTestRunnerName(
   );
 
   if (doesExecutableExist) {
-    return basename(customTestRunnerPath)
-      .replace("_", "")
-      .toLowerCase();
+    return basename(customTestRunnerPath).replace("_", "").toLowerCase();
   }
 
   throw new Error("No test runner in specified path. Please verify it.");
@@ -84,6 +83,12 @@ export async function getTestRunner(
         terminalProvider,
         customTestRunnerPath
       );
+    } else if (customTestRunnerName === "playwright") {
+      return new PlaywrightTestRunner(
+        configurationProvider,
+        terminalProvider,
+        customTestRunnerPath
+      );
     }
   }
 
@@ -100,8 +105,13 @@ export async function getTestRunner(
     terminalProvider
   );
 
+  const playwrightTestRunner = new PlaywrightTestRunner(
+    configurationProvider,
+    terminalProvider
+  );
+
   return getAvailableTestRunner(
-    [jestTestRunner, mochaTestRunner, avaTestRunner],
+    [jestTestRunner, mochaTestRunner, avaTestRunner, playwrightTestRunner],
     rootPath
   );
 }
