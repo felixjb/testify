@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+-   Support for playwright test runner
+
+### Added
+
 -   Add support to jest-each intellisense and improve overall code parsing and test detection
 -   Add @calebboyd as a contributor.
 

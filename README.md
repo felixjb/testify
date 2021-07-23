@@ -42,6 +42,7 @@ This extension works currently with :
 -   Mocha
 -   Jest
 -   AVA
+-   Playwright Test
 
 ## Versioning
 
