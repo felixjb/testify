@@ -8,6 +8,7 @@ export interface ITestRunnerInterface {
   terminalProvider: TerminalProvider;
   configurationProvider: ConfigurationProvider;
 
+  runWatch(rootPath: WorkspaceFolder, fileName: string, testName: string): void;
   runTest(rootPath: WorkspaceFolder, fileName: string, testName: string): void;
   debugTest(
     rootPath: WorkspaceFolder,

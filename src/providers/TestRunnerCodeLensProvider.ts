@@ -2,6 +2,7 @@ import { CodeLens, CodeLensProvider, TextDocument, workspace } from "vscode";
 
 import TestRunnerDebugCodeLens from "../codelens/TestDebugRunnerCodeLens";
 import TestRunnerCodeLens from "../codelens/TestRunnerCodeLens";
+import TestWatchRunnerCodeLens from '../codelens/TestWatchRunnerCodeLens';
 import { codeParser } from "../parser/codeParser";
 
 function getRootPath({ uri }) {
@@ -15,6 +16,13 @@ function getRootPath({ uri }) {
 }
 
 function getCodeLens(rootPath, fileName, testName, startPosition) {
+  const watchRunnerCodeLens = new TestWatchRunnerCodeLens(
+    rootPath,
+    fileName,
+    testName,
+    startPosition
+  );
+
   const testRunnerCodeLens = new TestRunnerCodeLens(
     rootPath,
     fileName,
@@ -29,7 +37,7 @@ function getCodeLens(rootPath, fileName, testName, startPosition) {
     startPosition
   );
 
-  return [testRunnerCodeLens, debugRunnerCodeLens];
+  return [testRunnerCodeLens, debugRunnerCodeLens, watchRunnerCodeLens];
 }
 
 export default class TestRunnerCodeLensProvider implements CodeLensProvider {

@@ -1,12 +1,12 @@
-import { join } from "path";
-import { debug, WorkspaceFolder } from "vscode";
-import { ITestRunnerInterface } from "../interfaces/ITestRunnerInterface";
-import { ConfigurationProvider } from "../providers/ConfigurationProvider";
-import { TerminalProvider } from "../providers/TerminalProvider";
+import { join } from 'path';
+import { debug, WorkspaceFolder } from 'vscode';
+import { ITestRunnerInterface } from '../interfaces/ITestRunnerInterface';
+import { ConfigurationProvider } from '../providers/ConfigurationProvider';
+import { TerminalProvider } from '../providers/TerminalProvider';
 
 export class PlaywrightTestRunner implements ITestRunnerInterface {
-  public name: string = "playwright";
-  public path: string = join("node_modules", ".bin", this.name);
+  public name: string = 'playwright';
+  public path: string = join('node_modules', '.bin', this.name);
   public terminalProvider: TerminalProvider = null;
   public configurationProvider: ConfigurationProvider = null;
 
@@ -23,6 +23,29 @@ export class PlaywrightTestRunner implements ITestRunnerInterface {
     }
   }
 
+  public runWatch(
+    rootPath: WorkspaceFolder,
+    fileName: string,
+    testName: string
+  ) {
+    const additionalArguments = this.configurationProvider.additionalArguments;
+    const environmentVariables =
+      this.configurationProvider.environmentVariables;
+
+    const command = `${
+      this.path
+    } test -g "${testName}" ${additionalArguments} ${this.transformFileName(
+      fileName
+    )}`;
+
+    const terminal = this.terminalProvider.get(
+      { env: environmentVariables },
+      rootPath
+    );
+
+    terminal.sendText(command, true);
+    terminal.show(true);
+  }
   public runTest(
     rootPath: WorkspaceFolder,
     fileName: string,
@@ -59,27 +82,27 @@ export class PlaywrightTestRunner implements ITestRunnerInterface {
 
     debug.startDebugging(rootPath, {
       args: [
-        "test",
-        "-g",
+        'test',
+        '-g',
         testName,
-        ...additionalArguments.split(" "),
-        this.transformFileName(fileName),
+        ...additionalArguments.split(' '),
+        this.transformFileName(fileName)
       ],
-      console: "integratedTerminal",
+      console: 'integratedTerminal',
       env: {
         ...{ PLAYWRIGHT_CHROMIUM_DEBUG_PORT: 9222, PWDEBUG: true },
-        ...environmentVariables,
+        ...environmentVariables
       },
-      name: "Debug Test",
+      name: 'Debug Test',
       program: join(rootPath.uri.fsPath, this.path),
-      request: "launch",
+      request: 'launch',
       skipFiles,
-      type: "node",
+      type: 'node'
     });
   }
 
   // We force slash instead of backslash for Windows
   private transformFileName(fileName: string) {
-    return fileName.replace(/\\/g, "/");
+    return fileName.replace(/\\/g, '/');
   }
 }
