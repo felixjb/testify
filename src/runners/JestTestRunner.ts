@@ -35,7 +35,7 @@ export class JestTestRunner implements ITestRunnerInterface {
 
     const command = `${this.path} ${this.transformFileName(
       fileName
-    )} --testNamePattern="${testName}" ${additionalArguments}`;
+    )} --testNamePattern="${testName}" --watch ${additionalArguments}`;
 
     const terminal = this.terminalProvider.get(
       { env: environmentVariables },

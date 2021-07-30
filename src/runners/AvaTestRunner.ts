@@ -35,7 +35,7 @@ export class AvaTestRunner implements ITestRunnerInterface {
 
     const command = `${this.path} ${this.transformFileName(
       fileName
-    )} -m "${testName}" ${additionalArguments}`;
+    )} -m "${testName}" --watch ${additionalArguments}`;
 
     const terminal = this.terminalProvider.get(
       { env: environmentVariables },
@@ -45,6 +45,7 @@ export class AvaTestRunner implements ITestRunnerInterface {
     terminal.sendText(command, true);
     terminal.show(true);
   }
+
   public runTest(
     rootPath: WorkspaceFolder,
     fileName: string,

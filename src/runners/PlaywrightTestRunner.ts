@@ -23,29 +23,21 @@ export class PlaywrightTestRunner implements ITestRunnerInterface {
     }
   }
 
+  /**
+   * Playwright test runner executes default test function since it doesn't support watch yet.
+   * https://github.com/microsoft/playwright/issues/7035
+   * @param rootPath
+   * @param fileName
+   * @param testName
+   */
   public runWatch(
     rootPath: WorkspaceFolder,
     fileName: string,
     testName: string
   ) {
-    const additionalArguments = this.configurationProvider.additionalArguments;
-    const environmentVariables =
-      this.configurationProvider.environmentVariables;
-
-    const command = `${
-      this.path
-    } test -g "${testName}" ${additionalArguments} ${this.transformFileName(
-      fileName
-    )}`;
-
-    const terminal = this.terminalProvider.get(
-      { env: environmentVariables },
-      rootPath
-    );
-
-    terminal.sendText(command, true);
-    terminal.show(true);
+    this.runTest(rootPath, fileName, testName);
   }
+
   public runTest(
     rootPath: WorkspaceFolder,
     fileName: string,
