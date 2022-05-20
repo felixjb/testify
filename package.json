@@ -26,7 +26,7 @@
     "*"
   ],
   "engines": {
-    "vscode": "^1.18.0"
+    "vscode": "^1.64.0"
   },
   "repository": {
     "type": "git",
@@ -98,12 +98,11 @@
     "contributors:generate": "all-contributors generate",
     "format": "prettier --write src/**/*.{ts,json} package.json",
     "lint": "tslint -c tslint.json src/**/*.ts",
-    "test": "npm run compile && node ./node_modules/vscode/bin/test",
+    "test": "npm run compile && node ./out/test/run-test.js",
     "precommit": "lint-staged",
     "compile": "tsc --noUnusedParameters --noUnusedLocals -p ./",
     "watch": "tsc -watch  --noUnusedParameters --noUnusedLocals  -p ./",
-    "vscode:prepublish": "npm run compile",
-    "postinstall": "node ./node_modules/vscode/bin/install"
+    "vscode:prepublish": "npm run compile"
   },
   "dependencies": {
     "@babel/core": "^7.14.6",
@@ -115,16 +114,20 @@
   },
   "devDependencies": {
     "@types/babel__traverse": "^7.11.1",
-    "@types/mocha": "^8.2.2",
+    "@types/glob": "^7.2.0",
+    "@types/mocha": "^8.2.3",
     "@types/node": "^15.12.2",
+    "@types/vscode": "1.64",
+    "@vscode/test-electron": "^2.1.3",
     "all-contributors-cli": "^6.20.0",
+    "glob": "^8.0.3",
     "husky": "^6.0.0",
     "lint-staged": "^11.0.0",
+    "mocha": "^10.0.0",
     "prettier": "2.3.1",
     "ts-mocha": "^8.0.0",
     "tslint": "^6.1.3",
     "tslint-config-prettier": "^1.18.0",
-    "typescript": "^4.3.4",
-    "vscode": "^1.1.37"
+    "typescript": "^4.3.4"
   }
 }
