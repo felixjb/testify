@@ -10,12 +10,12 @@
 
 Testify is a JavaScript and Typescript test runner extension for VSCode. It adds codelens near the framework's keywords, such as
 
--   `suite`,
--   `describe`,
--   `context`,
--   `it`,
--   `specify`
--   `test`
+- `suite`,
+- `describe`,
+- `context`,
+- `it`,
+- `specify`
+- `test`
 
 enabling VSCode to run associated tests and output the results in the integrated terminal.
 Currently it works **out of the box** for **Mocha** and **Jest** test runner.
@@ -39,10 +39,10 @@ The following configuration properties are available:
 
 This extension works currently with :
 
--   Mocha
--   Jest
--   AVA
--   Playwright Test
+- Mocha
+- Jest
+- AVA
+- Playwright Test
 
 ## Versioning
 
@@ -75,6 +75,7 @@ Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 Also, a special **thank you to Barbara Iamauchi** who designed the amazing new icon for this project!
@@ -85,8 +86,8 @@ This project follows the [all-contributors](https://github.com/kentcdodds/all-co
 
 ## Authors
 
--   **Geoffrey** - _Initial work_ - Github: [@g3offrey](https://github.com/g3offrey)
--   **Felix J. Batista** - _Forked project_ - Github: [@felixjb](https://github.com/felixjb)
+- **Geoffrey** - _Initial work_ - Github: [@g3offrey](https://github.com/g3offrey)
+- **Felix J. Batista** - _Forked project_ - Github: [@felixjb](https://github.com/felixjb)
 
 based on [JavaScript Test Runner](https://github.com/g3offrey/javascript-test-runner) by **Geoffrey**
 

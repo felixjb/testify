@@ -4,31 +4,31 @@
 //
 
 // The module 'assert' provides assertion methods from node
-import assert from "assert";
-import { codeParser } from "../../parser/codeParser";
+import assert from 'assert'
+import {codeParser} from '../../parser/codeParser'
 
 // Defines a Mocha test suite to group tests of similar kind together
-suite("codeParser Tests", () => {
+suite('codeParser Tests', () => {
   // Defines a Mocha unit test
-  test("Valid Token", () => {
+  test('Valid Token', () => {
     const code = `
             describe('Fake test', () => {});
-        `;
-    assert.equal(1, codeParser(code).length);
-  });
+        `
+    assert.equal(1, codeParser(code).length)
+  })
 
-  test("Invalid Tokens", () => {
+  test('Invalid Tokens', () => {
     const code = `
             var test = 'Fluo';
             let src = {test: true, type: 'BANK'};
             if (!src.test && src.type === 'BANK') {
                 let firstName = 'test';
             }
-        `;
-    assert.equal(0, codeParser(code).length);
-  });
+        `
+    assert.equal(0, codeParser(code).length)
+  })
 
-  test("Jsx syntax", () => {
+  test('Jsx syntax', () => {
     const code = `
         describe("JsonFormTextField", () => {
 
@@ -47,11 +47,11 @@ suite("codeParser Tests", () => {
                 ownerInput.simulate("change");
             });
         });
-        `;
-    assert.equal(2, codeParser(code).length);
-  });
+        `
+    assert.equal(2, codeParser(code).length)
+  })
 
-  test("Decorator syntax", () => {
+  test('Decorator syntax', () => {
     const code = `
       describe("TestWithOptionalChaining", () => {
         it("just works", () => {
@@ -73,12 +73,12 @@ suite("codeParser Tests", () => {
           expect(newObject?.name).to.be.equal('Testify');
           expect(newObject?.catchphrase).toBeUndefined();
         })
-      })`;
+      })`
 
-    assert.equal(2, codeParser(code).length);
-  });
+    assert.equal(2, codeParser(code).length)
+  })
 
-  test("Rest Spread syntax", () => {
+  test('Rest Spread syntax', () => {
     const code = `
         describe("TestWithRestSpread", () => {
           it('just works!', () => {
@@ -92,11 +92,11 @@ suite("codeParser Tests", () => {
             expect(newObject.catchphrase).toBe('Witness Me!');
           });
         });
-      `;
-    assert.equal(2, codeParser(code).length);
-  });
+      `
+    assert.equal(2, codeParser(code).length)
+  })
 
-  test("Optional Chaining syntax", () => {
+  test('Optional Chaining syntax', () => {
     const code = `
       describe("TestWithOptionalChaining", () => {
         it("just works", () => {
@@ -114,12 +114,12 @@ suite("codeParser Tests", () => {
           expect(newObject?.name).to.be.equal('Testify');
           expect(newObject?.catchphrase).toBeUndefined();
         })
-      })`;
+      })`
 
-    assert.equal(2, codeParser(code).length);
-  });
+    assert.equal(2, codeParser(code).length)
+  })
 
-  test("Nullish Coalescing syntax", () => {
+  test('Nullish Coalescing syntax', () => {
     const code = `
       describe("TestWithNullishCoalescing", () => {
         it("just works", () => {
@@ -130,12 +130,12 @@ suite("codeParser Tests", () => {
           expect(createUser()).to.be.equal('No Name');
           expect(createUser('silvawillian')).to.be.equal('silvawillian');
         })
-      })`;
+      })`
 
-    assert.equal(2, codeParser(code).length);
-  });
+    assert.equal(2, codeParser(code).length)
+  })
 
-  test("jest-each tests with template syntax", () => {
+  test('jest-each tests with template syntax', () => {
     const code = `
       describe("TestWithNullishCoalescing", () => {
 
@@ -147,14 +147,14 @@ suite("codeParser Tests", () => {
           expect(createUser()).to.be.equal('No Name');
           expect(createUser('silvawillian')).to.be.equal('silvawillian');
         })
-      })`;
-    const p = codeParser(code);
-    assert.equal(2, p.length);
-    assert.equal("each", p[1].loc.identifierName);
-    assert.equal("just works .* .*", p[1].testName);
-  });
+      })`
+    const p = codeParser(code)
+    assert.equal(2, p.length)
+    assert.equal('each', p[1].loc.identifierName)
+    assert.equal('just works .* .*', p[1].testName)
+  })
 
-  test("jest-each tests with array syntax", () => {
+  test('jest-each tests with array syntax', () => {
     const code = `
       describe("TestWithNullishCoalescing", () => {
 
@@ -166,13 +166,13 @@ suite("codeParser Tests", () => {
           expect(createUser()).to.be.equal('No Name');
           expect(createUser('silvawillian')).to.be.equal('silvawillian');
         })
-      })`;
-    const p = codeParser(code);
-    assert.equal(2, p.length);
-    assert.equal("each", p[1].loc.identifierName);
-  });
+      })`
+    const p = codeParser(code)
+    assert.equal(2, p.length)
+    assert.equal('each', p[1].loc.identifierName)
+  })
 
-  test("is not triggered by regex test #32", () => {
+  test('is not triggered by regex test #32', () => {
     const code = `
       describe("TestWithNullishCoalescing", () => {
 
@@ -185,9 +185,9 @@ suite("codeParser Tests", () => {
           expect(createUser()).to.be.equal('No Name');
           expect(createUser('silvawillian')).to.be.equal('silvawillian');
         })
-      })`;
-    const p = codeParser(code);
-    assert.equal(2, p.length);
-    assert.equal("test", p[1].loc.identifierName);
-  });
-});
+      })`
+    const p = codeParser(code)
+    assert.equal(2, p.length)
+    assert.equal('test', p[1].loc.identifierName)
+  })
+})

@@ -3,7 +3,7 @@ name: CI
 on:
   push:
     branches: [main]
-    tags: ["v*"]
+    tags: ['v*']
   pull_request:
     branches: [main, develop]
 
@@ -19,7 +19,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: "12.x"
+          node-version: '12.x'
       - name: Clean install dependencies
         run: npm ci
       - name: Run Lint
@@ -40,7 +40,7 @@ jobs:
       - name: Publish to Marketplace
         uses: lannonbr/vsce-action@master
         with:
-          args: "publish -p $VSCE_TOKEN"
+          args: 'publish -p $VSCE_TOKEN'
         env:
           VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }}
       - name: Generate Changelog

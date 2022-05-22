@@ -1,39 +1,37 @@
 // TODO: This file looks odd. Refactor it as a proper factory
 
-import { exists } from "fs";
-import { basename, join } from "path";
-import { WorkspaceFolder } from "vscode";
-import { ITestRunnerInterface } from "../interfaces/ITestRunnerInterface";
-import { ConfigurationProvider } from "../providers/ConfigurationProvider";
-import { TerminalProvider } from "../providers/TerminalProvider";
-import { AvaTestRunner } from "./AvaTestRunner";
-import { JestTestRunner } from "./JestTestRunner";
-import { MochaTestRunner } from "./MochaTestRunner";
-import { PlaywrightTestRunner } from "./PlaywrightTestRunner";
+import {exists} from 'fs'
+import {basename, join} from 'path'
+import {WorkspaceFolder} from 'vscode'
+import {ITestRunnerInterface} from '../interfaces/ITestRunnerInterface'
+import {ConfigurationProvider} from '../providers/ConfigurationProvider'
+import {TerminalProvider} from '../providers/TerminalProvider'
+import {AvaTestRunner} from './AvaTestRunner'
+import {JestTestRunner} from './JestTestRunner'
+import {MochaTestRunner} from './MochaTestRunner'
+import {PlaywrightTestRunner} from './PlaywrightTestRunner'
 
-const terminalProvider = new TerminalProvider();
+const terminalProvider = new TerminalProvider()
 
 function doesFileExist(filePath: string): Promise<boolean> {
-  return new Promise((resolve) => {
-    exists(filePath, (doesExist) => {
-      resolve(doesExist);
-    });
-  });
+  return new Promise(resolve => {
+    exists(filePath, doesExist => {
+      resolve(doesExist)
+    })
+  })
 }
 
 async function getCustomTestRunnerName(
   rootPath: WorkspaceFolder,
   customTestRunnerPath: string
 ): Promise<string> {
-  const doesExecutableExist = await doesFileExist(
-    join(rootPath.uri.fsPath, customTestRunnerPath)
-  );
+  const doesExecutableExist = await doesFileExist(join(rootPath.uri.fsPath, customTestRunnerPath))
 
   if (doesExecutableExist) {
-    return basename(customTestRunnerPath).replace("_", "").toLowerCase();
+    return basename(customTestRunnerPath).replace('_', '').toLowerCase()
   }
 
-  throw new Error("No test runner in specified path. Please verify it.");
+  throw new Error('No test runner in specified path. Please verify it.')
 }
 
 async function getAvailableTestRunner(
@@ -41,77 +39,42 @@ async function getAvailableTestRunner(
   rootPath: WorkspaceFolder
 ): Promise<ITestRunnerInterface> {
   for (const runner of testRunners) {
-    const doesRunnerExist = await doesFileExist(
-      join(rootPath.uri.fsPath, runner.path)
-    );
+    const doesRunnerExist = await doesFileExist(join(rootPath.uri.fsPath, runner.path))
 
     if (doesRunnerExist) {
-      return runner;
+      return runner
     }
   }
 
-  throw new Error("No test runner in your project. Please install one.");
+  throw new Error('No test runner in your project. Please install one.')
 }
 
-export async function getTestRunner(
-  rootPath: WorkspaceFolder
-): Promise<ITestRunnerInterface> {
-  const configurationProvider = new ConfigurationProvider(rootPath);
-  const customTestRunnerPath = configurationProvider.testRunnerPath;
+export async function getTestRunner(rootPath: WorkspaceFolder): Promise<ITestRunnerInterface> {
+  const configurationProvider = new ConfigurationProvider(rootPath)
+  const customTestRunnerPath = configurationProvider.testRunnerPath
 
   if (customTestRunnerPath) {
-    const customTestRunnerName = await getCustomTestRunnerName(
-      rootPath,
-      customTestRunnerPath
-    );
+    const customTestRunnerName = await getCustomTestRunnerName(rootPath, customTestRunnerPath)
 
-    if (customTestRunnerName === "jest") {
-      return new JestTestRunner(
-        configurationProvider,
-        terminalProvider,
-        customTestRunnerPath
-      );
-    } else if (customTestRunnerName === "mocha") {
-      return new MochaTestRunner(
-        configurationProvider,
-        terminalProvider,
-        customTestRunnerPath
-      );
-    } else if (customTestRunnerName === "ava") {
-      return new AvaTestRunner(
-        configurationProvider,
-        terminalProvider,
-        customTestRunnerPath
-      );
-    } else if (customTestRunnerName === "playwright") {
-      return new PlaywrightTestRunner(
-        configurationProvider,
-        terminalProvider,
-        customTestRunnerPath
-      );
+    if (customTestRunnerName === 'jest') {
+      return new JestTestRunner(configurationProvider, terminalProvider, customTestRunnerPath)
+    } else if (customTestRunnerName === 'mocha') {
+      return new MochaTestRunner(configurationProvider, terminalProvider, customTestRunnerPath)
+    } else if (customTestRunnerName === 'ava') {
+      return new AvaTestRunner(configurationProvider, terminalProvider, customTestRunnerPath)
+    } else if (customTestRunnerName === 'playwright') {
+      return new PlaywrightTestRunner(configurationProvider, terminalProvider, customTestRunnerPath)
     }
   }
 
-  const jestTestRunner = new JestTestRunner(
-    configurationProvider,
-    terminalProvider
-  );
-  const mochaTestRunner = new MochaTestRunner(
-    configurationProvider,
-    terminalProvider
-  );
-  const avaTestRunner = new AvaTestRunner(
-    configurationProvider,
-    terminalProvider
-  );
+  const jestTestRunner = new JestTestRunner(configurationProvider, terminalProvider)
+  const mochaTestRunner = new MochaTestRunner(configurationProvider, terminalProvider)
+  const avaTestRunner = new AvaTestRunner(configurationProvider, terminalProvider)
 
-  const playwrightTestRunner = new PlaywrightTestRunner(
-    configurationProvider,
-    terminalProvider
-  );
+  const playwrightTestRunner = new PlaywrightTestRunner(configurationProvider, terminalProvider)
 
   return getAvailableTestRunner(
     [jestTestRunner, mochaTestRunner, avaTestRunner, playwrightTestRunner],
     rootPath
-  );
+  )
 }
