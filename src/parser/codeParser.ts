@@ -66,7 +66,7 @@ function codeParser(sourceCode: string) {
         }
       }
 
-      if (identifier !== undefined && identifier.loc !== null) {
+      if (identifier !== undefined && identifier.loc !== undefined && identifier.loc !== null) {
         const loc = identifier.loc
         const args = node.arguments
         args.forEach(a => {
@@ -74,7 +74,8 @@ function codeParser(sourceCode: string) {
             result.push({
               loc,
               testName: replacePlaceHolder
-                ? a.value.replace(/(\$\{[^\}]*\})|(\$[^ ]*)/g, '.*')
+                ? // eslint-disable-next-line no-useless-escape
+                  a.value.replace(/(\$\{[^\}]*\})|(\$[^ ]*)/g, '.*')
                 : a.value
             })
           }

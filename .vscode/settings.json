@@ -13,5 +13,6 @@
     "**/.vscode-test": true,
     "**/node_modules": true,
     "**/out": true
-  }
+  },
+  "testify.additionalArgs": "--require ts-node/register --no-timeout"
 }
