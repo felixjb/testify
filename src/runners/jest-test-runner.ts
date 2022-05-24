@@ -1,11 +1,11 @@
 import {join} from 'path'
 import {debug, WorkspaceFolder} from 'vscode'
-import {ITestRunnerInterface} from '../interfaces/ITestRunnerInterface'
-import {ConfigurationProvider} from '../providers/ConfigurationProvider'
-import {TerminalProvider} from '../providers/TerminalProvider'
+import {ConfigurationProvider} from '../providers/configuration-provider'
+import {TerminalProvider} from '../providers/terminal-provider'
+import {TestRunner} from './test-runner'
 
 // TODO: Make a more generic test runner class and extend it
-export class JestTestRunner implements ITestRunnerInterface {
+export class JestTestRunner implements TestRunner {
   public name = 'jest'
   public path: string = join('node_modules', '.bin', this.name)
   public terminalProvider: TerminalProvider

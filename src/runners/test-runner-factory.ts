@@ -3,13 +3,13 @@
 import {exists} from 'fs'
 import {basename, join} from 'path'
 import {WorkspaceFolder} from 'vscode'
-import {ITestRunnerInterface} from '../interfaces/ITestRunnerInterface'
-import {ConfigurationProvider} from '../providers/ConfigurationProvider'
-import {TerminalProvider} from '../providers/TerminalProvider'
-import {AvaTestRunner} from './AvaTestRunner'
-import {JestTestRunner} from './JestTestRunner'
-import {MochaTestRunner} from './MochaTestRunner'
-import {PlaywrightTestRunner} from './PlaywrightTestRunner'
+import {ConfigurationProvider} from '../providers/configuration-provider'
+import {TerminalProvider} from '../providers/terminal-provider'
+import {AvaTestRunner} from './ava-test-runner'
+import {JestTestRunner} from './jest-test-runner'
+import {MochaTestRunner} from './mocha-test-runner'
+import {PlaywrightTestRunner} from './playwright-test-runner'
+import {TestRunner} from './test-runner'
 
 const terminalProvider = new TerminalProvider()
 
@@ -35,9 +35,9 @@ async function getCustomTestRunnerName(
 }
 
 async function getAvailableTestRunner(
-  testRunners: ITestRunnerInterface[],
+  testRunners: TestRunner[],
   rootPath: WorkspaceFolder
-): Promise<ITestRunnerInterface> {
+): Promise<TestRunner> {
   for (const runner of testRunners) {
     const doesRunnerExist = await doesFileExist(join(rootPath.uri.fsPath, runner.path))
 
@@ -49,7 +49,7 @@ async function getAvailableTestRunner(
   throw new Error('No test runner in your project. Please install one.')
 }
 
-export async function getTestRunner(rootPath: WorkspaceFolder): Promise<ITestRunnerInterface> {
+export async function getTestRunner(rootPath: WorkspaceFolder): Promise<TestRunner> {
   const configurationProvider = new ConfigurationProvider(rootPath)
   const customTestRunnerPath = configurationProvider.testRunnerPath
 

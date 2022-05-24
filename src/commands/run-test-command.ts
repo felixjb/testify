@@ -1,6 +1,6 @@
 import {relative} from 'path'
 import {WorkspaceFolder} from 'vscode'
-import {getTestRunner} from '../runners/TestRunnerFactory'
+import {getTestRunner} from '../runners/test-runner-factory'
 
 async function runTest(rootPath: WorkspaceFolder, fileName: string, testName: string) {
   const relativeFilename = relative(rootPath.uri.fsPath, fileName)

@@ -1,10 +1,10 @@
 import {join} from 'path'
 import {debug, WorkspaceFolder} from 'vscode'
-import {ITestRunnerInterface} from '../interfaces/ITestRunnerInterface'
-import {ConfigurationProvider} from '../providers/ConfigurationProvider'
-import {TerminalProvider} from '../providers/TerminalProvider'
+import {ConfigurationProvider} from '../providers/configuration-provider'
+import {TerminalProvider} from '../providers/terminal-provider'
+import {TestRunner} from './test-runner'
 
-export class PlaywrightTestRunner implements ITestRunnerInterface {
+export class PlaywrightTestRunner implements TestRunner {
   public name = 'playwright'
   public path: string = join('node_modules', '.bin', this.name)
   public terminalProvider: TerminalProvider

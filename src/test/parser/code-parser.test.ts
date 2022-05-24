@@ -1,5 +1,5 @@
 import assert from 'assert'
-import {codeParser} from '../../parser/codeParser'
+import {codeParser} from '../../parser/code-parser'
 
 describe('codeParser Tests', () => {
   it('Valid Token', () => {

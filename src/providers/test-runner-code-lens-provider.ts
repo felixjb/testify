@@ -7,9 +7,9 @@ import {
   workspace,
   WorkspaceFolder
 } from 'vscode'
-import TestRunnerDebugCodeLens from '../codelens/TestDebugRunnerCodeLens'
-import TestRunnerCodeLens from '../codelens/TestRunnerCodeLens'
-import {codeParser} from '../parser/codeParser'
+import TestRunnerDebugCodeLens from '../codelens/test-debug-runner-code-lens'
+import TestRunnerCodeLens from '../codelens/test-runner-code-lens'
+import {codeParser} from '../parser/code-parser'
 
 function getRootPath(uri: Uri): WorkspaceFolder | typeof workspace {
   const activeWorkspace = workspace.getWorkspaceFolder(uri)
