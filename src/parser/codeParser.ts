@@ -1,11 +1,22 @@
 import {parse, ParserOptions} from '@babel/parser'
 import traverse from '@babel/traverse'
-import {Identifier} from '@babel/types'
+import {Identifier, SourceLocation} from '@babel/types'
 
 const parentTokens = ['each']
 const testTokens = ['suite', 'describe', 'context', 'it', 'specify', 'test']
 
-function codeParser(sourceCode) {
+declare module '@babel/types' {
+  interface SourceLocation {
+    identifierName: string
+  }
+}
+
+type TestLocation = {
+  loc: SourceLocation
+  testName: string
+}
+
+function codeParser(sourceCode: string) {
   const parserOptions: ParserOptions = {
     plugins: [
       'typescript',
@@ -20,11 +31,11 @@ function codeParser(sourceCode) {
 
   const ast = parse(sourceCode, parserOptions)
 
-  const result = []
+  const result: TestLocation[] = []
   traverse(ast, {
     CallExpression: p => {
       const node = p.node
-      let identifier: Identifier
+      let identifier: Identifier | undefined
       let replacePlaceHolder = false
       if (node.callee.type === 'Identifier' && testTokens.includes(node.callee.name)) {
         // Callee is a direct call to a test function
@@ -55,12 +66,13 @@ function codeParser(sourceCode) {
         }
       }
 
-      if (identifier) {
+      if (identifier !== undefined && identifier.loc !== null) {
+        const loc = identifier.loc
         const args = node.arguments
         args.forEach(a => {
           if (a.type === 'StringLiteral') {
             result.push({
-              loc: identifier.loc,
+              loc,
               testName: replacePlaceHolder
                 ? a.value.replace(/(\$\{[^\}]*\})|(\$[^ ]*)/g, '.*')
                 : a.value

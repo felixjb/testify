@@ -1,7 +1,7 @@
 import {Terminal, TerminalOptions, window, WorkspaceFolder} from 'vscode'
 
 export class TerminalProvider {
-  private activeTerminal: Terminal = null
+  private activeTerminal: Terminal | undefined
 
   public get(terminalOptions: TerminalOptions, rootPath: WorkspaceFolder): Terminal {
     if (this.activeTerminal) {

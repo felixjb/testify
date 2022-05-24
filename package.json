@@ -1,27 +1,29 @@
 {
   "name": "testify",
   "displayName": "Testify",
+  "description": "Run JavaScript & TypeScript tests easily using CodeLens",
   "version": "1.9.0",
   "author": {
-    "name": "felixjb"
+    "name": "felixjb",
+    "email": "felixjbcomp@gmail.com"
   },
   "publisher": "felixjb",
-  "description": "Run JavaScript & TypeScript tests easily using CodeLens",
   "license": "MIT",
   "categories": [
-    "Other"
+    "Testing"
   ],
   "keywords": [
+    "test",
+    "testing",
+    "unit",
     "mocha",
     "jest",
-    "test",
-    "unit",
     "ava",
     "playwright"
   ],
   "preview": false,
   "icon": "resources/icon.png",
-  "main": "./out/extension",
+  "main": "./out/extension.js",
   "activationEvents": [
     "*"
   ],
@@ -33,8 +35,7 @@
     "url": "https://github.com/felixjb/testify"
   },
   "bugs": {
-    "url": "https://github.com/felixjb/testify/issues",
-    "email": "felixjbcomp@gmail.com"
+    "url": "https://github.com/felixjb/testify/issues"
   },
   "contributes": {
     "commands": [

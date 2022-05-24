@@ -6,10 +6,10 @@ import {TerminalProvider} from '../providers/TerminalProvider'
 
 // TODO: Make a more generic test runner class and extend it
 export class MochaTestRunner implements ITestRunnerInterface {
-  public name = 'mocha'
+  public name: string = 'mocha'
   public path: string = join('node_modules', '.bin', this.name)
-  public terminalProvider: TerminalProvider = null
-  public configurationProvider: ConfigurationProvider = null
+  public terminalProvider: TerminalProvider
+  public configurationProvider: ConfigurationProvider
 
   constructor(
     configurationProvider: ConfigurationProvider,

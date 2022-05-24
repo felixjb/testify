@@ -5,10 +5,10 @@ import {ConfigurationProvider} from '../providers/ConfigurationProvider'
 import {TerminalProvider} from '../providers/TerminalProvider'
 
 export class PlaywrightTestRunner implements ITestRunnerInterface {
-  public name = 'playwright'
+  public name: string = 'playwright'
   public path: string = join('node_modules', '.bin', this.name)
-  public terminalProvider: TerminalProvider = null
-  public configurationProvider: ConfigurationProvider = null
+  public terminalProvider: TerminalProvider
+  public configurationProvider: ConfigurationProvider
 
   constructor(
     configurationProvider: ConfigurationProvider,
