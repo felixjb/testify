@@ -1,6 +1,7 @@
 // TODO: This file looks odd. Refactor it as a proper factory
 
-import {exists} from 'fs'
+import {constants} from 'fs'
+import {access} from 'fs/promises'
 import {basename, join} from 'path'
 import {WorkspaceFolder} from 'vscode'
 import {ConfigurationProvider} from '../providers/configuration-provider'
@@ -13,12 +14,13 @@ import {TestRunner} from './test-runner'
 
 const terminalProvider = new TerminalProvider()
 
-function doesFileExist(filePath: string): Promise<boolean> {
-  return new Promise(resolve => {
-    exists(filePath, doesExist => {
-      resolve(doesExist)
-    })
-  })
+async function doesFileExist(filePath: string): Promise<boolean> {
+  try {
+    await access(filePath, constants.X_OK)
+    return true
+  } catch {
+    return false
+  }
 }
 
 async function getCustomTestRunnerName(
