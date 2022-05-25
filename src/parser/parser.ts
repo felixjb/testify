@@ -13,10 +13,10 @@ declare module '@babel/types' {
 
 type TestLocation = {
   loc: SourceLocation
-  testName: string
+  title: string
 }
 
-function codeParser(sourceCode: string) {
+export function parseSourceCode(sourceCode: string) {
   const parserOptions: ParserOptions = {
     plugins: [
       'typescript',
@@ -73,7 +73,7 @@ function codeParser(sourceCode: string) {
           if (a.type === 'StringLiteral') {
             result.push({
               loc,
-              testName: replacePlaceHolder
+              title: replacePlaceHolder
                 ? // eslint-disable-next-line no-useless-escape
                   a.value.replace(/(\$\{[^\}]*\})|(\$[^ ]*)/g, '.*')
                 : a.value
@@ -85,5 +85,3 @@ function codeParser(sourceCode: string) {
   })
   return result
 }
-
-export {codeParser}

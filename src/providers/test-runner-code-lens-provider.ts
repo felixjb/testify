@@ -9,7 +9,7 @@ import {
 } from 'vscode'
 import TestRunnerDebugCodeLens from '../codelens/test-debug-runner-code-lens'
 import TestRunnerCodeLens from '../codelens/test-runner-code-lens'
-import {codeParser} from '../parser/code-parser'
+import {parseSourceCode} from '../parser/parser'
 
 function getRootPath(uri: Uri): WorkspaceFolder | typeof workspace {
   const activeWorkspace = workspace.getWorkspaceFolder(uri)
@@ -45,8 +45,10 @@ export default class TestRunnerCodeLensProvider implements CodeLensProvider {
     const createRangeObject = (line: number) => document.lineAt(line - 1).range
     const rootPath = getRootPath(document.uri)
 
-    return codeParser(document.getText()).reduce<(TestRunnerCodeLens | TestRunnerDebugCodeLens)[]>(
-      (acc, {loc, testName}) => [
+    return parseSourceCode(document.getText()).reduce<
+      (TestRunnerCodeLens | TestRunnerDebugCodeLens)[]
+    >(
+      (acc, {loc, title: testName}) => [
         ...acc,
         ...getCodeLens({
           rootPath,
