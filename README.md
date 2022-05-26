@@ -1,4 +1,4 @@
-[![Build Status](https://github.com/felixjb/testify/workflows/CI/badge.svg?branch=main)](https://github.com/felixjb/testify/actions)
+[![Build Status](https://github.com/felixjb/testify/workflows/continuous-integration/badge.svg?branch=main)](https://github.com/felixjb/testify/actions)
 
 # Testify
 
