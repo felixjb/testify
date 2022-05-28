@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "felixjb.testify",
+    "editorconfig.editorconfig",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode"
+  ]
+}

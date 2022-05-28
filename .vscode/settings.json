@@ -1,17 +1,18 @@
-// Place your settings in this file to overwrite default and user settings.
 {
-    "files.exclude": {
-        "**/.git/objects/**": true,
-        "**/.git/subtree-cache/**": true,
-        "**/.vscode-test/*/**": true,
-        "**/node_modules/*/**": true,
-        "**/out/*/**": true
-    },
-    "search.exclude": {
-        "**/.git": true,
-        "**/.vscode-test": true,
-        "**/node_modules": true,
-        "**/out": true
-    },
-    "editor.rulers": [80]
+  "editor.rulers": [100],
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+    "source.organizeImports": true
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "files.trimTrailingWhitespace": true,
+  "search.exclude": {
+    "**/.git": true,
+    "**/.vscode-test": true,
+    "**/node_modules": true,
+    "**/out": true
+  },
+  "testify.additionalArgs": "--require ts-node/register --no-timeout"
 }
