@@ -5,7 +5,7 @@
       "name": "Run",
       "type": "extensionHost",
       "request": "launch",
-      "preLaunchTask": "watch",
+      "preLaunchTask": "Build & Watch",
       "runtimeExecutable": "${execPath}",
       "args": ["--extensionDevelopmentPath=${workspaceFolder}"],
       "outFiles": ["${workspaceFolder}/out"],
