@@ -2,6 +2,7 @@ import {join} from 'path'
 import {debug, WorkspaceFolder} from 'vscode'
 import {ConfigurationProvider} from '../providers/configuration-provider'
 import {TerminalProvider} from '../providers/terminal-provider'
+import {escapeCharacter} from '../utils/utils'
 import {TestRunner} from './test-runner'
 
 // TODO: Make a more generic test runner class and extend it
@@ -27,8 +28,9 @@ export class MochaTestRunner implements TestRunner {
   public runTest(rootPath: WorkspaceFolder, fileName: string, testName: string) {
     const additionalArguments = this.configurationProvider.additionalArguments
     const environmentVariables = this.configurationProvider.environmentVariables
+    const testNameEscapedQuotes = escapeCharacter(testName, '"')
 
-    const command = `${this.path} ${fileName} --fgrep="${testName}" ${additionalArguments}`
+    const command = `${this.path} ${fileName} --fgrep="${testNameEscapedQuotes}" ${additionalArguments}`
 
     const terminal = this.terminalProvider.get({env: environmentVariables}, rootPath)
 

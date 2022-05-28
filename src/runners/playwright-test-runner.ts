@@ -2,6 +2,7 @@ import {join} from 'path'
 import {debug, WorkspaceFolder} from 'vscode'
 import {ConfigurationProvider} from '../providers/configuration-provider'
 import {TerminalProvider} from '../providers/terminal-provider'
+import {escapeCharacter} from '../utils/utils'
 import {TestRunner} from './test-runner'
 
 export class PlaywrightTestRunner implements TestRunner {
@@ -26,10 +27,11 @@ export class PlaywrightTestRunner implements TestRunner {
   public runTest(rootPath: WorkspaceFolder, fileName: string, testName: string) {
     const additionalArguments = this.configurationProvider.additionalArguments
     const environmentVariables = this.configurationProvider.environmentVariables
+    const testNameEscapedQuotes = escapeCharacter(testName, '"')
 
     const command = `${
       this.path
-    } test -g "${testName}" ${additionalArguments} ${this.transformFileName(fileName)}`
+    } test -g "${testNameEscapedQuotes}" ${additionalArguments} ${this.transformFileName(fileName)}`
 
     const terminal = this.terminalProvider.get({env: environmentVariables}, rootPath)
 
