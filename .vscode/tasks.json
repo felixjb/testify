@@ -2,7 +2,7 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "build & watch",
+      "label": "Build & Watch",
       "detail": "tsc -watch",
       "type": "npm",
       "script": "compile:watch",
