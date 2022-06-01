@@ -1,12 +1,7 @@
 <!--
 Yay! Thanks for sending us a pull request (PR)! 🎊
-
-Please ensure your PR adheres to:
-- [ ] Search previous suggestions before making a new one, as yours may be a duplicate.
-- [ ] The code respects the linting rules
-- [ ] It builds and passes all tests
-- [ ] Sort by alphabetical order whenever possible
-- and the following format...
+Please refer to our **CONTRIBUTING** guide and make sure you follow our guidelines.
+If you have any questions, join us in the [Discussions](https://github.com/felixjb/testify/discussions)
 -->
 
 ### Description
@@ -32,27 +27,30 @@ Other possible keywords:
 - resolved
 -->
 
-### Commits
+### Testing
 
-Commits should reference project issues in their subject lines, and multiple commits should be squashed if they address the same issue. In addition, commits should follow the guidelines from "[How to write a good git commit message](http://chris.beams.io/posts/git-commit/)":
+Describe the automated tests you have written **OR** explain that your changes do not need testing for an extremely good reason.
 
-    1.  Subject is separated from body by a blank line
-    2.  Subject is limited to 50 characters (not including issue reference)
-    3.  Subject does not end with a period
-    4.  Subject uses the imperative mood ("add", not "adding")
-    5.  Body wraps at 72 characters
-    6.  Body explains "what" and "why", not "how"
-
-### Tests
-
-The pull request adds unit tests **OR** does not need testing for this extremely good reason:
+Describe the manual tests we should perform to verify that the changes work and do not add any bugs.
 
 ### Documentation
 
-In case of new functionality, add documentation that describes how to use it. If you implement backwards incompatible changes, please leave a note in the Special Notes section.
+Any added features or changes to working features need to be documented.
+Inform the changes that were made to the repository documentation (`README.md`, `CONTRIBUTING.md`, etc.).
+Also, detail any necessary changes to the Wiki.
 
 ### Special notes for your reviewer:
 
 Leave any additional detail that you might find important or useful.
+
+e.g.: Implemented a breaking change that affects [...]
+
+### Checklist
+
+- [ ] Search previous suggestions before making a new one, as yours may be a duplicate.
+- [ ] I have reviewed the projects requirements alongside the stakeholders.
+- [ ] Any dependent changes have been merged and published in downstream modules.
+- [ ] The code follows the style guidelines
+- [ ] The commit messages follow the style guidelines
 
 <!-- Thanks for contributing! -->
