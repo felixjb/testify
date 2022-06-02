@@ -1,6 +1,6 @@
 {
   "release": {
-    "branches": "main",
+    "branches": ["main"],
     "verifyConditions": [
       "@semantic-release/github"
     ],
