@@ -10,6 +10,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'npm'
+      - name: Install Dependencies
+        run: npm ci
+      - name: Verify VSCE_PAT
+        run: npx vsce verify-pat -p ${{ secrets.VSCE_TOKEN }}
       - name: Release
         uses: cycjimmy/semantic-release-action@v3
         with:
