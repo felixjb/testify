@@ -1,17 +1,29 @@
 {
-  "release": {
-    "branches": ["main"],
-    "verifyConditions": [
-      "@semantic-release/github"
+  "branches": [
+    "main"
+  ],
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    "@semantic-release/changelog",
+    "@semantic-release/git",
+    "@semantic-release/npm",
+    [
+      "semantic-release-vsce",
+      {
+        "packageVsix": true
+      }
     ],
-    "publish": [
-      "@semantic-release/github"
-    ],
-    "success": [
-      "@semantic-release/github"
-    ],
-    "fail": [
-      "@semantic-release/github"
+    [
+      "@semantic-release/github",
+      {
+        "assets": [
+          {
+            "path": "*.vsix",
+            "label": "Extension File"
+          }
+        ]
+      }
     ]
-  }
+  ]
 }
