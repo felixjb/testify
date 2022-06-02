@@ -1,7 +1,7 @@
 {
   "name": "testify",
   "displayName": "Testify",
-  "description": "Run JavaScript & TypeScript tests easily using CodeLens",
+  "description": "Run JavaScript tests easily using CodeLens",
   "version": "1.9.0",
   "author": {
     "name": "felixjb",
@@ -60,7 +60,7 @@
         "properties": {
           "testify.additionalArgs": {
             "default": "",
-            "description": "CLI args to pass to test runner.",
+            "description": "Specifies arguments to be passed to the test framework command",
             "scope": "resource",
             "type": "string"
           },
@@ -68,13 +68,13 @@
             "default": {
               "NODE_ENV": "test"
             },
-            "description": "Environment variables to set before running a test.",
+            "description": "Specifies environment variables to be exported before running a test",
             "scope": "resource",
             "type": "object"
           },
           "testify.skipFiles": {
             "default": [],
-            "description": "Array of glob patterns for script paths to skip.",
+            "description": "Specifies files that should be skipped during debugging",
             "items": {
               "type": "string"
             },
@@ -83,7 +83,7 @@
           },
           "testify.testRunnerPath": {
             "default": "",
-            "description": "Path to test runner.",
+            "description": "Specifies a custom path for the test runner executable",
             "scope": "resource",
             "type": "string"
           }
