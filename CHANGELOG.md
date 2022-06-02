@@ -9,100 +9,100 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
--   Support for playwright test runner
+- Support for playwright test runner
 
 ## [1.8.0] - 2021-01-06
 
 ### Added
 
--   Add support to jest-each intellisense and improve overall code parsing and test detection
--   Add @calebboyd as a contributor.
+- Add support to jest-each intellisense and improve overall code parsing and test detection
+- Add @calebboyd as a contributor.
 
 ### Fixed
 
--   Fix parser incorrectly identifying Regexp .test method as a test
--   Fix parser incorrectly identifying identifier with name "it" as a test
+- Fix parser incorrectly identifying Regexp .test method as a test
+- Fix parser incorrectly identifying identifier with name "it" as a test
 
 ## [1.7.0] - 2020-12-12
 
 ### Added
 
--   Add support to decorators in the parser
--   Add @calebboyd as a contributor.
+- Add support to decorators in the parser
+- Add @calebboyd as a contributor.
 
 ## [1.6.1] - 2020-08-06
 
 ### Changed
 
--   Migrate CI from Travis to GitHub Actions
--   Rename default branch to "main"
+- Migrate CI from Travis to GitHub Actions
+- Rename default branch to "main"
 
 ### Fixed
 
--   Fix package vulnerabilities
+- Fix package vulnerabilities
 
 ## [1.6.0] - 2020-08-05
 
 ### Added
 
--   Support for AVA test runner. Thanks to @LoveSponge
--   Add @LoveSponge as a contributor.
+- Support for AVA test runner. Thanks to @LoveSponge
+- Add @LoveSponge as a contributor.
 
 ### Fixed
 
--   Add missing contributor picture to README.
+- Add missing contributor picture to README.
 
 ## [1.5.0] - 2020-08-05
 
 ### Changed
 
--   Enable optional chaining and nullish coalescing TypeScript syntaxes. Thanks to @silvawillian
+- Enable optional chaining and nullish coalescing TypeScript syntaxes. Thanks to @silvawillian
 
 ## [1.4.1] - 2019-05-13
 
 ### Fixed
 
--   Fix Mocha test filter option.
--   Fix Mocha debug options.
+- Fix Mocha test filter option.
+- Fix Mocha debug options.
 
 ## [1.4.0] - 2019-09-27
 
 ### Fixed
 
--   Fix integrated terminal instances bug.
+- Fix integrated terminal instances bug.
 
 ### Added
 
--   Add `suite`, `context` and `specify` keywords to test token list.
+- Add `suite`, `context` and `specify` keywords to test token list.
 
 ## [1.3.0] - 2019-09-08
 
 ### Added
 
--   Add `testRunnerPath` configuration.
+- Add `testRunnerPath` configuration.
 
 ## [1.2.1] - 2019-08-18
 
 ### Fixed
 
--   Fix windows file path recognition.
+- Fix windows file path recognition.
 
 ### Changed
 
--   Update `skipFile` configuration to use new VSCode's string arrays format.
+- Update `skipFile` configuration to use new VSCode's string arrays format.
 
 ## [1.2.0] - 2019-08-10
 
 ### Added
 
--   Add `skipFile` configuration (a.k.a. "Not My Code" feature).
+- Add `skipFile` configuration (a.k.a. "Not My Code" feature).
 
 ## [1.1.0] - 2019-06-24
 
 ### Added
 
--   Add support to tests with spread operator `(...)`. Thanks to @silvawillian
+- Add support to tests with spread operator `(...)`. Thanks to @silvawillian
 
 ## [1.0.0] - 2019-06-21
 
--   Initial release.
+- Initial release.

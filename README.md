@@ -1,24 +1,28 @@
-[![Build Status](https://github.com/felixjb/testify/workflows/CI/badge.svg?branch=main)](https://github.com/felixjb/testify/actions)
-
-# Testify
+[![Continuous Integration](https://github.com/felixjb/testify/actions/workflows/continuous-integration.yaml/badge.svg)](https://github.com/felixjb/testify/actions/workflows/continuous-integration.yaml)
+[![](https://vsmarketplacebadge.apphb.com/downloads-short/felixjb.testify.svg)](https://marketplace.visualstudio.com/items?itemName=felixjb.testify)
 
 <p align="center">
-    <a title="Run JavaScript & TypeScript tests easily using CodeLens" href="https://marketplace.visualstudio.com/items?itemName=felixjb.testify">
+    <a title="Run JavaScript tests easily using CodeLens" href="https://marketplace.visualstudio.com/items?itemName=felixjb.testify">
         <img src="https://raw.githubusercontent.com/felixjb/testify/main/resources/icon.png" alt="Testify"/>
     </a>
 </p>
 
-Testify is a JavaScript and Typescript test runner extension for VSCode. It adds codelens near the framework's keywords, such as
+# Testify
 
--   `suite`,
--   `describe`,
--   `context`,
--   `it`,
--   `specify`
--   `test`
+Testify is an [open-source](https://github.com/felixjb/testify 'Open Testify on GitHub') extension for [Visual Studio Code](https://code.visualstudio.com 'Learn more about VSCode').
 
-enabling VSCode to run associated tests and output the results in the integrated terminal.
-Currently it works **out of the box** for **Mocha** and **Jest** test runner.
+Testify **enables** you to run or debug JavaScript tests **individually** or **entire suites** with a **single click** through **code lens**. It adds code lens near any compatible test framework **keywords** and outputs the results to the **integrated terminal**.
+
+If you need any information, try using our **ever-expanding** [Wiki](https://github.com/felixjb/testify/wiki). Or, if you have any **questions** or need any **help**, **join us** in the [Discussions](https://github.com/felixjb/testify/discussions).
+
+## Compatibility
+
+Testify maintainers are **always** working to support **more** frameworks as **best** as possible. Testify currently works with these test frameworks:
+
+- [Mocha](https://mochajs.org/)
+- [Jest](https://jestjs.io/)
+- [AVA](https://github.com/avajs/ava)
+- [Playwright](https://playwright.dev/)
 
 ## Demo
 
@@ -26,23 +30,16 @@ Currently it works **out of the box** for **Mocha** and **Jest** test runner.
 
 ## Configuration
 
-The following configuration properties are available:
+You can configure Testify to work a little more to your taste using VSCode's settings. Here are all the configuration properties are available:
 
-| Property                 | Description                                        | Example                       |
-| ------------------------ | -------------------------------------------------- | ----------------------------- |
-| `testify.additionalArgs` | CLI args to pass to test runner                    | "--watch"                     |
-| `testify.envVars`        | Environment variables to set before running a test | { "NODE_ENV": "test" }        |
-| `testify.skipFiles`      | Array of glob patterns for script paths to skip    | ["<node_internals>/**/*.js"]  |
-| `testify.testRunnerPath` | Path to test runner                                | "src/node_modules/.bin/mocha" |
+| Property                 | Description                                                                                                      | Example                        | Default                  |
+|--------------------------|------------------------------------------------------------------------------------------------------------------|--------------------------------|--------------------------|
+| `testify.additionalArgs` | Specifies arguments to be passed to the test framework command.<br>It takes a single string with all arguments.  | `"--require ts-node/register"` | `""`                     |
+| `testify.envVars`        | Specifies environment variables to be exported before running a test.                                            | `{ "NODE_ENV": "test" }`       | `{ "NODE_ENV": "test" }` |
+| `testify.skipFiles`      | Specifies files that should be skipped during debugging.<br>It takes an array of glob patterns.                  | `["<node_internals>/**/*.js"]` | `[]`                     |
+| `testify.testRunnerPath` | Specifies a custom path for the test runner executable.                                                          | `"node_modules/.bin/mocha"`    | `""`                     |
 
-## Compatibility
-
-This extension works currently with :
-
--   Mocha
--   Jest
--   AVA
--   Playwright Test
+<!-- You can use this tool to generate a markdown table: https://www.tablesgenerator.com/markdown_tables# -->
 
 ## Versioning
 
@@ -85,8 +82,8 @@ This project follows the [all-contributors](https://github.com/kentcdodds/all-co
 
 ## Authors
 
--   **Geoffrey** - _Initial work_ - Github: [@g3offrey](https://github.com/g3offrey)
--   **Felix J. Batista** - _Forked project_ - Github: [@felixjb](https://github.com/felixjb)
+- **Geoffrey** - _Initial work_ - Github: [@g3offrey](https://github.com/g3offrey)
+- **Felix J. Batista** - _Forked project_ - Github: [@felixjb](https://github.com/felixjb)
 
 based on [JavaScript Test Runner](https://github.com/g3offrey/javascript-test-runner) by **Geoffrey**
 

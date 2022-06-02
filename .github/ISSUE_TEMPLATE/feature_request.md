@@ -4,11 +4,19 @@ about: Suggest an idea for this project
 title: ''
 labels: enhancement, feature
 assignees: felixjb
-
 ---
+
+<!--
+Thank you for your suggestion!
+Refer to our **CONTRIBUTING** guide if you need any information.
+If you have any questions, join us in the [Discussions](https://github.com/felixjb/testify/discussions)
+-->
 
 **Is your feature request related to a problem? Please describe.**
 A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+
+**Is your feature request related to a specific platform or test framework? Please describe.**
+Ex. When using Mocha, I'd like to [...]
 
 **Describe the solution you'd like**
 A clear and concise description of what you want to happen.

@@ -1,80 +1,30 @@
-name: CI
+name: Continuous Integration
 
 on:
-  push:
-    branches: [main]
-    tags: ["v*"]
   pull_request:
     branches: [main, develop]
 
 jobs:
-  build:
+  test:
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
-          node-version: "12.x"
-      - name: Clean install dependencies
+          node-version: '16'
+          cache: 'npm'
+      - name: Install Dependencies
         run: npm ci
+      - name: Run Prettier
+        run: npm run prettier:check
       - name: Run Lint
-        run: npm run lint
+        run: npm run lint:check
       - name: Run Tests
         uses: GabrielBB/xvfb-action@v1.0
         with:
           run: npm test
-  deploy:
-    needs: build
-    if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Clean install dependencies
-        run: npm ci
-      - name: Publish to Marketplace
-        uses: lannonbr/vsce-action@master
-        with:
-          args: "publish -p $VSCE_TOKEN"
-        env:
-          VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }}
-      - name: Generate Changelog
-        uses: scottbrenner/generate-changelog-action@master
-        id: generate_changelog
-        env:
-          REPO: ${{ github.repository }}
-      - name: Get Tag
-        id: get_tag
-        run: echo ::set-output name=TAG::${GITHUB_REF/refs\/tags\//}
-      - name: Get Package Version
-        id: get_version
-        uses: martinbeentjes/npm-get-version-action@master
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@latest
-        env:
-          # This token is provided by Actions,
-          # you do not need to create your own token
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.get_tag.outputs.TAG }}
-          release_name: ${{ steps.get_tag.outputs.TAG }}
-          body: |
-            ${{ steps.generate_changelog.outputs.changelog }}
-          draft: false
-          prerelease: false
-      - name: Upload Release Asset
-        id: upload_release_asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./testify-${{ steps.get_version.outputs.current-version }}.vsix
-          asset_name: testify-${{ steps.get_version.outputs.current-version }}.vsix
-          asset_content_type: application/vsix
