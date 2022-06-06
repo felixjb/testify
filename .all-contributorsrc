@@ -1,5 +1,5 @@
 {
-  "projectName": "Testify",
+  "projectName": "testify",
   "projectOwner": "felixjb",
   "repoType": "github",
   "repoHost": "https://github.com",
@@ -88,7 +88,18 @@
         "code",
         "maintenance"
       ]
+    },
+    {
+      "login": "felipecrs",
+      "name": "Felipe Santos",
+      "avatar_url": "https://avatars.githubusercontent.com/u/29582865?v=4",
+      "profile": "http://felipecrs.com",
+      "contributions": [
+        "infra"
+      ]
     }
   ],
-  "commitConvention": "none"
+  "commitConvention": "none",
+  "skipCi": true,
+  "contributorsPerLine": 7
 }
