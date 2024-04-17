@@ -3,7 +3,8 @@
 .vscode
 .vscode-test
 node_modules
-out/
+out/**/*.map
+out/test/**
 src/
 .editorconfig
 .eslintignore
