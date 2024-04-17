@@ -7,7 +7,7 @@ const testTokens = ['suite', 'describe', 'context', 'it', 'specify', 'test']
 
 declare module '@babel/types' {
   interface SourceLocation {
-    identifierName: string
+    identifierName: string | null | undefined
   }
 }
 
