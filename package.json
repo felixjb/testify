@@ -33,9 +33,9 @@
     "*"
   ],
   "engines": {
-    "node": "^16",
-    "npm": "^8",
-    "vscode": "^1.64.0"
+    "node": "^18.20.2",
+    "npm": "^10.5.0",
+    "vscode": "^1.88.1"
   },
   "repository": {
     "type": "git",
@@ -106,8 +106,10 @@
     "validate": "npm-run-all --parallel prettier:format lint:fix test",
     "bundle": "webpack --mode development",
     "bundle:watch": "webpack --mode development --watch",
-    "package": "webpack --mode production --devtool hidden-source-map",
-    "vscode:prepublish": "npm run package"
+    "bundle:production": "webpack --mode production --devtool hidden-source-map",
+    "vscode:prepublish": "npm run bundle:production",
+    "package": "vsce package",
+    "publish": "vsce publish"
   },
   "dependencies": {
     "@babel/core": "^7.18.0",
