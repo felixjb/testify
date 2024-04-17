@@ -1,10 +1,10 @@
-[![Continuous Integration](https://github.com/felixjb/testify/actions/workflows/continuous-integration.yaml/badge.svg)](https://github.com/felixjb/testify/actions/workflows/continuous-integration.yaml)
-[![](https://vsmarketplacebadge.apphb.com/downloads-short/felixjb.testify.svg)](https://marketplace.visualstudio.com/items?itemName=felixjb.testify)
+[![CI/CD](https://github.com/felixjb/testify/actions/workflows/ci-cd.yaml/badge.svg)](https://github.com/felixjb/testify/actions/workflows/ci-cd.yaml)
+[![Visual Studio Marketplace Installs](https://img.shields.io/visual-studio-marketplace/i/felixjb.testify)](https://marketplace.visualstudio.com/items?itemName=felixjb.testify)
 
 <p align="center">
-    <a title="Run JavaScript tests easily using CodeLens" href="https://marketplace.visualstudio.com/items?itemName=felixjb.testify">
-        <img src="https://raw.githubusercontent.com/felixjb/testify/main/resources/icon.png" alt="Testify"/>
-    </a>
+  <a title="Run JavaScript tests easily using CodeLens" href="https://marketplace.visualstudio.com/items?itemName=felixjb.testify">
+    <img src="https://raw.githubusercontent.com/felixjb/testify/main/resources/icon.png" alt="Testify"/>
+  </a>
 </p>
 
 # Testify
