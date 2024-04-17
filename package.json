@@ -30,7 +30,10 @@
   "icon": "resources/icon.png",
   "main": "./out/extension.js",
   "activationEvents": [
-    "*"
+    "onLanguage:javascript",
+    "onLanguage:typescript",
+    "onLanguage:javascriptreact",
+    "onLanguage:typescriptreact"
   ],
   "engines": {
     "node": "^18.20.2",
