@@ -65,8 +65,11 @@ export class PlaywrightTestRunner implements TestRunner {
     })
   }
 
-  // We force slash instead of backslash for Windows
-  private transformFileName(fileName: string) {
-    return fileName.replace(/\\/g, '/')
+  /**
+   * Executes {@link runTest} method due to Playwright test runner not supporting "watch" yet.
+   * https://github.com/microsoft/playwright/issues/7035
+   */
+  public watchTest(rootPath: WorkspaceFolder, fileName: string, testName: string): void {
+    this.runTest(rootPath, fileName, testName)
   }
 }

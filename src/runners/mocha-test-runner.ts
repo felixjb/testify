@@ -54,4 +54,18 @@ export class MochaTestRunner implements TestRunner {
       type: 'node'
     })
   }
+
+  // TODO: Reuse the runTest method
+  public watchTest(rootPath: WorkspaceFolder, fileName: string, testName: string): void {
+    const environmentVariables = this.configurationProvider.environmentVariables
+    const terminal = this.terminalProvider.get({env: environmentVariables}, rootPath)
+
+    const additionalArguments = this.configurationProvider.additionalArguments
+    const command = `${this.path} ${convertFilePathToWindows(
+      fileName
+    )} --fgrep="${escapeQuotes(testName)}" --watch ${additionalArguments}`
+
+    terminal.sendText(command, true)
+    terminal.show(true)
+  }
 }

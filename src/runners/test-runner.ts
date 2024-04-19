@@ -10,4 +10,5 @@ export interface TestRunner {
 
   runTest(rootPath: WorkspaceFolder, fileName: string, testName: string): void
   debugTest(rootPath: WorkspaceFolder, fileName: string, testName: string): void
+  watchTest(rootPath: WorkspaceFolder, fileName: string, testName: string): void
 }

@@ -7,13 +7,13 @@ import {
   workspace,
   WorkspaceFolder
 } from 'vscode'
-import TestRunnerDebugCodeLens from '../codelens/test-debug-runner-code-lens'
-import TestRunnerCodeLens from '../codelens/test-runner-code-lens'
+import DebugTestCodeLens from '../codelens/debug-test-code-lens'
+import RunTestCodeLens from '../codelens/run-test-code-lens'
+import WatchTestCodeLens from '../codelens/watch-test-code-lens'
 import {parseSourceCode} from '../parser/parser'
 
 function getRootPath(uri: Uri): WorkspaceFolder | typeof workspace {
   const activeWorkspace = workspace.getWorkspaceFolder(uri)
-
   return activeWorkspace ?? workspace
 }
 
@@ -27,17 +27,12 @@ function getCodeLens({
   fileName: string
   testName: string
   startPosition: Range
-}) {
-  const testRunnerCodeLens = new TestRunnerCodeLens(rootPath, fileName, testName, startPosition)
-
-  const debugRunnerCodeLens = new TestRunnerDebugCodeLens(
-    rootPath,
-    fileName,
-    testName,
-    startPosition
-  )
-
-  return [testRunnerCodeLens, debugRunnerCodeLens]
+}): CodeLens[] {
+  return [
+    new RunTestCodeLens(rootPath, fileName, testName, startPosition),
+    new DebugTestCodeLens(rootPath, fileName, testName, startPosition),
+    new WatchTestCodeLens(rootPath, fileName, testName, startPosition)
+  ]
 }
 
 export default class TestRunnerCodeLensProvider implements CodeLensProvider {
@@ -45,11 +40,9 @@ export default class TestRunnerCodeLensProvider implements CodeLensProvider {
     const createRangeObject = (line: number) => document.lineAt(line - 1).range
     const rootPath = getRootPath(document.uri)
 
-    return parseSourceCode(document.getText()).reduce<
-      (TestRunnerCodeLens | TestRunnerDebugCodeLens)[]
-    >(
-      (acc, {loc, title: testName}) => [
-        ...acc,
+    return parseSourceCode(document.getText()).reduce<CodeLens[]>(
+      (codelenses, {loc, title: testName}) => [
+        ...codelenses,
         ...getCodeLens({
           rootPath,
           testName,
