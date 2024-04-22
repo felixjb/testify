@@ -3,43 +3,37 @@
 'use strict'
 
 const path = require('path')
-const ForkTsCheckerPlugin = require('fork-ts-checker-webpack-plugin')
-const nodeExternals = require('webpack-node-externals')
 
+/**@type {import('webpack').Configuration}*/
 module.exports = {
-  target: 'webworker',
-  entry: './src/extension.ts',
+  context: __dirname,
+  target: 'node', // VS Code extensions run in a Node.js-context 📖 -> https://webpack.js.org/configuration/node/
+  entry: {
+    extension: './src/extension.ts' // the entry point of this extension, 📖 -> https://webpack.js.org/configuration/entry-context/
+  },
   output: {
+    // the bundle is stored in the 'out' folder (check package.json), 📖 -> https://webpack.js.org/configuration/output/
     path: path.resolve(__dirname, 'out'),
-    filename: 'extension.js',
+    filename: '[name].js',
     libraryTarget: 'commonjs2',
     devtoolModuleFilenameTemplate: '../[resource-path]'
   },
   devtool: 'source-map',
-  externals: [
-    {
-      vscode: 'commonjs vscode'
-    },
-    nodeExternals()
-  ],
-  resolve: {
-    fallback: {fs: false, path: false},
-    mainFields: ['browser', 'module', 'main'],
-    extensions: ['.ts']
+  externals: {
+    vscode: 'commonjs vscode' // the vscode-module is created on-the-fly and must be excluded. Add other modules that cannot be webpack'ed, 📖 -> https://webpack.js.org/configuration/externals/
   },
-  stats: 'errors-only',
+  resolve: {
+    // support reading TypeScript and JavaScript files, 📖 -> https://github.com/TypeStrong/ts-loader
+    mainFields: ['browser', 'module', 'main'], // look for `browser` entry point in imported node modules
+    extensions: ['.ts', '.js']
+  },
   module: {
     rules: [
       {
         test: /\.ts$/,
         exclude: /node_modules/,
-        loader: 'esbuild-loader',
-        options: {
-          loader: 'ts',
-          target: 'es2015'
-        }
+        use: [{loader: 'ts-loader'}]
       }
     ]
-  },
-  plugins: [new ForkTsCheckerPlugin()]
+  }
 }
