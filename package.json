@@ -51,12 +51,16 @@
   "contributes": {
     "commands": [
       {
+        "command": "testify.run.test",
+        "title": "Run Test"
+      },
+      {
         "command": "testify.debug.test",
         "title": "Debug Test"
       },
       {
-        "command": "testify.run.test",
-        "title": "Run Test"
+        "command": "testify.watch.test",
+        "title": "Watch Test"
       }
     ],
     "configuration": [
