@@ -14,5 +14,9 @@ export default [
   {
     language: 'javascriptreact',
     scheme: 'file'
+  },
+  {
+    language: 'vue',
+    scheme: 'file'
   }
 ]
