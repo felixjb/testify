@@ -3,7 +3,12 @@ import {WorkspaceFolder} from 'vscode'
 export interface TestRunner {
   readonly path: string
 
-  runTest(workspaceFolder: WorkspaceFolder, fileName: string, testName: string): void
+  runTest(
+    workspaceFolder: WorkspaceFolder,
+    fileName: string,
+    testName: string,
+    watchOption?: string
+  ): void
   debugTest(workspaceFolder: WorkspaceFolder, fileName: string, testName: string): void
   watchTest(workspaceFolder: WorkspaceFolder, fileName: string, testName: string): void
 }

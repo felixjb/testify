@@ -25,37 +25,33 @@ export class PlaywrightTestRunner implements TestRunner {
     terminal.show(true)
   }
 
-  public debugTest(workspaceFolder: WorkspaceFolder, fileName: string, testName: string): void {
-    const additionalArguments = this.configurationProvider.additionalArguments
-    const environmentVariables = this.configurationProvider.environmentVariables
-    const skipFiles = this.configurationProvider.skipFiles
-
-    debug.startDebugging(workspaceFolder, {
-      skipFiles,
-      args: [
-        'test',
-        '-g',
-        escapeQuotes(testName),
-        ...additionalArguments.split(' '),
-        convertFilePathToWindows(fileName)
-      ],
-      console: 'integratedTerminal',
-      env: {
-        ...{PLAYWRIGHT_CHROMIUM_DEBUG_PORT: 9222, PWDEBUG: true},
-        ...environmentVariables
-      },
-      name: 'Debug Test',
-      program: join(workspaceFolder.uri.fsPath, this.path),
-      request: 'launch',
-      type: 'node'
-    })
-  }
-
   /**
    * Executes {@link runTest} method due to Playwright test runner not supporting "watch" yet.
    * https://github.com/microsoft/playwright/issues/7035
    */
   public watchTest(workspaceFolder: WorkspaceFolder, fileName: string, testName: string): void {
     this.runTest(workspaceFolder, fileName, testName)
+  }
+
+  public debugTest(workspaceFolder: WorkspaceFolder, fileName: string, testName: string): void {
+    debug.startDebugging(workspaceFolder, {
+      args: [
+        'test',
+        '-g',
+        escapeQuotes(testName),
+        ...this.configurationProvider.additionalArguments.split(' '),
+        convertFilePathToWindows(fileName)
+      ],
+      env: {
+        ...{PLAYWRIGHT_CHROMIUM_DEBUG_PORT: 9222, PWDEBUG: true},
+        ...this.configurationProvider.environmentVariables
+      },
+      name: 'Debug Test',
+      console: 'integratedTerminal',
+      program: join(workspaceFolder.uri.fsPath, this.path),
+      request: 'launch',
+      type: 'node',
+      skipFiles: this.configurationProvider.skipFiles
+    })
   }
 }

@@ -12,28 +12,32 @@ export class AvaTestRunner implements TestRunner {
     readonly path: string = join('node_modules', '.bin', 'ava')
   ) {}
 
-  public runTest(workspaceFolder: WorkspaceFolder, fileName: string, testName: string): void {
+  public runTest(
+    workspaceFolder: WorkspaceFolder,
+    fileName: string,
+    testName: string,
+    watchOption?: string
+  ): void {
     const environmentVariables = this.configurationProvider.environmentVariables
     const terminal = TerminalProvider.get({env: environmentVariables}, workspaceFolder)
 
     const additionalArguments = this.configurationProvider.additionalArguments
     const command = `${this.path} ${convertFilePathToWindows(
       fileName
-    )} -m "${escapeQuotes(testName)}" ${additionalArguments}`
+    )} -m "${escapeQuotes(testName)}" ${additionalArguments} ${watchOption}`
 
     terminal.sendText(command, true)
     terminal.show(true)
   }
 
-  public debugTest(workspaceFolder: WorkspaceFolder, fileName: string, testName: string): void {
-    const skipFiles = this.configurationProvider.skipFiles
-    const environmentVariables = this.configurationProvider.environmentVariables
-    const additionalArguments = this.configurationProvider.additionalArguments
+  public watchTest(workspaceFolder: WorkspaceFolder, fileName: string, testName: string): void {
+    this.runTest(workspaceFolder, fileName, testName, '--watch')
+  }
 
+  public debugTest(workspaceFolder: WorkspaceFolder, fileName: string, testName: string): void {
     debug.startDebugging(workspaceFolder, {
-      skipFiles,
       console: 'integratedTerminal',
-      env: environmentVariables,
+      env: this.configurationProvider.environmentVariables,
       name: 'Debug Test',
       outputCapture: 'std',
       port: 9229,
@@ -44,24 +48,11 @@ export class AvaTestRunner implements TestRunner {
         '--serial',
         convertFilePathToWindows(fileName),
         `--match="${escapeQuotes(testName)}"`,
-        ...additionalArguments.split(' ')
+        ...this.configurationProvider.additionalArguments.split(' ')
       ],
       runtimeExecutable: join(workspaceFolder.uri.fsPath, this.path),
-      type: 'node'
+      type: 'node',
+      skipFiles: this.configurationProvider.skipFiles
     })
-  }
-
-  // TODO: Reuse the runTest method
-  public watchTest(workspaceFolder: WorkspaceFolder, fileName: string, testName: string): void {
-    const environmentVariables = this.configurationProvider.environmentVariables
-    const terminal = TerminalProvider.get({env: environmentVariables}, workspaceFolder)
-
-    const additionalArguments = this.configurationProvider.additionalArguments
-    const command = `${this.path} ${convertFilePathToWindows(
-      fileName
-    )} -m "${escapeQuotes(testName)}" --watch ${additionalArguments}`
-
-    terminal.sendText(command, true)
-    terminal.show(true)
   }
 }

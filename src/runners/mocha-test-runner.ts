@@ -12,52 +12,43 @@ export class MochaTestRunner implements TestRunner {
     readonly path: string = join('node_modules', '.bin', 'mocha')
   ) {}
 
-  public runTest(workspaceFolder: WorkspaceFolder, fileName: string, testName: string): void {
+  public runTest(
+    workspaceFolder: WorkspaceFolder,
+    fileName: string,
+    testName: string,
+    watchOption?: string
+  ): void {
     const environmentVariables = this.configurationProvider.environmentVariables
     const terminal = TerminalProvider.get({env: environmentVariables}, workspaceFolder)
 
     const additionalArguments = this.configurationProvider.additionalArguments
     const command = `${this.path} ${convertFilePathToWindows(
       fileName
-    )} --fgrep="${escapeQuotes(testName)}" ${additionalArguments}`
+    )} --fgrep="${escapeQuotes(testName)}" ${additionalArguments} ${watchOption}`
 
     terminal.sendText(command, true)
     terminal.show(true)
   }
 
-  public debugTest(workspaceFolder: WorkspaceFolder, fileName: string, testName: string): void {
-    const skipFiles = this.configurationProvider.skipFiles
-    const additionalArguments = this.configurationProvider.additionalArguments
-    const environmentVariables = this.configurationProvider.environmentVariables
+  public watchTest(workspaceFolder: WorkspaceFolder, fileName: string, testName: string): void {
+    this.runTest(workspaceFolder, fileName, testName, '--watch')
+  }
 
+  public debugTest(workspaceFolder: WorkspaceFolder, fileName: string, testName: string): void {
     debug.startDebugging(workspaceFolder, {
-      skipFiles,
       args: [
         convertFilePathToWindows(fileName),
         '--fgrep',
         escapeQuotes(testName),
-        ...additionalArguments.split(' ')
+        ...this.configurationProvider.additionalArguments.split(' ')
       ],
       console: 'integratedTerminal',
-      env: environmentVariables,
+      env: this.configurationProvider.environmentVariables,
       name: 'Debug Test',
       program: join(workspaceFolder.uri.fsPath, this.path),
       request: 'launch',
-      type: 'node'
+      type: 'node',
+      skipFiles: this.configurationProvider.skipFiles
     })
-  }
-
-  // TODO: Reuse the runTest method
-  public watchTest(workspaceFolder: WorkspaceFolder, fileName: string, testName: string): void {
-    const environmentVariables = this.configurationProvider.environmentVariables
-    const terminal = TerminalProvider.get({env: environmentVariables}, workspaceFolder)
-
-    const additionalArguments = this.configurationProvider.additionalArguments
-    const command = `${this.path} ${convertFilePathToWindows(
-      fileName
-    )} --fgrep="${escapeQuotes(testName)}" --watch ${additionalArguments}`
-
-    terminal.sendText(command, true)
-    terminal.show(true)
   }
 }
