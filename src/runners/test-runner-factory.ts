@@ -1,82 +1,63 @@
-// TODO: This file looks odd. Refactor it as a proper factory
-
-import {constants} from 'fs'
-import {access} from 'fs/promises'
+import {existsSync} from 'fs'
 import {basename, join} from 'path'
 import {WorkspaceFolder} from 'vscode'
 import {ConfigurationProvider} from '../providers/configuration-provider'
-import {TerminalProvider} from '../providers/terminal-provider'
 import {AvaTestRunner} from './ava-test-runner'
 import {JestTestRunner} from './jest-test-runner'
 import {MochaTestRunner} from './mocha-test-runner'
 import {PlaywrightTestRunner} from './playwright-test-runner'
 import {TestRunner} from './test-runner'
 
-const terminalProvider = new TerminalProvider()
-
-async function doesFileExist(filePath: string): Promise<boolean> {
-  try {
-    await access(filePath, constants.X_OK)
-    return true
-  } catch {
-    return false
-  }
+const TEST_RUNNERS: Record<
+  string,
+  new (configurationProvider: ConfigurationProvider, path?: string) => TestRunner
+> = {
+  jest: JestTestRunner,
+  mocha: MochaTestRunner,
+  ava: AvaTestRunner,
+  playwright: PlaywrightTestRunner
 }
 
-async function getCustomTestRunnerName(
-  rootPath: WorkspaceFolder,
-  customTestRunnerPath: string
-): Promise<string> {
-  const doesExecutableExist = await doesFileExist(join(rootPath.uri.fsPath, customTestRunnerPath))
-
-  if (doesExecutableExist) {
-    return basename(customTestRunnerPath).replace('_', '').toLowerCase()
+function getCustomTestRunner(workspaceFolder: WorkspaceFolder, path: string): TestRunner {
+  const executablePath = join(workspaceFolder.uri.fsPath, path)
+  if (!existsSync(executablePath)) {
+    throw new Error(`No test runner in specified path: ${path}. Please verify it.`)
   }
 
-  throw new Error('No test runner in specified path. Please verify it.')
+  const name = basename(path).replace('_', '').toLowerCase()
+  const TestRunner = TEST_RUNNERS[name]
+  if (!TestRunner) {
+    throw new Error(`Unsupported test runner: ${name}. Please use one of the supported ones.`)
+  }
+
+  const configurationProvider = new ConfigurationProvider(workspaceFolder)
+  return new TestRunner(configurationProvider, path)
 }
 
-async function getAvailableTestRunner(
-  testRunners: TestRunner[],
-  rootPath: WorkspaceFolder
-): Promise<TestRunner> {
-  for (const runner of testRunners) {
-    const doesRunnerExist = await doesFileExist(join(rootPath.uri.fsPath, runner.path))
+function getAvailableTestRunner(workspaceFolder: WorkspaceFolder): TestRunner {
+  const configurationProvider = new ConfigurationProvider(workspaceFolder)
+  const testRunners = [
+    new JestTestRunner(configurationProvider),
+    new MochaTestRunner(configurationProvider),
+    new AvaTestRunner(configurationProvider),
+    new PlaywrightTestRunner(configurationProvider)
+  ]
 
-    if (doesRunnerExist) {
-      return runner
-    }
-  }
-
-  throw new Error('No test runner in your project. Please install one.')
-}
-
-export async function getTestRunner(rootPath: WorkspaceFolder): Promise<TestRunner> {
-  const configurationProvider = new ConfigurationProvider(rootPath)
-  const customTestRunnerPath = configurationProvider.testRunnerPath
-
-  if (customTestRunnerPath) {
-    const customTestRunnerName = await getCustomTestRunnerName(rootPath, customTestRunnerPath)
-
-    if (customTestRunnerName === 'jest') {
-      return new JestTestRunner(configurationProvider, terminalProvider, customTestRunnerPath)
-    } else if (customTestRunnerName === 'mocha') {
-      return new MochaTestRunner(configurationProvider, terminalProvider, customTestRunnerPath)
-    } else if (customTestRunnerName === 'ava') {
-      return new AvaTestRunner(configurationProvider, terminalProvider, customTestRunnerPath)
-    } else if (customTestRunnerName === 'playwright') {
-      return new PlaywrightTestRunner(configurationProvider, terminalProvider, customTestRunnerPath)
-    }
-  }
-
-  const jestTestRunner = new JestTestRunner(configurationProvider, terminalProvider)
-  const mochaTestRunner = new MochaTestRunner(configurationProvider, terminalProvider)
-  const avaTestRunner = new AvaTestRunner(configurationProvider, terminalProvider)
-
-  const playwrightTestRunner = new PlaywrightTestRunner(configurationProvider, terminalProvider)
-
-  return getAvailableTestRunner(
-    [jestTestRunner, mochaTestRunner, avaTestRunner, playwrightTestRunner],
-    rootPath
+  const foundTestRunner = testRunners.find(runner =>
+    existsSync(join(workspaceFolder.uri.fsPath, runner.path))
   )
+  if (!foundTestRunner) {
+    throw new Error('No supported test runner found. Please install one.')
+  }
+
+  return foundTestRunner
+}
+
+export function getTestRunner(workspaceFolder: WorkspaceFolder): TestRunner {
+  const configurationProvider = new ConfigurationProvider(workspaceFolder)
+  const testRunnerPath = configurationProvider.testRunnerPath
+
+  return testRunnerPath
+    ? getCustomTestRunner(workspaceFolder, testRunnerPath)
+    : getAvailableTestRunner(workspaceFolder)
 }

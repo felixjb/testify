@@ -22,9 +22,9 @@ export function runTestCallback(
   workspaceFolder: WorkspaceFolder,
   fileName: string,
   testName: string
-): Promise<void> {
-  const relativeFilename = relative(rootPath.uri.fsPath, fileName)
-  const testRunner = await getTestRunner(rootPath)
+): void {
+  const relativeFilename = relative(workspaceFolder.uri.fsPath, fileName)
+  const testRunner = getTestRunner(workspaceFolder)
 
-  testRunner.runTest(rootPath, relativeFilename, testName)
+  testRunner.runTest(workspaceFolder, relativeFilename, testName)
 }
