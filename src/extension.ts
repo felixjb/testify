@@ -1,16 +1,16 @@
 import {commands, ExtensionContext, languages} from 'vscode'
-import debugTestCommand from './commands/debug-test-command'
-import runTestCommand from './commands/run-test-command'
-import watchTestCommand from './commands/watch-test-command'
+import {debugTestCallback} from './commands/debug-test-command'
+import {runTestCallback} from './commands/run-test-command'
+import {watchTestCallback} from './commands/watch-test-command'
 import FILE_SELECTOR from './constants/file-selector'
-import CodeLensProvider from './providers/code-lens-provider'
+import {TestRunnerCodeLensProvider} from './providers/code-lens-provider'
 
 export function activate(context: ExtensionContext): void {
   context.subscriptions.push(
-    languages.registerCodeLensProvider(FILE_SELECTOR, new CodeLensProvider())
+    languages.registerCodeLensProvider(FILE_SELECTOR, new TestRunnerCodeLensProvider())
   )
 
-  commands.registerCommand('testify.run.test', runTestCommand)
-  commands.registerCommand('testify.debug.test', debugTestCommand)
-  commands.registerCommand('testify.watch.test', watchTestCommand)
+  commands.registerCommand('testify.run.test', runTestCallback)
+  commands.registerCommand('testify.debug.test', debugTestCallback)
+  commands.registerCommand('testify.watch.test', watchTestCallback)
 }

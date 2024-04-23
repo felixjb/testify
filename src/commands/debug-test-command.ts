@@ -1,9 +1,25 @@
 import {relative} from 'path'
-import {WorkspaceFolder} from 'vscode'
+import {Command, WorkspaceFolder} from 'vscode'
 import {getTestRunner} from '../runners/test-runner-factory'
 
-export default async function debugTest(
-  rootPath: WorkspaceFolder,
+export function buildDebugTestCommand({
+  workspaceFolder,
+  fileName,
+  testName
+}: {
+  workspaceFolder: WorkspaceFolder
+  fileName: string
+  testName: string
+}): Command {
+  return {
+    arguments: [workspaceFolder, fileName, testName],
+    command: 'testify.debug.test',
+    title: 'Debug Test'
+  }
+}
+
+export function debugTestCallback(
+  workspaceFolder: WorkspaceFolder,
   fileName: string,
   testName: string
 ): Promise<void> {

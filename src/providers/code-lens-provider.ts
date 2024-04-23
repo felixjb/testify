@@ -1,60 +1,45 @@
-import {
-  CodeLens,
-  CodeLensProvider,
-  Range,
-  TextDocument,
-  Uri,
-  workspace,
-  WorkspaceFolder
-} from 'vscode'
-import DebugTestCodeLens from '../codelens/debug-test-code-lens'
-import RunTestCodeLens from '../codelens/run-test-code-lens'
-import WatchTestCodeLens from '../codelens/watch-test-code-lens'
+import {CodeLens, CodeLensProvider, Range, TextDocument, workspace, WorkspaceFolder} from 'vscode'
+import {buildDebugTestCommand} from '../commands/debug-test-command'
+import {buildRunTestCommand} from '../commands/run-test-command'
+import {buildWatchTestCommand} from '../commands/watch-test-command'
 import {parseSourceCode} from '../parser/parser'
 
-function getRootPath(uri: Uri): WorkspaceFolder | typeof workspace {
-  const activeWorkspace = workspace.getWorkspaceFolder(uri)
-  return activeWorkspace ?? workspace
-}
-
-function getCodeLens({
-  rootPath,
-  fileName,
-  testName,
-  startPosition
-}: {
-  rootPath: WorkspaceFolder | typeof workspace
-  fileName: string
-  testName: string
-  startPosition: Range
-}): CodeLens[] {
-  return [
-    new RunTestCodeLens(rootPath, fileName, testName, startPosition),
-    new DebugTestCodeLens(rootPath, fileName, testName, startPosition),
-    new WatchTestCodeLens(rootPath, fileName, testName, startPosition)
-  ]
-}
-
-export default class TestRunnerCodeLensProvider implements CodeLensProvider {
-  public provideCodeLenses(document: TextDocument): CodeLens[] | Thenable<CodeLens[]> {
-    const createRangeObject = (line: number) => document.lineAt(line - 1).range
-    const rootPath = getRootPath(document.uri)
+export class TestRunnerCodeLensProvider implements CodeLensProvider {
+  public provideCodeLenses(document: TextDocument): CodeLens[] {
+    const workspaceFolder = workspace.getWorkspaceFolder(document.uri)
+    if (!workspaceFolder) {
+      return []
+    }
 
     return parseSourceCode(document.getText()).reduce<CodeLens[]>(
-      (codelenses, {loc, title: testName}) => [
-        ...codelenses,
-        ...getCodeLens({
-          rootPath,
+      (codeLenses, {loc, title: testName}) => [
+        ...codeLenses,
+        ...this.getCodeLens({
+          workspaceFolder,
           testName,
           fileName: document.fileName,
-          startPosition: createRangeObject(loc.start.line)
+          startPosition: document.lineAt(loc.start.line - 1).range
         })
       ],
       []
     )
   }
 
-  public resolveCodeLens?(lens: CodeLens): CodeLens | Thenable<CodeLens> {
-    return lens
+  private getCodeLens({
+    workspaceFolder,
+    fileName,
+    testName,
+    startPosition
+  }: {
+    workspaceFolder: WorkspaceFolder
+    fileName: string
+    testName: string
+    startPosition: Range
+  }): CodeLens[] {
+    return [
+      new CodeLens(startPosition, buildRunTestCommand({workspaceFolder, fileName, testName})),
+      new CodeLens(startPosition, buildDebugTestCommand({workspaceFolder, fileName, testName})),
+      new CodeLens(startPosition, buildWatchTestCommand({workspaceFolder, fileName, testName}))
+    ]
   }
 }
