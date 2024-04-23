@@ -16,7 +16,7 @@ type TestLocation = {
   title: string
 }
 
-export function parseSourceCode(sourceCode: string) {
+export function parseSourceCode(sourceCode: string): TestLocation[] {
   const parserOptions: ParserOptions = {
     plugins: [
       'typescript',
@@ -28,10 +28,10 @@ export function parseSourceCode(sourceCode: string) {
     ],
     sourceType: 'module'
   }
-
   const ast = parse(sourceCode, parserOptions)
 
   const result: TestLocation[] = []
+
   traverse(ast, {
     CallExpression: p => {
       const node = p.node
@@ -41,13 +41,11 @@ export function parseSourceCode(sourceCode: string) {
         // Callee is a direct call to a test function
         identifier = node.callee
       } else if (node.callee.type === 'MemberExpression') {
-        //
         if (
           node.callee.property.type === 'Identifier' &&
           testTokens.includes(node.callee.property.name)
         ) {
-          // Callee seems to be a test function. Check if known parent object
-          // is present
+          // Callee seems to be a test function. Check if known parent object is present
           if (
             node.callee.object.type === 'CallExpression' &&
             node.callee.object.callee.type === 'Identifier' &&
@@ -66,22 +64,21 @@ export function parseSourceCode(sourceCode: string) {
         }
       }
 
-      if (identifier !== undefined && identifier.loc !== undefined && identifier.loc !== null) {
+      if (identifier?.loc) {
         const loc = identifier.loc
-        const args = node.arguments
-        args.forEach(a => {
-          if (a.type === 'StringLiteral') {
+        node.arguments.forEach(argument => {
+          if (argument.type === 'StringLiteral') {
             result.push({
               loc,
               title: replacePlaceHolder
-                ? // eslint-disable-next-line no-useless-escape
-                  a.value.replace(/(\$\{[^\}]*\})|(\$[^ ]*)/g, '.*')
-                : a.value
+                ? argument.value.replace(/(\$\{[^}]*\})|(\$[^ ]*)/g, '.*')
+                : argument.value
             })
           }
         })
       }
     }
   })
+
   return result
 }
