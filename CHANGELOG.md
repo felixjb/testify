@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.11.0] - 2024-04-17
+
+### Added
+
+- Add Watch test command to run tests in watch mode - thanks to @Beleren
+- Add vue as a supported file type for test detection
+
+### Changed
+
+- Shorten the commands CodeLens text by removing the `Test` suffix
+- Reuse the open terminal instance when running tests
+- Customize the terminal name, icon and color
+- Use "cwd" option to create terminal instead of manually navigating to workspace URI
+- Add error message for unsupported test runner
+- Improve error messages by adding name and path
+
+### Fixed
+
+- Fix bundling issue with webpack that caused the extension to not load CodeLens
+
 ## [1.10.0] - 2024-04-17
 
 ### Changed
