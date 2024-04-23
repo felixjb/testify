@@ -2,19 +2,15 @@ import {relative} from 'path'
 import {Command, WorkspaceFolder} from 'vscode'
 import {getTestRunner} from '../runners/test-runner-factory'
 
-export function buildWatchTestCommand({
-  workspaceFolder,
-  fileName,
-  testName
-}: {
-  workspaceFolder: WorkspaceFolder
-  fileName: string
+export function buildWatchTestCommand(
+  workspaceFolder: WorkspaceFolder,
+  fileName: string,
   testName: string
-}): Command {
+): Command {
   return {
     arguments: [workspaceFolder, fileName, testName],
     command: 'testify.watch.test',
-    title: 'Watch Test'
+    title: 'Watch'
   }
 }
 

@@ -37,9 +37,9 @@ export class TestRunnerCodeLensProvider implements CodeLensProvider {
     startPosition: Range
   }): CodeLens[] {
     return [
-      new CodeLens(startPosition, buildRunTestCommand({workspaceFolder, fileName, testName})),
-      new CodeLens(startPosition, buildDebugTestCommand({workspaceFolder, fileName, testName})),
-      new CodeLens(startPosition, buildWatchTestCommand({workspaceFolder, fileName, testName}))
+      new CodeLens(startPosition, buildRunTestCommand(workspaceFolder, fileName, testName)),
+      new CodeLens(startPosition, buildDebugTestCommand(workspaceFolder, fileName, testName)),
+      new CodeLens(startPosition, buildWatchTestCommand(workspaceFolder, fileName, testName))
     ]
   }
 }
