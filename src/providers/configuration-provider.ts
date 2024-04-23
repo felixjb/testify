@@ -5,29 +5,23 @@ type env = {[key: string]: string | null | undefined}
 export class ConfigurationProvider {
   private readonly configuration: WorkspaceConfiguration
 
-  constructor(rootPath: WorkspaceFolder) {
-    this.configuration = workspace.getConfiguration('testify', rootPath.uri)
+  constructor(workspaceFolder: WorkspaceFolder) {
+    this.configuration = workspace.getConfiguration('testify', workspaceFolder.uri)
   }
 
   get additionalArguments(): string {
-    const DEFAULT = ''
-    return this.configuration.get('additionalArgs', DEFAULT)
+    return this.configuration.get<string>('additionalArgs', '')
   }
 
   get environmentVariables(): env {
-    const DEFAULT = {
-      NODE_ENV: 'test'
-    }
-    return this.configuration.get('envVars', DEFAULT)
+    return this.configuration.get<env>('envVars', {NODE_ENV: 'test'})
   }
 
   get skipFiles(): string[] {
-    const DEFAULT: string[] = []
-    return this.configuration.get('skipFiles', DEFAULT)
+    return this.configuration.get<string[]>('skipFiles', [])
   }
 
   get testRunnerPath(): string {
-    const DEFAULT = ''
-    return this.configuration.get('testRunnerPath', DEFAULT)
+    return this.configuration.get<string>('testRunnerPath', '')
   }
 }
