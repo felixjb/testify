@@ -1,16 +1,23 @@
-import {Terminal, TerminalOptions, window, WorkspaceFolder} from 'vscode'
+import {Terminal, TerminalOptions, ThemeColor, ThemeIcon, WorkspaceFolder, window} from 'vscode'
 
 export class TerminalProvider {
-  private activeTerminal: Terminal | undefined
+  private static activeTerminal: Terminal
 
-  public get(terminalOptions: TerminalOptions, rootPath: WorkspaceFolder): Terminal {
-    if (this.activeTerminal) {
-      this.activeTerminal.dispose()
+  private constructor() {}
+
+  public static get(terminalOptions: TerminalOptions, workspaceFolder: WorkspaceFolder): Terminal {
+    if (!TerminalProvider.activeTerminal || TerminalProvider.activeTerminal?.exitStatus) {
+      TerminalProvider.activeTerminal = window.createTerminal({
+        ...terminalOptions,
+        cwd: workspaceFolder.uri.fsPath,
+        name: 'Testify',
+        iconPath: new ThemeIcon('beaker', new ThemeColor('terminal.ansiGreen')),
+        color: new ThemeColor('terminal.ansiGreen')
+      })
+
+      window.onDidCloseTerminal(closedTerminal => closedTerminal.dispose())
     }
 
-    this.activeTerminal = window.createTerminal(terminalOptions)
-    this.activeTerminal.sendText(`cd ${rootPath.uri.fsPath}`, true)
-
-    return this.activeTerminal
+    return TerminalProvider.activeTerminal
   }
 }
