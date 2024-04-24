@@ -16,7 +16,7 @@ export class AvaTestRunner implements TestRunner {
     workspaceFolder: WorkspaceFolder,
     fileName: string,
     testName: string,
-    watchOption?: string
+    watchOption: string = ''
   ): void {
     const environmentVariables = this.configurationProvider.environmentVariables
     const terminal = TerminalProvider.get({env: environmentVariables}, workspaceFolder)
