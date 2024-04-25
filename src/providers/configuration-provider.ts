@@ -24,4 +24,8 @@ export class ConfigurationProvider {
   get testRunnerPath(): string {
     return this.configuration.get<string>('testRunnerPath', '')
   }
+
+  get autoClear(): boolean {
+    return this.configuration.get<boolean>('autoClear', true)
+  }
 }

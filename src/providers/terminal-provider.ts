@@ -14,8 +14,6 @@ export class TerminalProvider {
         iconPath: new ThemeIcon('beaker', new ThemeColor('terminal.ansiGreen')),
         color: new ThemeColor('terminal.ansiGreen')
       })
-
-      window.onDidCloseTerminal(closedTerminal => closedTerminal.dispose())
     }
 
     return TerminalProvider.activeTerminal

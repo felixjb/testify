@@ -94,6 +94,12 @@
             "description": "Specifies a custom path for the test runner executable",
             "scope": "resource",
             "type": "string"
+          },
+          "testify.autoClear": {
+            "default": true,
+            "description": "When enabled, the output channel will be cleared before running a test",
+            "scope": "resource",
+            "type": "boolean"
           }
         }
       }

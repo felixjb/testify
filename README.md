@@ -38,6 +38,7 @@ You can configure Testify to work a little more to your taste using VSCode's set
 | `testify.envVars`        | Specifies environment variables to be exported before running a test.                                            | `{ "NODE_ENV": "test" }`       | `{ "NODE_ENV": "test" }` |
 | `testify.skipFiles`      | Specifies files that should be skipped during debugging.<br>It takes an array of glob patterns.                  | `["<node_internals>/**/*.js"]` | `[]`                     |
 | `testify.testRunnerPath` | Specifies a custom path for the test runner executable.                                                          | `"node_modules/.bin/mocha"`    | `""`                     |
+| `testify.autoClear` | When enabled, the output channel will be cleared before running a test                                                          | `true`    | `true`                     |
 
 <!-- You can use this tool to generate a markdown table: https://www.tablesgenerator.com/markdown_tables# -->
 

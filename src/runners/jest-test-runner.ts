@@ -1,5 +1,5 @@
 import {join} from 'path'
-import {WorkspaceFolder, debug} from 'vscode'
+import {WorkspaceFolder, commands, debug} from 'vscode'
 import {ConfigurationProvider} from '../providers/configuration-provider'
 import {TerminalProvider} from '../providers/terminal-provider'
 import {convertFilePathToWindows, escapeQuotes} from '../utils/utils'
@@ -25,6 +25,10 @@ export class JestTestRunner implements TestRunner {
     const command = `${this.path} ${convertFilePathToWindows(
       fileName
     )} --testNamePattern="${escapeQuotes(testName)}" ${additionalArguments} ${watchOption}`
+
+    if (this.configurationProvider.autoClear) {
+      commands.executeCommand('workbench.action.terminal.clear')
+    }
 
     terminal.sendText(command, true)
     terminal.show(true)
