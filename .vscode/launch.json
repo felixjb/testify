@@ -8,7 +8,7 @@
       "preLaunchTask": "Build & Watch",
       "runtimeExecutable": "${execPath}",
       "args": ["--disable-extensions", "--extensionDevelopmentPath=${workspaceFolder}"],
-      "outFiles": ["${workspaceFolder}/out"],
+      "outFiles": ["${workspaceFolder}/out/**/*.js"],
       "sourceMaps": true,
       "skipFiles": ["<node_internals>/**", "**/node_modules/**"]
     },
