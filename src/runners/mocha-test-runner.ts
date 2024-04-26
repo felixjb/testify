@@ -2,7 +2,7 @@ import {join} from 'path'
 import {commands, debug, WorkspaceFolder} from 'vscode'
 import {ConfigurationProvider} from '../providers/configuration-provider'
 import {TerminalProvider} from '../providers/terminal-provider'
-import {convertFilePathToWindows, escapeQuotes} from '../utils/utils'
+import {convertFilePathToWindows, escapeQuotesAndSpecialCharacters} from '../utils/utils'
 import {TestRunner} from './test-runner'
 
 // TODO: Make a more generic test runner class and extend it
@@ -24,7 +24,7 @@ export class MochaTestRunner implements TestRunner {
     const additionalArguments = this.configurationProvider.additionalArguments
     const command = `${this.path} ${convertFilePathToWindows(
       fileName
-    )} --fgrep="${escapeQuotes(testName)}" ${additionalArguments} ${watchOption}`
+    )} --fgrep="${escapeQuotesAndSpecialCharacters(testName)}" ${additionalArguments} ${watchOption}`
 
     if (this.configurationProvider.autoClear) {
       commands.executeCommand('workbench.action.terminal.clear')
@@ -43,7 +43,7 @@ export class MochaTestRunner implements TestRunner {
       args: [
         convertFilePathToWindows(fileName),
         '--fgrep',
-        escapeQuotes(testName),
+        escapeQuotesAndSpecialCharacters(testName),
         ...this.configurationProvider.additionalArguments.split(' ')
       ],
       console: 'integratedTerminal',

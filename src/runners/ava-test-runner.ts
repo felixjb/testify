@@ -2,7 +2,7 @@ import {join} from 'path'
 import {commands, debug, WorkspaceFolder} from 'vscode'
 import {ConfigurationProvider} from '../providers/configuration-provider'
 import {TerminalProvider} from '../providers/terminal-provider'
-import {convertFilePathToWindows, escapeQuotes} from '../utils/utils'
+import {convertFilePathToWindows, escapeQuotesAndSpecialCharacters} from '../utils/utils'
 import {TestRunner} from './test-runner'
 
 // TODO: Make a more generic test runner class and extend it
@@ -24,7 +24,7 @@ export class AvaTestRunner implements TestRunner {
     const additionalArguments = this.configurationProvider.additionalArguments
     const command = `${this.path} ${convertFilePathToWindows(
       fileName
-    )} -m "${escapeQuotes(testName)}" ${additionalArguments} ${watchOption}`
+    )} -m "${escapeQuotesAndSpecialCharacters(testName)}" ${additionalArguments} ${watchOption}`
 
     if (this.configurationProvider.autoClear) {
       commands.executeCommand('workbench.action.terminal.clear')
@@ -51,7 +51,7 @@ export class AvaTestRunner implements TestRunner {
         '--break',
         '--serial',
         convertFilePathToWindows(fileName),
-        `--match="${escapeQuotes(testName)}"`,
+        `--match="${escapeQuotesAndSpecialCharacters(testName)}"`,
         ...this.configurationProvider.additionalArguments.split(' ')
       ],
       runtimeExecutable: join(workspaceFolder.uri.fsPath, this.path),

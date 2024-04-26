@@ -2,7 +2,7 @@ import {join} from 'path'
 import {commands, debug, WorkspaceFolder} from 'vscode'
 import {ConfigurationProvider} from '../providers/configuration-provider'
 import {TerminalProvider} from '../providers/terminal-provider'
-import {convertFilePathToWindows, escapeQuotes} from '../utils/utils'
+import {convertFilePathToWindows, escapeQuotesAndSpecialCharacters} from '../utils/utils'
 import {TestRunner} from './test-runner'
 
 // TODO: Make a more generic test runner class and extend it
@@ -19,7 +19,7 @@ export class PlaywrightTestRunner implements TestRunner {
     const additionalArguments = this.configurationProvider.additionalArguments
     const command = `${
       this.path
-    } test -g "${escapeQuotes(testName)}" ${additionalArguments} ${convertFilePathToWindows(fileName)}`
+    } test -g "${escapeQuotesAndSpecialCharacters(testName)}" ${additionalArguments} ${convertFilePathToWindows(fileName)}`
 
     if (this.configurationProvider.autoClear) {
       commands.executeCommand('workbench.action.terminal.clear')
@@ -42,7 +42,7 @@ export class PlaywrightTestRunner implements TestRunner {
       args: [
         'test',
         '-g',
-        escapeQuotes(testName),
+        escapeQuotesAndSpecialCharacters(testName),
         ...this.configurationProvider.additionalArguments.split(' '),
         convertFilePathToWindows(fileName)
       ],

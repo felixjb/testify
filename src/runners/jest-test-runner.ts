@@ -2,7 +2,7 @@ import {join} from 'path'
 import {WorkspaceFolder, commands, debug} from 'vscode'
 import {ConfigurationProvider} from '../providers/configuration-provider'
 import {TerminalProvider} from '../providers/terminal-provider'
-import {convertFilePathToWindows, escapeQuotes} from '../utils/utils'
+import {convertFilePathToWindows, escapeQuotesAndSpecialCharacters} from '../utils/utils'
 import {TestRunner} from './test-runner'
 
 // TODO: Make a more generic test runner class and extend it
@@ -24,7 +24,7 @@ export class JestTestRunner implements TestRunner {
     const additionalArguments = this.configurationProvider.additionalArguments
     const command = `${this.path} ${convertFilePathToWindows(
       fileName
-    )} --testNamePattern="${escapeQuotes(testName)}" ${additionalArguments} ${watchOption}`
+    )} --testNamePattern="${escapeQuotesAndSpecialCharacters(testName)}" ${additionalArguments} ${watchOption}`
 
     if (this.configurationProvider.autoClear) {
       commands.executeCommand('workbench.action.terminal.clear')
@@ -43,7 +43,7 @@ export class JestTestRunner implements TestRunner {
       args: [
         convertFilePathToWindows(fileName),
         '--testNamePattern',
-        escapeQuotes(testName),
+        escapeQuotesAndSpecialCharacters(testName),
         '--runInBand',
         ...this.configurationProvider.additionalArguments.split(' ')
       ],
