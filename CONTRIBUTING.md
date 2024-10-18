@@ -20,16 +20,18 @@ This guide was adapted from [Atom](https://github.com/atom/atom)
 [What should I know before I get started?](#what-should-i-know-before-i-get-started)
 
 [How Can I Contribute?](#how-can-i-contribute)
-  * [Reporting Bugs](#reporting-bugs)
-  * [Suggesting Enhancements](#suggesting-enhancements)
-  * [Your First Code Contribution](#your-first-code-contribution)
-  * [Pull Requests](#pull-requests)
+
+- [Reporting Bugs](#reporting-bugs)
+- [Suggesting Enhancements](#suggesting-enhancements)
+- [Your First Code Contribution](#your-first-code-contribution)
+- [Pull Requests](#pull-requests)
 
 [Style Guides](#style-guides)
-  * [Git Commit Messages](#git-commit-messages)
-  * [TypeScript Style Guide](#typescript-style-guide)
-  * [Testing Style Guide](#testing-style-guide)
-  * [Documentation Style Guide](#documentation-style-guide)
+
+- [Git Commit Messages](#git-commit-messages)
+- [TypeScript Style Guide](#typescript-style-guide)
+- [Testing Style Guide](#testing-style-guide)
+- [Documentation Style Guide](#documentation-style-guide)
 
 ---
 
@@ -43,8 +45,8 @@ This project and everyone participating in it is governed by the [Code of Conduc
 
 We have an official message board, GitHub Discussions, where the community can give you helpful advice if you have questions or need any help. Also, we are always working on our Wiki to provide additional information.
 
-* [Discussions](https://github.com/felixjb/testify/discussions)
-* [Wiki](https://github.com/felixjb/testify/wiki)
+- [Discussions](https://github.com/felixjb/testify/discussions)
+- [Wiki](https://github.com/felixjb/testify/wiki)
 
 ## What should I know before I get started?
 
@@ -68,45 +70,45 @@ To report a bug, open a new issue and fill out the [bug report template](.github
 
 Explain the problem and include additional details to help maintainers reproduce the problem:
 
-* **Use a clear and descriptive title** for the issue to identify the problem.
-* **Describe the exact steps which reproduce the problem** in as many details as possible.
-* **Provide specific examples to demonstrate the steps**. Include links to files or GitHub projects, or copy/pasteable snippets, which you use in those examples. If you're providing snippets in the issue, use [Markdown code blocks](https://help.github.com/articles/markdown-basics/#multiple-lines).
-* **Describe the behavior you observed after following the steps** and point out what exactly is the problem with that behavior.
-* **Explain which behavior you expected to see instead and why.**
-* **Include screenshots and GIFs** which show you following the described steps and clearly demonstrate the problem. If you use the keyboard while following the steps, **record the GIF with the shortcuts status bar shown**. You can use [this tool](https://www.cockos.com/licecap/) to record GIFs on macOS and Windows, and [this tool](https://github.com/colinkeenan/silentcast) or [this tool](https://github.com/GNOME/byzanz) on Linux.
-* **If the problem wasn't triggered by a specific action**, describe what you were doing before the problem happened and share more information using the guidelines below.
+- **Use a clear and descriptive title** for the issue to identify the problem.
+- **Describe the exact steps which reproduce the problem** in as many details as possible.
+- **Provide specific examples to demonstrate the steps**. Include links to files or GitHub projects, or copy/pasteable snippets, which you use in those examples. If you're providing snippets in the issue, use [Markdown code blocks](https://help.github.com/articles/markdown-basics/#multiple-lines).
+- **Describe the behavior you observed after following the steps** and point out what exactly is the problem with that behavior.
+- **Explain which behavior you expected to see instead and why.**
+- **Include screenshots and GIFs** which show you following the described steps and clearly demonstrate the problem. If you use the keyboard while following the steps, **record the GIF with the shortcuts status bar shown**. You can use [this tool](https://www.cockos.com/licecap/) to record GIFs on macOS and Windows, and [this tool](https://github.com/colinkeenan/silentcast) or [this tool](https://github.com/GNOME/byzanz) on Linux.
+- **If the problem wasn't triggered by a specific action**, describe what you were doing before the problem happened and share more information using the guidelines below.
 
 Provide more context by answering these questions:
 
-* **Did the problem start happening recently** (e.g. after updating to a new version of Testify) or was this always a problem?
-* If the problem started happening recently, **can you reproduce the problem in an older version of Testify?** What's the most recent version in which the problem doesn't happen? You can download older versions of Testify from the [extensions menu](https://github.com/microsoft/vscode/issues/12764#issuecomment-442370545).
-* **Can you reliably reproduce the issue?** If not, provide details about how often the problem happens and under which conditions it normally happens.
+- **Did the problem start happening recently** (e.g. after updating to a new version of Testify) or was this always a problem?
+- If the problem started happening recently, **can you reproduce the problem in an older version of Testify?** What's the most recent version in which the problem doesn't happen? You can download older versions of Testify from the [extensions menu](https://github.com/microsoft/vscode/issues/12764#issuecomment-442370545).
+- **Can you reliably reproduce the issue?** If not, provide details about how often the problem happens and under which conditions it normally happens.
 
 Include details about your configuration and environment:
 
-* **Which version of Testify are you using?** You can get the exact version by hovering the extension card with your mouse in the extensions menu.
-* **Which version of VSCode are you using?** You can get the exact version in the "About" section in the "Help" menu.
-* **What's the name and version of the OS you're using?**
-* **Which test framework are you using in your project?**
-* **Are you using any custom Testify configuration?** Check your configurations in VSCode, both the Workspace and User sections.
+- **Which version of Testify are you using?** You can get the exact version by hovering the extension card with your mouse in the extensions menu.
+- **Which version of VSCode are you using?** You can get the exact version in the "About" section in the "Help" menu.
+- **What's the name and version of the OS you're using?**
+- **Which test framework are you using in your project?**
+- **Are you using any custom Testify configuration?** Check your configurations in VSCode, both the Workspace and User sections.
 
 ### Suggesting Enhancements
 
 Enhancement suggestions are tracked as [GitHub issues](https://guides.github.com/features/issues/). Create an issue and provide the following information:
 
-* **Use a clear and descriptive title** for the issue to identify the suggestion.
-* **Provide a step-by-step description of the suggested enhancement** in as many details as possible.
-* **Provide specific examples to demonstrate the steps**. Include copy/pasteable snippets which you use in those examples, as [Markdown code blocks](https://help.github.com/articles/markdown-basics/#multiple-lines).
-* **Describe the current behavior** and **explain which behavior you expected to see instead** and why.
-* **Include screenshots and animated GIFs** which help you demonstrate the steps or point out the part of Testify which the suggestion is related to. You can use [this tool](https://www.cockos.com/licecap/) to record GIFs on macOS and Windows, and [this tool](https://github.com/colinkeenan/silentcast) or [this tool](https://github.com/GNOME/byzanz) on Linux.
-* **Explain why this enhancement would be useful** to most Testify users
-* **Specify which platforms and test frameworks the suggested enhancement is related to**
+- **Use a clear and descriptive title** for the issue to identify the suggestion.
+- **Provide a step-by-step description of the suggested enhancement** in as many details as possible.
+- **Provide specific examples to demonstrate the steps**. Include copy/pasteable snippets which you use in those examples, as [Markdown code blocks](https://help.github.com/articles/markdown-basics/#multiple-lines).
+- **Describe the current behavior** and **explain which behavior you expected to see instead** and why.
+- **Include screenshots and animated GIFs** which help you demonstrate the steps or point out the part of Testify which the suggestion is related to. You can use [this tool](https://www.cockos.com/licecap/) to record GIFs on macOS and Windows, and [this tool](https://github.com/colinkeenan/silentcast) or [this tool](https://github.com/GNOME/byzanz) on Linux.
+- **Explain why this enhancement would be useful** to most Testify users
+- **Specify which platforms and test frameworks the suggested enhancement is related to**
 
 ### Your First Code Contribution
 
 Unsure where to begin contributing to Testify? You can start by looking through these `help-wanted` issues:
 
-* [Help wanted issues][help-wanted] - issues that our maintainers and contributors need a little help.
+- [Help wanted issues][help-wanted] - issues that our maintainers and contributors need a little help.
 
 Issue lists can be sorted by total number of comments. While not perfect, number of comments is a reasonable proxy for impact a given change will have.
 
@@ -158,8 +160,9 @@ There are some VSCode extensions that can help you write code while respecting t
 Other than that, write [clean code](https://www.oreilly.com/library/view/clean-code-a/9780136083238/) so it's easy to understand and comments are not necessary.
 Here are some additional good practices that are encouraged in this project:
 
-* Prefer the object spread operator (`{...anotherObj}`) to `Object.assign()`
-* Inline `export` with expressions whenever possible
+- Prefer the object spread operator (`{...anotherObj}`) to `Object.assign()`
+- Inline `export` with expressions whenever possible
+
   ```js
   // Use this:
   export const name = 'Testify'
@@ -169,12 +172,13 @@ Here are some additional good practices that are encouraged in this project:
 
   export {name}
   ```
-* Organize imports so they are ordered, deduplicated and only the necessary ones remain (Pro Tip: use VSCode's "organize imports" command)
-* Place class properties in the following order:
-    * Class methods and properties (methods starting with `static`)
-    * Instance methods and properties
-* Sort by alphabetical order whenever possible
-* [Avoid platform-dependent code](https://flight-manual.atom.io/hacking-atom/sections/cross-platform-compatibility/)
+
+- Organize imports so they are ordered, deduplicated and only the necessary ones remain (Pro Tip: use VSCode's "organize imports" command)
+- Place class properties in the following order:
+  - Class methods and properties (methods starting with `static`)
+  - Instance methods and properties
+- Sort by alphabetical order whenever possible
+- [Avoid platform-dependent code](https://flight-manual.atom.io/hacking-atom/sections/cross-platform-compatibility/)
 
 ### Testing Style Guide
 
@@ -186,39 +190,39 @@ There are several ways to write a test and, in this project, we attempt to use a
 The goal is to provide as much context as possible in the test, through titles and meaningful variable and function names.
 Here's an example of how it goes:
 
-  ```js
-  // unit to be tested:
-  describe('parser', () => {
-    // context, or "given"
-    context('given a source code with a valid test', () => {
-      // what is being tested, or "then"
-      it('should find a test', () => {
-        // arrange
-        const testToken = 'it'
-        const testTitle = 'a test'
-        const sourceCode = `
-          ${testToken}('${testTitle}', () => {
-            const expected = 'value'
+```js
+// unit to be tested:
+describe('parser', () => {
+  // context, or "given"
+  context('given a source code with a valid test', () => {
+    // what is being tested, or "then"
+    it('should find a test', () => {
+      // arrange
+      const testToken = 'it'
+      const testTitle = 'a test'
+      const sourceCode = `
+        ${testToken}('${testTitle}', () => {
+          const expected = 'value'
 
-            const result = foo()
+          const result = foo()
 
-            expect(result).toEqual(expected)
-          });
-        `
+          expect(result).toEqual(expected)
+        });
+      `
 
-        // act
-        const result = parseSourceCode(sourceCode)
+      // act
+      const result = parseSourceCode(sourceCode)
 
-        // assert
-        assert.equal(result.length, 1)
-        assert.equal(result[0].title, testTitle)
-        assert.equal(result[0].loc.identifierName, testToken)
-      })
+      // assert
+      assert.equal(result.length, 1)
+      assert.equal(result[0].title, testTitle)
+      assert.equal(result[0].loc.identifierName, testToken)
     })
   })
-  ```
+})
+```
 
 ### Documentation Style Guide
 
-* Straightforward and important information should go in the [README](README.md)
-* Any long, complex or niche information should go in the [Wiki](https://github.com/felixjb/testify/wiki)
+- Straightforward and important information should go in the [README](README.md)
+- Any long, complex or niche information should go in the [Wiki](https://github.com/felixjb/testify/wiki)

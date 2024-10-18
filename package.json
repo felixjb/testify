@@ -19,7 +19,8 @@
     "mocha",
     "jest",
     "ava",
-    "playwright"
+    "playwright",
+    "vitest"
   ],
   "private": true,
   "preview": false,

@@ -76,10 +76,16 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/11512170?v=4",
       "profile": "https://github.com/Beleren",
       "contributions": ["code"]
+    },
+    {
+      "login": "lucasmarques73",
+      "name": "Lucas Marques",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11946424?v=4",
+      "profile": "https://github.com/lucasmarques73",
+      "contributions": ["code"]
     }
   ],
   "commitConvention": "none",
   "skipCi": true,
   "contributorsPerLine": 7
 }
-

@@ -23,6 +23,7 @@ Testify maintainers are **always** working to support **more** frameworks as **b
 - [Jest](https://jestjs.io/)
 - [AVA](https://github.com/avajs/ava)
 - [Playwright](https://playwright.dev/)
+- [Vitest](https://vitest.dev)
 
 ## Demo
 
@@ -32,13 +33,13 @@ Testify maintainers are **always** working to support **more** frameworks as **b
 
 You can configure Testify to work a little more to your taste using VSCode's settings. Here are all the configuration properties are available:
 
-| Property                 | Description                                                                                                      | Example                        | Default                  |
-|--------------------------|------------------------------------------------------------------------------------------------------------------|--------------------------------|--------------------------|
-| `testify.additionalArgs` | Specifies arguments to be passed to the test framework command.<br>It takes a single string with all arguments.  | `"--require ts-node/register"` | `""`                     |
-| `testify.envVars`        | Specifies environment variables to be exported before running a test.                                            | `{ "NODE_ENV": "test" }`       | `{ "NODE_ENV": "test" }` |
-| `testify.skipFiles`      | Specifies files that should be skipped during debugging.<br>It takes an array of glob patterns.                  | `["<node_internals>/**/*.js"]` | `[]`                     |
-| `testify.testRunnerPath` | Specifies a custom path for the test runner executable.                                                          | `"node_modules/.bin/mocha"`    | `""`                     |
-| `testify.autoClear` | When enabled, the output channel will be cleared before running a test                                                          | `true`    | `true`                     |
+| Property                 | Description                                                                                                     | Example                        | Default                  |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------- | ------------------------------ | ------------------------ |
+| `testify.additionalArgs` | Specifies arguments to be passed to the test framework command.<br>It takes a single string with all arguments. | `"--require ts-node/register"` | `""`                     |
+| `testify.envVars`        | Specifies environment variables to be exported before running a test.                                           | `{ "NODE_ENV": "test" }`       | `{ "NODE_ENV": "test" }` |
+| `testify.skipFiles`      | Specifies files that should be skipped during debugging.<br>It takes an array of glob patterns.                 | `["<node_internals>/**/*.js"]` | `[]`                     |
+| `testify.testRunnerPath` | Specifies a custom path for the test runner executable.                                                         | `"node_modules/.bin/mocha"`    | `""`                     |
+| `testify.autoClear`      | When enabled, the output channel will be cleared before running a test                                          | `true`                         | `true`                   |
 
 <!-- You can use this tool to generate a markdown table: https://www.tablesgenerator.com/markdown_tables# -->
 
@@ -71,6 +72,7 @@ Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/calebboyd"><img src="https://avatars2.githubusercontent.com/u/5818726?v=4?s=100" width="100px;" alt="Caleb Boyd"/><br /><sub><b>Caleb Boyd</b></sub></a><br /><a href="https://github.com/felixjb/testify/issues?q=author%3Acalebboyd" title="Bug reports">🐛</a> <a href="https://github.com/felixjb/testify/commits?author=calebboyd" title="Code">💻</a> <a href="#maintenance-calebboyd" title="Maintenance">🚧</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://felipecrs.com"><img src="https://avatars.githubusercontent.com/u/29582865?v=4?s=100" width="100px;" alt="Felipe Santos"/><br /><sub><b>Felipe Santos</b></sub></a><br /><a href="#infra-felipecrs" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Beleren"><img src="https://avatars.githubusercontent.com/u/11512170?v=4?s=100" width="100px;" alt="Leandro Haruki"/><br /><sub><b>Leandro Haruki</b></sub></a><br /><a href="https://github.com/felixjb/testify/commits?author=Beleren" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/lucasmarques73"><img src="https://avatars.githubusercontent.com/u/11946424?v=4&s=100" width="100px;" alt="Lucas Marques"/><br /><sub><b>Lucas Marques</b></sub></a><br /><a href="https://github.com/felixjb/testify/commits?author=lucasmarques73" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
