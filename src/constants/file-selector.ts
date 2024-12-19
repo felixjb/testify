@@ -1,4 +1,6 @@
-export default [
+import type {DocumentFilter} from 'vscode'
+
+export const FILE_SELECTOR: DocumentFilter[] = [
   {
     language: 'typescript',
     scheme: 'file'

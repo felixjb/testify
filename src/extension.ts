@@ -2,7 +2,7 @@ import {commands, ExtensionContext, languages, window} from 'vscode'
 import {debugTestCallback} from './commands/debug-test-command'
 import {runTestCallback} from './commands/run-test-command'
 import {watchTestCallback} from './commands/watch-test-command'
-import FILE_SELECTOR from './constants/file-selector'
+import {FILE_SELECTOR} from './constants/file-selector'
 import {TestRunnerCodeLensProvider} from './providers/code-lens-provider'
 
 export function activate(context: ExtensionContext): void {

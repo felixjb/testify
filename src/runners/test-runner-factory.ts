@@ -7,15 +7,17 @@ import {JestTestRunner} from './jest-test-runner'
 import {MochaTestRunner} from './mocha-test-runner'
 import {PlaywrightTestRunner} from './playwright-test-runner'
 import {TestRunner} from './test-runner'
+import {VitestTestRunner} from './vitest-test-runner'
 
 const TEST_RUNNERS: Record<
   string,
   new (configurationProvider: ConfigurationProvider, path?: string) => TestRunner
 > = {
+  ava: AvaTestRunner,
   jest: JestTestRunner,
   mocha: MochaTestRunner,
-  ava: AvaTestRunner,
-  playwright: PlaywrightTestRunner
+  playwright: PlaywrightTestRunner,
+  vitest: VitestTestRunner
 }
 
 function getCustomTestRunner(workspaceFolder: WorkspaceFolder, path: string): TestRunner {
@@ -37,10 +39,11 @@ function getCustomTestRunner(workspaceFolder: WorkspaceFolder, path: string): Te
 function getAvailableTestRunner(workspaceFolder: WorkspaceFolder): TestRunner {
   const configurationProvider = new ConfigurationProvider(workspaceFolder)
   const testRunners = [
+    new AvaTestRunner(configurationProvider),
     new JestTestRunner(configurationProvider),
     new MochaTestRunner(configurationProvider),
-    new AvaTestRunner(configurationProvider),
-    new PlaywrightTestRunner(configurationProvider)
+    new PlaywrightTestRunner(configurationProvider),
+    new VitestTestRunner(configurationProvider)
   ]
 
   const foundTestRunner = testRunners.find(runner =>
