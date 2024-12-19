@@ -19,10 +19,11 @@ If you need any information, try using our **ever-expanding** [Wiki](https://git
 
 Testify maintainers are **always** working to support **more** frameworks as **best** as possible. Testify currently works with these test frameworks:
 
-- [Mocha](https://mochajs.org/)
 - [Jest](https://jestjs.io/)
-- [AVA](https://github.com/avajs/ava)
+- [Vitest](https://vitest.dev/)
+- [Mocha](https://mochajs.org/)
 - [Playwright](https://playwright.dev/)
+- [AVA](https://github.com/avajs/ava)
 
 ## Demo
 
