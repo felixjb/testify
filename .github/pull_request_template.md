@@ -4,11 +4,11 @@ Please refer to our **CONTRIBUTING** guide and make sure you follow our guidelin
 If you have any questions, join us in the [Discussions](https://github.com/felixjb/testify/discussions)
 -->
 
-### Description
+# Description
 
 A few sentences describing the overall goals of the pull request's commits and details including screenshots of any UI changes.
 
-### Related issue(s)
+# Related issue(s)
 
 List related issue(s) which the pull request fixes. Pull requests should always address an issue and reference them in their title. Check the project current [issues](https://github.com/felixjb/testify/issues).
 
@@ -27,25 +27,25 @@ Other possible keywords:
 - resolved
 -->
 
-### Testing
+# Testing
 
 Describe the automated tests you have written **OR** explain that your changes do not need testing for an extremely good reason.
 
 Describe the manual tests we should perform to verify that the changes work and do not add any bugs.
 
-### Documentation
+# Documentation
 
 Any added features or changes to working features need to be documented.
 Inform the changes that were made to the repository documentation (`README.md`, `CONTRIBUTING.md`, etc.).
 Also, detail any necessary changes to the Wiki.
 
-### Special notes for your reviewer:
+# Special notes for your reviewer
 
 Leave any additional detail that you might find important or useful.
 
 e.g.: Implemented a breaking change that affects [...]
 
-### Checklist
+# Checklist
 
 - [ ] Search previous suggestions before making a new one, as yours may be a duplicate.
 - [ ] I have reviewed the projects requirements alongside the stakeholders.

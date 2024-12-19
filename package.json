@@ -16,10 +16,11 @@
     "test",
     "testing",
     "unit",
-    "mocha",
-    "jest",
     "ava",
-    "playwright"
+    "jest",
+    "mocha",
+    "playwright",
+    "vitest"
   ],
   "private": true,
   "preview": false,
@@ -28,7 +29,7 @@
     "theme": "dark"
   },
   "icon": "resources/icon.png",
-  "main": "./out/extension",
+  "main": "./out/extension.js",
   "activationEvents": [
     "onLanguage:javascript",
     "onLanguage:javascriptreact",
@@ -36,10 +37,11 @@
     "onLanguage:typescriptreact",
     "onLanguage:vue"
   ],
+  "engineStrict": true,
   "engines": {
-    "node": "^18.20.2",
-    "npm": "^10.5.0",
-    "vscode": "^1.88.1"
+    "node": "^20.18.1",
+    "npm": "^10.8.2",
+    "vscode": "^1.96.1"
   },
   "repository": {
     "type": "git",
@@ -108,12 +110,12 @@
   "scripts": {
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate",
-    "prepare": "husky install",
     "clean": "npx rimraf dist out .vscode-test && npm ci",
     "prettier:format": "prettier \"**/*.{ts,json}\" --ignore-path .gitignore --write .",
     "prettier:check": "prettier --check \"**/*.{ts,json}\" --ignore-path .gitignore",
     "lint:fix": "eslint src --ext .ts --fix",
     "lint:check": "eslint src --ext .ts",
+    "typecheck": "tsc -p ./ --noEmit",
     "compile": "tsc -p ./",
     "compile:watch": "tsc -watch -p ./",
     "test": "npm run compile && node ./out/test/run-test.js",
@@ -149,11 +151,11 @@
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "glob": "^7.2.3",
-    "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
     "mocha": "^10.4.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^3.2.5",
+    "simple-git-hooks": "^2.11.1",
     "ts-loader": "^9.5.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5",
