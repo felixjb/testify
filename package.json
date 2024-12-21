@@ -119,7 +119,7 @@
     "compile": "tsc -p ./",
     "compile:watch": "tsc -watch -p ./",
     "test": "npm run compile && node ./out/test/run-test.js",
-    "validate": "npm-run-all --parallel prettier:format lint:fix test",
+    "validate": "npm-run-all --parallel typecheck lint:fix prettier:format test",
     "bundle": "webpack --mode development",
     "bundle:watch": "webpack --mode development --watch",
     "bundle:production": "webpack --mode production --devtool hidden-source-map",

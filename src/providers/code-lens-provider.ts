@@ -1,8 +1,7 @@
-import {CodeLens, CodeLensProvider, Range, TextDocument, workspace, WorkspaceFolder} from 'vscode'
-import {buildDebugTestCommand} from '../commands/debug-test-command'
-import {buildRunTestCommand} from '../commands/run-test-command'
-import {buildWatchTestCommand} from '../commands/watch-test-command'
+import {CodeLens, CodeLensProvider, Range, TextDocument, workspace} from 'vscode'
+import {buildTestCommands} from '../commands/commands'
 import {parseSourceCode} from '../parser/parser'
+import {TestParams} from '../utils/params'
 
 export class TestRunnerCodeLensProvider implements CodeLensProvider {
   public provideCodeLenses(document: TextDocument): CodeLens[] {
@@ -30,16 +29,12 @@ export class TestRunnerCodeLensProvider implements CodeLensProvider {
     fileName,
     testName,
     startPosition
-  }: {
-    workspaceFolder: WorkspaceFolder
-    fileName: string
-    testName: string
-    startPosition: Range
-  }): CodeLens[] {
+  }: TestParams & {startPosition: Range}): CodeLens[] {
+    const {run, watch, debug} = buildTestCommands(workspaceFolder, fileName, testName)
     return [
-      new CodeLens(startPosition, buildRunTestCommand(workspaceFolder, fileName, testName)),
-      new CodeLens(startPosition, buildWatchTestCommand(workspaceFolder, fileName, testName)),
-      new CodeLens(startPosition, buildDebugTestCommand(workspaceFolder, fileName, testName))
+      new CodeLens(startPosition, run),
+      new CodeLens(startPosition, watch),
+      new CodeLens(startPosition, debug)
     ]
   }
 }

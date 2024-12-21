@@ -1,45 +1,38 @@
 import {join} from 'path'
-import {commands, debug, WorkspaceFolder} from 'vscode'
-import {COMMON_DEBUG_CONFIG} from '../constants/debug-configuration'
+import {debug} from 'vscode'
 import {ConfigurationProvider} from '../providers/configuration-provider'
-import {TerminalProvider} from '../providers/terminal-provider'
+import {TestParams} from '../utils/params'
 import {convertFilePathToWindows, escapeQuotesAndSpecialCharacters} from '../utils/utils'
-import {TestRunner} from './test-runner'
+import {RunParams, TestRunner} from './test-runner'
 
-export class VitestTestRunner implements TestRunner {
+export class VitestTestRunner extends TestRunner {
   constructor(
-    private readonly configurationProvider: ConfigurationProvider,
+    readonly configurationProvider: ConfigurationProvider,
     readonly path: string = join('node_modules', '.bin', 'vitest')
-  ) {}
+  ) {
+    super(configurationProvider, path)
+  }
 
-  public runTest(
-    workspaceFolder: WorkspaceFolder,
-    fileName: string,
-    testName: string,
-    watchOption?: string
-  ): void {
-    const environmentVariables = this.configurationProvider.environmentVariables
-    const terminal = TerminalProvider.get({env: environmentVariables}, workspaceFolder)
-
-    const additionalArguments = this.configurationProvider.additionalArguments
+  public run({workspaceFolder, fileName, testName, watchOption = ''}: RunParams): void {
     const mode = watchOption ? 'watch' : 'run'
-    const command = `${this.path} ${mode} ${convertFilePathToWindows(fileName)} --testNamePattern="${escapeQuotesAndSpecialCharacters(testName)}" ${additionalArguments}`
+    const command = [
+      this.path,
+      mode,
+      convertFilePathToWindows(fileName),
+      `--testNamePattern="${escapeQuotesAndSpecialCharacters(testName)}"`,
+      this.configurationProvider.additionalArguments
+    ].join(' ')
 
-    if (this.configurationProvider.autoClear) {
-      commands.executeCommand('workbench.action.terminal.clear')
-    }
-
-    terminal.sendText(command, true)
-    terminal.show(true)
+    this.runCommand(workspaceFolder, command)
   }
 
-  public watchTest(workspaceFolder: WorkspaceFolder, fileName: string, testName: string): void {
-    this.runTest(workspaceFolder, fileName, testName, 'watch')
+  public watch({workspaceFolder, fileName, testName}: TestParams): void {
+    this.run({workspaceFolder, fileName, testName, watchOption: 'watch'})
   }
 
-  public debugTest(workspaceFolder: WorkspaceFolder, fileName: string, testName: string): void {
+  public debug({workspaceFolder, fileName, testName}: TestParams): void {
     debug.startDebugging(workspaceFolder, {
-      ...COMMON_DEBUG_CONFIG,
+      ...this.getCommonDebugConfig(workspaceFolder),
       args: [
         'run',
         convertFilePathToWindows(fileName),
@@ -47,10 +40,7 @@ export class VitestTestRunner implements TestRunner {
         escapeQuotesAndSpecialCharacters(testName),
         '--no-file-parallelism',
         ...this.configurationProvider.additionalArguments.split(' ')
-      ],
-      env: this.configurationProvider.environmentVariables,
-      program: join(workspaceFolder.uri.fsPath, this.path),
-      skipFiles: this.configurationProvider.skipFiles
+      ]
     })
   }
 }

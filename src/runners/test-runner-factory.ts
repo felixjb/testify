@@ -18,37 +18,36 @@ const TEST_RUNNERS: Record<
   mocha: MochaTestRunner,
   playwright: PlaywrightTestRunner,
   vitest: VitestTestRunner
-}
+} as const
 
-function getCustomTestRunner(workspaceFolder: WorkspaceFolder, path: string): TestRunner {
-  const executablePath = join(workspaceFolder.uri.fsPath, path)
+function getCustomTestRunner(
+  configurationProvider: ConfigurationProvider,
+  workspaceFolder: WorkspaceFolder
+): TestRunner | never {
+  const testRunnerPath = configurationProvider.testRunnerPath
+  const executablePath = join(workspaceFolder.uri.fsPath, testRunnerPath)
   if (!existsSync(executablePath)) {
-    throw new Error(`No test runner in specified path: ${path}. Please verify it.`)
+    throw new Error(`No test runner in specified path: ${testRunnerPath}. Please verify it.`)
   }
 
-  const name = basename(path).replace('_', '').toLowerCase()
-  const TestRunner = TEST_RUNNERS[name]
+  const testRunnerName = basename(testRunnerPath).replace('_', '').toLowerCase()
+  const TestRunner = TEST_RUNNERS[testRunnerName]
   if (!TestRunner) {
-    throw new Error(`Unsupported test runner: ${name}. Please use one of the supported ones.`)
+    throw new Error(
+      `Unsupported test runner: ${testRunnerName}. Please use one of the supported ones.`
+    )
   }
 
-  const configurationProvider = new ConfigurationProvider(workspaceFolder)
-  return new TestRunner(configurationProvider, path)
+  return new TestRunner(configurationProvider, testRunnerPath)
 }
 
-function getAvailableTestRunner(workspaceFolder: WorkspaceFolder): TestRunner {
-  const configurationProvider = new ConfigurationProvider(workspaceFolder)
-  const testRunners = [
-    new AvaTestRunner(configurationProvider),
-    new JestTestRunner(configurationProvider),
-    new MochaTestRunner(configurationProvider),
-    new PlaywrightTestRunner(configurationProvider),
-    new VitestTestRunner(configurationProvider)
-  ]
-
-  const foundTestRunner = testRunners.find(runner =>
-    existsSync(join(workspaceFolder.uri.fsPath, runner.path))
-  )
+function getAvailableTestRunner(
+  configurationProvider: ConfigurationProvider,
+  workspaceFolder: WorkspaceFolder
+): TestRunner | never {
+  const foundTestRunner = Object.values(TEST_RUNNERS)
+    .map(TestRunner => new TestRunner(configurationProvider))
+    .find(runner => existsSync(join(workspaceFolder.uri.fsPath, runner.path)))
   if (!foundTestRunner) {
     throw new Error('No supported test runner found. Please install one.')
   }
@@ -56,11 +55,13 @@ function getAvailableTestRunner(workspaceFolder: WorkspaceFolder): TestRunner {
   return foundTestRunner
 }
 
-export function getTestRunner(workspaceFolder: WorkspaceFolder): TestRunner {
-  const configurationProvider = new ConfigurationProvider(workspaceFolder)
+export function getTestRunner(
+  configurationProvider: ConfigurationProvider,
+  workspaceFolder: WorkspaceFolder
+): TestRunner {
   const testRunnerPath = configurationProvider.testRunnerPath
 
   return testRunnerPath
-    ? getCustomTestRunner(workspaceFolder, testRunnerPath)
-    : getAvailableTestRunner(workspaceFolder)
+    ? getCustomTestRunner(configurationProvider, workspaceFolder)
+    : getAvailableTestRunner(configurationProvider, workspaceFolder)
 }

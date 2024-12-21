@@ -1,6 +1,6 @@
 import {workspace, WorkspaceConfiguration, WorkspaceFolder} from 'vscode'
 
-type env = {[key: string]: string | null | undefined}
+export type env = {[key: string]: string | null | undefined}
 
 export class ConfigurationProvider {
   private readonly configuration: WorkspaceConfiguration

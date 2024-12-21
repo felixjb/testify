@@ -1,35 +1,30 @@
 import {join} from 'path'
-import {commands, debug, WorkspaceFolder} from 'vscode'
-import {COMMON_DEBUG_CONFIG} from '../constants/debug-configuration'
+import {debug} from 'vscode'
 import {ConfigurationProvider} from '../providers/configuration-provider'
-import {TerminalProvider} from '../providers/terminal-provider'
+import {TestParams} from '../utils/params'
 import {convertFilePathToWindows, escapeQuotesAndSpecialCharacters} from '../utils/utils'
-import {TestRunner} from './test-runner'
+import {RunParams, TestRunner} from './test-runner'
 
-export class PlaywrightTestRunner implements TestRunner {
+export class PlaywrightTestRunner extends TestRunner {
   constructor(
-    private readonly configurationProvider: ConfigurationProvider,
+    readonly configurationProvider: ConfigurationProvider,
     readonly path: string = join('node_modules', '.bin', 'playwright')
-  ) {}
+  ) {
+    super(configurationProvider, path)
+  }
 
-  public runTest(
-    workspaceFolder: WorkspaceFolder,
-    fileName: string,
-    testName: string,
-    watchOption: string = ''
-  ): void {
-    const environmentVariables = this.configurationProvider.environmentVariables
-    const terminal = TerminalProvider.get({env: environmentVariables}, workspaceFolder)
+  public run({workspaceFolder, fileName, testName, watchOption = ''}: RunParams): void {
+    const command = [
+      watchOption,
+      this.path,
+      'test',
+      '-g',
+      `"${escapeQuotesAndSpecialCharacters(testName)}"`,
+      this.configurationProvider.additionalArguments,
+      convertFilePathToWindows(fileName)
+    ].join(' ')
 
-    const additionalArguments = this.configurationProvider.additionalArguments
-    const command = `${watchOption} ${this.path} test -g "${escapeQuotesAndSpecialCharacters(testName)}" ${additionalArguments} ${convertFilePathToWindows(fileName)}`
-
-    if (this.configurationProvider.autoClear) {
-      commands.executeCommand('workbench.action.terminal.clear')
-    }
-
-    terminal.sendText(command, true)
-    terminal.show(true)
+    this.runCommand(workspaceFolder, command)
   }
 
   /**
@@ -38,26 +33,24 @@ export class PlaywrightTestRunner implements TestRunner {
    *
    * @see https://github.com/microsoft/playwright/issues/21960#issuecomment-1483604692
    */
-  public watchTest(workspaceFolder: WorkspaceFolder, fileName: string, testName: string): void {
-    this.runTest(workspaceFolder, fileName, testName, 'PWTEST_WATCH=1')
+  public watch({workspaceFolder, fileName, testName}: TestParams): void {
+    this.run({workspaceFolder, fileName, testName, watchOption: 'PWTEST_WATCH=1'})
   }
 
-  public debugTest(workspaceFolder: WorkspaceFolder, fileName: string, testName: string): void {
+  public debug({workspaceFolder, fileName, testName}: TestParams): void {
     debug.startDebugging(workspaceFolder, {
-      ...COMMON_DEBUG_CONFIG,
+      ...this.getCommonDebugConfig(workspaceFolder),
+      env: {
+        ...{PLAYWRIGHT_CHROMIUM_DEBUG_PORT: 9222, PWDEBUG: true},
+        ...this.configurationProvider.environmentVariables
+      },
       args: [
         'test',
         '-g',
         escapeQuotesAndSpecialCharacters(testName),
         ...this.configurationProvider.additionalArguments.split(' '),
         convertFilePathToWindows(fileName)
-      ],
-      env: {
-        ...{PLAYWRIGHT_CHROMIUM_DEBUG_PORT: 9222, PWDEBUG: true},
-        ...this.configurationProvider.environmentVariables
-      },
-      program: join(workspaceFolder.uri.fsPath, this.path),
-      skipFiles: this.configurationProvider.skipFiles
+      ]
     })
   }
 }

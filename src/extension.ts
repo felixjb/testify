@@ -1,7 +1,10 @@
 import {commands, ExtensionContext, languages, window} from 'vscode'
-import {debugTestCallback} from './commands/debug-test-command'
-import {runTestCallback} from './commands/run-test-command'
-import {watchTestCallback} from './commands/watch-test-command'
+import {
+  debugTestCallback,
+  runTestCallback,
+  TestifyCommand,
+  watchTestCallback
+} from './commands/commands'
 import {FILE_SELECTOR} from './constants/file-selector'
 import {TestRunnerCodeLensProvider} from './providers/code-lens-provider'
 
@@ -12,7 +15,7 @@ export function activate(context: ExtensionContext): void {
 
   window.onDidCloseTerminal(closedTerminal => closedTerminal.dispose())
 
-  commands.registerCommand('testify.run.test', runTestCallback)
-  commands.registerCommand('testify.debug.test', debugTestCallback)
-  commands.registerCommand('testify.watch.test', watchTestCallback)
+  commands.registerCommand(TestifyCommand.run, runTestCallback)
+  commands.registerCommand(TestifyCommand.watch, watchTestCallback)
+  commands.registerCommand(TestifyCommand.debug, debugTestCallback)
 }

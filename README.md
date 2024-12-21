@@ -33,13 +33,13 @@ Testify maintainers are **always** working to support **more** frameworks as **b
 
 You can configure Testify to work a little more to your taste using VSCode's settings. Here are all the configuration properties are available:
 
-| Property                 | Description                                                                                                      | Example                        | Default                  |
-|--------------------------|------------------------------------------------------------------------------------------------------------------|--------------------------------|--------------------------|
-| `testify.additionalArgs` | Specifies arguments to be passed to the test framework command.<br>It takes a single string with all arguments.  | `"--require ts-node/register"` | `""`                     |
-| `testify.envVars`        | Specifies environment variables to be exported before running a test.                                            | `{ "NODE_ENV": "test" }`       | `{ "NODE_ENV": "test" }` |
-| `testify.skipFiles`      | Specifies files that should be skipped during debugging.<br>It takes an array of glob patterns.                  | `["<node_internals>/**/*.js"]` | `[]`                     |
-| `testify.testRunnerPath` | Specifies a custom path for the test runner executable.                                                          | `"node_modules/.bin/mocha"`    | `""`                     |
-| `testify.autoClear` | When enabled, the output channel will be cleared before running a test                                                          | `true`    | `true`                     |
+| Property                 | Description                                                                                                     | Example                        | Default                  |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------- | ------------------------------ | ------------------------ |
+| `testify.additionalArgs` | Specifies arguments to be passed to the test framework command.<br>It takes a single string with all arguments. | `"--require ts-node/register"` | `""`                     |
+| `testify.envVars`        | Specifies environment variables to be exported before running a test.                                           | `{ "NODE_ENV": "test" }`       | `{ "NODE_ENV": "test" }` |
+| `testify.skipFiles`      | Specifies files that should be skipped during debugging.<br>It takes an array of glob patterns.                 | `["<node_internals>/**/*.js"]` | `[]`                     |
+| `testify.testRunnerPath` | Specifies a custom path for the test runner executable.                                                         | `"node_modules/.bin/mocha"`    | `""`                     |
+| `testify.autoClear`      | When enabled, the output channel will be cleared before running a test                                          | `true`                         | `true`                   |
 
 <!-- You can use this tool to generate a markdown table: https://www.tablesgenerator.com/markdown_tables# -->
 
