@@ -5,6 +5,7 @@ import {ConfigurationProvider} from '../providers/configuration-provider'
 import {AvaTestRunner} from './ava-test-runner'
 import {JestTestRunner} from './jest-test-runner'
 import {MochaTestRunner} from './mocha-test-runner'
+import {NodeTestRunner} from './node-test-runner'
 import {PlaywrightTestRunner} from './playwright-test-runner'
 import {TestRunner} from './test-runner'
 import {VitestTestRunner} from './vitest-test-runner'
@@ -16,6 +17,7 @@ const TEST_RUNNERS: Record<
   ava: AvaTestRunner,
   jest: JestTestRunner,
   mocha: MochaTestRunner,
+  node: NodeTestRunner,
   playwright: PlaywrightTestRunner,
   vitest: VitestTestRunner
 } as const
@@ -59,9 +61,7 @@ export function getTestRunner(
   configurationProvider: ConfigurationProvider,
   workspaceFolder: WorkspaceFolder
 ): TestRunner {
-  const testRunnerPath = configurationProvider.testRunnerPath
-
-  return testRunnerPath
+  return configurationProvider.testRunnerPath
     ? getCustomTestRunner(configurationProvider, workspaceFolder)
     : getAvailableTestRunner(configurationProvider, workspaceFolder)
 }
