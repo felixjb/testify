@@ -75,9 +75,7 @@
             "type": "string"
           },
           "testify.envVars": {
-            "default": {
-              "NODE_ENV": "test"
-            },
+            "default": {},
             "description": "Specifies environment variables to be exported before running a test",
             "scope": "resource",
             "type": "object"

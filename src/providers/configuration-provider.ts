@@ -14,7 +14,7 @@ export class ConfigurationProvider {
   }
 
   get environmentVariables(): env {
-    return this.configuration.get<env>('envVars', {NODE_ENV: 'test'})
+    return this.configuration.get<env>('envVars', {})
   }
 
   get skipFiles(): string[] {
