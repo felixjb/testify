@@ -34,8 +34,7 @@ export class MochaTestRunner extends TestRunner {
       ...this.getCommonDebugConfig(workspaceFolder),
       args: [
         convertFilePathToWindows(fileName),
-        '--fgrep',
-        escapeQuotesAndSpecialCharacters(testName),
+        `--fgrep="${escapeQuotesAndSpecialCharacters(testName)}"`,
         ...this.configurationProvider.additionalArguments.split(' ')
       ]
     })

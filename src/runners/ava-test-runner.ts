@@ -17,7 +17,7 @@ export class AvaTestRunner extends TestRunner {
     const command = [
       this.path,
       convertFilePathToWindows(fileName),
-      `-m "${escapeQuotesAndSpecialCharacters(testName)}"`,
+      `--match="${escapeQuotesAndSpecialCharacters(testName)}"`,
       watchOption,
       this.configurationProvider.additionalArguments
     ].join(' ')

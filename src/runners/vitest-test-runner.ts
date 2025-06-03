@@ -13,8 +13,8 @@ export class VitestTestRunner extends TestRunner {
     super(configurationProvider, path)
   }
 
-  public run({workspaceFolder, fileName, testName, watchOption = ''}: RunParams): void {
-    const mode = watchOption ? 'watch' : 'run'
+  public run({workspaceFolder, fileName, testName, watchOption}: RunParams): void {
+    const mode = watchOption ?? 'run'
     const command = [
       this.path,
       mode,
@@ -36,8 +36,7 @@ export class VitestTestRunner extends TestRunner {
       args: [
         'run',
         convertFilePathToWindows(fileName),
-        '--testNamePattern',
-        escapeQuotesAndSpecialCharacters(testName),
+        `--testNamePattern="${escapeQuotesAndSpecialCharacters(testName)}"`,
         '--no-file-parallelism',
         ...this.configurationProvider.additionalArguments.split(' ')
       ]

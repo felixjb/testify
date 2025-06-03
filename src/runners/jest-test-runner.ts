@@ -34,8 +34,7 @@ export class JestTestRunner extends TestRunner {
       ...this.getCommonDebugConfig(workspaceFolder),
       args: [
         convertFilePathToWindows(fileName),
-        '--testNamePattern',
-        escapeQuotesAndSpecialCharacters(testName),
+        `--testNamePattern="${escapeQuotesAndSpecialCharacters(testName)}"`,
         '--runInBand',
         ...this.configurationProvider.additionalArguments.split(' ')
       ]
