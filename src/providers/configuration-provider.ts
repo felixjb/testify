@@ -28,4 +28,8 @@ export class ConfigurationProvider {
   get autoClear(): boolean {
     return this.configuration.get<boolean>('autoClear', true)
   }
+
+  get excludePatterns(): string[] {
+    return this.configuration.get<string[]>('excludePatterns', [])
+  }
 }

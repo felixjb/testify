@@ -69,37 +69,46 @@
       {
         "properties": {
           "testify.additionalArgs": {
-            "default": "",
             "description": "Specifies arguments to be passed to the test framework command",
             "scope": "resource",
-            "type": "string"
+            "type": "string",
+            "default": ""
           },
           "testify.envVars": {
-            "default": {},
             "description": "Specifies environment variables to be exported before running a test",
             "scope": "resource",
-            "type": "object"
+            "type": "object",
+            "default": {}
           },
           "testify.skipFiles": {
-            "default": [],
             "description": "Specifies files that should be skipped during debugging",
+            "scope": "resource",
+            "type": "array",
             "items": {
               "type": "string"
             },
-            "scope": "resource",
-            "type": "array"
+            "default": []
           },
           "testify.testRunnerPath": {
-            "default": "",
             "description": "Specifies a custom path for the test runner executable",
             "scope": "resource",
-            "type": "string"
+            "type": "string",
+            "default": ""
           },
           "testify.autoClear": {
-            "default": true,
             "description": "When enabled, the output channel will be cleared before running a test",
             "scope": "resource",
-            "type": "boolean"
+            "type": "boolean",
+            "default": true
+          },
+          "testify.excludePatterns": {
+            "description": "Specifies glob pattern for relative file paths to be excluded from test discovery",
+            "scope": "resource",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": []
           }
         }
       }
@@ -132,6 +141,7 @@
     "@babel/plugin-syntax-jsx": "^7.24.1",
     "@babel/plugin-syntax-typescript": "^7.24.1",
     "@babel/traverse": "^7.24.1",
+    "picomatch": "^4.0.2",
     "which": "^5.0.0"
   },
   "devDependencies": {
@@ -141,6 +151,7 @@
     "@types/glob": "^8.1.0",
     "@types/mocha": "^10.0.6",
     "@types/node": "^18.19.31",
+    "@types/picomatch": "^4.0.0",
     "@types/vscode": "1.88.0",
     "@types/which": "^3.0.4",
     "@typescript-eslint/eslint-plugin": "^7.7.0",

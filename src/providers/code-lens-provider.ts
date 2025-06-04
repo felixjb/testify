@@ -1,12 +1,22 @@
+import picomatch from 'picomatch'
 import {CodeLens, CodeLensProvider, Range, TextDocument, workspace} from 'vscode'
 import {buildTestCommands} from '../commands/commands'
 import {parseSourceCode} from '../parser/parser'
 import {TestParams} from '../utils/params'
+import {ConfigurationProvider} from './configuration-provider'
 
 export class TestRunnerCodeLensProvider implements CodeLensProvider {
   public provideCodeLenses(document: TextDocument): CodeLens[] {
     const workspaceFolder = workspace.getWorkspaceFolder(document.uri)
     if (!workspaceFolder) {
+      return []
+    }
+
+    const configurationProvider = new ConfigurationProvider(workspaceFolder)
+    const isExcluded = configurationProvider.excludePatterns.find(pattern =>
+      picomatch.isMatch(document.fileName, pattern)
+    )
+    if (isExcluded) {
       return []
     }
 
