@@ -76,6 +76,13 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/11512170?v=4",
       "profile": "https://github.com/Beleren",
       "contributions": ["code"]
+    },
+    {
+      "login": "",
+      "name": "Barbara Iamauchi",
+      "avatar_url": "https://raw.githubusercontent.com/felixjb/testify/main/resources/babi.jpg",
+      "profile": "https://www.linkedin.com/in/barbara-iamauchi-772732121/",
+      "contributions": ["design"]
     }
   ],
   "commitConvention": "none",

@@ -47,7 +47,7 @@ You can configure Testify to work a little more to your taste using VSCode's set
 | `testify.skipFiles`       | Specifies files that should be skipped during debugging.<br>It takes an array of glob patterns.                 | `["<node_internals>/**/*.js"]` | `[]`    |
 | `testify.testRunnerPath`  | Specifies a custom path for the test runner executable.                                                         | `"node_modules/.bin/mocha"`    | `""`    |
 | `testify.autoClear`       | When enabled, the output channel will be cleared before running a test                                          | `true`                         | `true`  |
-| `testify.excludePatterns` | Specifies an array of glob patterns the the extension is to ignore and not provide codelens.                    | `["**/*.cy.ts"]`                         | `[]`  |
+| `testify.excludePatterns` | Specifies an array of glob patterns the the extension is to ignore and not provide codelens.                    | `["**/*.cy.ts"]`               | `[]`    |
 
 <!-- You can use this tool to generate a markdown table: https://www.tablesgenerator.com/markdown_tables# -->
 
@@ -80,6 +80,7 @@ Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/calebboyd"><img src="https://avatars2.githubusercontent.com/u/5818726?v=4?s=100" width="100px;" alt="Caleb Boyd"/><br /><sub><b>Caleb Boyd</b></sub></a><br /><a href="https://github.com/felixjb/testify/issues?q=author%3Acalebboyd" title="Bug reports">🐛</a> <a href="https://github.com/felixjb/testify/commits?author=calebboyd" title="Code">💻</a> <a href="#maintenance-calebboyd" title="Maintenance">🚧</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://felipecrs.com"><img src="https://avatars.githubusercontent.com/u/29582865?v=4?s=100" width="100px;" alt="Felipe Santos"/><br /><sub><b>Felipe Santos</b></sub></a><br /><a href="#infra-felipecrs" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Beleren"><img src="https://avatars.githubusercontent.com/u/11512170?v=4?s=100" width="100px;" alt="Leandro Haruki"/><br /><sub><b>Leandro Haruki</b></sub></a><br /><a href="https://github.com/felixjb/testify/commits?author=Beleren" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://www.linkedin.com/in/barbara-iamauchi-772732121/"><img src="https://raw.githubusercontent.com/felixjb/testify/main/resources/babi.jpg" width="100px;" alt="babi"/><br /><sub><b>Barbara Iamauchi</b></sub></a><br /><a href="#design-babi" title="Design">🎨</a></td>
     </tr>
   </tbody>
 </table>
@@ -88,10 +89,6 @@ Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds
 <!-- prettier-ignore-end -->
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
-
-Also, a special **thank you to Barbara Iamauchi** who designed the amazing new icon for this project!
-
-[<img src="https://raw.githubusercontent.com/felixjb/testify/main/resources/babi.jpg" width="100px;" alt="Barbara Iamauchi"/><br /><sub><b>Barbara Iamauchi</b></sub>](https://www.linkedin.com/in/barbara-iamauchi-772732121/)<br />
 
 This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind welcome!
 
