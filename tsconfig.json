@@ -3,6 +3,8 @@
     "target": "ES6",
     "module": "CommonJS",
     "lib": ["es6"],
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
     "rootDir": "src",
     "outDir": "out",
     "sourceMap": true,
