@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.16.0] - 2025-06-11
+
+### Added
+
+- `testify.entryPointPath` configuration to specify the path to the test runner's JavaScript entry point
+- Updated configurations:
+  - `testify.executablePath`
+  - `testify.args`
+  - `testify.env`
+  - `testify.excludeFiles`
+- Notification when the extension is updated to a new version
+
+### Changed
+
+- Update configurations descriptions, add examples, add configuration order, and add deprecation notices for old configurations:
+  - `testify.testRunnerPath`
+  - `testify.additionalArgs`
+  - `testify.envVars`
+  - `testify.excludePatterns`
+
+### Fixed
+
+- Fix debugging by using the test runners JavaScript entrypoint instead of the executable
+- Fix path resolution forcing forward slashes (`/`) for cross-platform compatibility
+- Fix Node Test Runner detection with basename when using `testify.executablePath` and `testify.entryPointPath`
+
 ## [1.15.0] - 2025-06-04
 
 ### Added
