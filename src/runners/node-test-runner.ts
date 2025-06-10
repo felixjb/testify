@@ -33,7 +33,7 @@ export class NodeTestRunner extends TestRunner {
       this.executablePath,
       '--test',
       watchOption,
-      this.configurationProvider.args,
+      ...this.configurationProvider.args,
       fileName,
       `--test-name-pattern="${testName}"`
     ].join(' ')
@@ -52,11 +52,7 @@ export class NodeTestRunner extends TestRunner {
       program: null,
       // Needed for specifing the Node.js version as the host may have multiple versions installed
       runtimeExecutable: this.executablePath,
-      args: [
-        ...this.configurationProvider.args.split(' '),
-        fileName,
-        `--test-name-pattern="${testName}"`
-      ]
+      args: [...this.configurationProvider.args, fileName, `--test-name-pattern="${testName}"`]
     })
   }
 }

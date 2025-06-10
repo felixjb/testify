@@ -1,3 +1,4 @@
+import shell from 'shell-quote'
 import {workspace, WorkspaceConfiguration, WorkspaceFolder} from 'vscode'
 import {toForwardSlashPath} from '../utils/utils'
 
@@ -23,13 +24,18 @@ export class ConfigurationProvider {
     return toForwardSlashPath(value.trim())
   }
 
-  get args(): string {
-    // TODO: Allow array of strings?
-    const value =
-      this.configuration.get<string>('args') ??
-      this.configuration.get<string>('additionalArgs') ?? // Legacy support
-      ''
-    return value.trim()
+  get args(): string[] {
+    const args = this.configuration
+      .get<string[]>('args', [])
+      .map(arg => arg.trim())
+      .filter(Boolean)
+    if (args.length > 0) return args
+
+    const additionalArgs = this.configuration.get<string>('additionalArgs', '')
+    return shell
+      .parse(additionalArgs)
+      .map(arg => arg.toString().trim())
+      .filter(Boolean)
   }
 
   get env(): env {

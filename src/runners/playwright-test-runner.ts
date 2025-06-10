@@ -18,7 +18,7 @@ export class PlaywrightTestRunner extends TestRunner {
       'test',
       '-g',
       `"${testName}"`,
-      this.configurationProvider.args,
+      ...this.configurationProvider.args,
       fileName
     ].join(' ')
 
@@ -43,7 +43,7 @@ export class PlaywrightTestRunner extends TestRunner {
         PWDEBUG: true,
         ...this.configurationProvider.env
       },
-      args: ['test', '-g', testName, ...this.configurationProvider.args.split(' '), fileName]
+      args: ['test', '-g', testName, ...this.configurationProvider.args, fileName]
     })
   }
 }

@@ -17,7 +17,7 @@ export class AvaTestRunner extends TestRunner {
       fileName,
       `--match="${testName}"`,
       watchOption,
-      this.configurationProvider.args
+      ...this.configurationProvider.args
     ].join(' ')
 
     this.runCommand(workspaceFolder, command)
@@ -36,7 +36,7 @@ export class AvaTestRunner extends TestRunner {
         '--serial',
         fileName,
         `--match="${testName}"`,
-        ...this.configurationProvider.args.split(' ')
+        ...this.configurationProvider.args
       ]
     })
   }

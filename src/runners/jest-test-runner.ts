@@ -17,7 +17,7 @@ export class JestTestRunner extends TestRunner {
       fileName,
       `--testNamePattern="${testName}"`,
       watchOption,
-      this.configurationProvider.args
+      ...this.configurationProvider.args
     ].join(' ')
 
     this.runCommand(workspaceFolder, command)
@@ -34,7 +34,7 @@ export class JestTestRunner extends TestRunner {
         fileName,
         `--testNamePattern="${testName}"`,
         '--runInBand',
-        ...this.configurationProvider.args.split(' ')
+        ...this.configurationProvider.args
       ]
     })
   }

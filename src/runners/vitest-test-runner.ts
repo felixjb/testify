@@ -18,7 +18,7 @@ export class VitestTestRunner extends TestRunner {
       mode,
       fileName,
       `--testNamePattern="${testName}"`,
-      this.configurationProvider.args
+      ...this.configurationProvider.args
     ].join(' ')
 
     this.runCommand(workspaceFolder, command)
@@ -36,7 +36,7 @@ export class VitestTestRunner extends TestRunner {
         fileName,
         `--testNamePattern="${testName}"`,
         '--no-file-parallelism',
-        ...this.configurationProvider.args.split(' ')
+        ...this.configurationProvider.args
       ]
     })
   }

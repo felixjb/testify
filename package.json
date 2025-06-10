@@ -102,19 +102,33 @@
         },
         "testify.args": {
           "order": 2,
-          "description": "Command line arguments passed to the test framework. Provide all arguments as a single string, separated by spaces.",
-          "type": "string",
+          "markdownDescription": "An array of strings with command line arguments passed to the test runner.\n\n- Each item is a separate argument (key and value).\n- Make sure to quote arguments properly where needed.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
           "examples": [
-            "--require ts-node/register",
-            "--no-timeout",
-            "--experimental-strip-types"
+            [
+              "--require ts-node/register",
+              "--no-timeout"
+            ],
+            [
+              "--config=playwright.config.ts"
+            ],
+            [
+              "--runInBand",
+              "--reporters=default,html"
+            ]
           ],
-          "default": ""
+          "default": []
         },
         "testify.env": {
           "order": 3,
           "description": "Environment variables to set when running or debugging tests. Specify as key-value pairs.",
           "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
           "examples": [
             {
               "NODE_ENV": "development"
@@ -214,6 +228,7 @@
     "@babel/plugin-syntax-typescript": "^7.24.1",
     "@babel/traverse": "^7.24.1",
     "picomatch": "^4.0.2",
+    "shell-quote": "^1.8.3",
     "which": "^5.0.0"
   },
   "devDependencies": {
@@ -224,6 +239,7 @@
     "@types/mocha": "^10.0.6",
     "@types/node": "^18.19.31",
     "@types/picomatch": "^4.0.0",
+    "@types/shell-quote": "^1.7.5",
     "@types/vscode": "1.88.0",
     "@types/which": "^3.0.4",
     "@typescript-eslint/eslint-plugin": "^7.7.0",

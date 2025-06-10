@@ -17,7 +17,7 @@ export class MochaTestRunner extends TestRunner {
       fileName,
       `--fgrep="${testName}"`,
       watchOption,
-      this.configurationProvider.args
+      ...this.configurationProvider.args
     ].join(' ')
 
     this.runCommand(workspaceFolder, command)
@@ -30,7 +30,7 @@ export class MochaTestRunner extends TestRunner {
   public debug({workspaceFolder, fileName, testName}: TestParams): void {
     debug.startDebugging(workspaceFolder, {
       ...this.getCommonDebugConfig(),
-      args: [fileName, `--fgrep="${testName}"`, ...this.configurationProvider.args.split(' ')]
+      args: [fileName, `--fgrep="${testName}"`, ...this.configurationProvider.args]
     })
   }
 }
