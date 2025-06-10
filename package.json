@@ -74,7 +74,7 @@
       "properties": {
         "testify.executablePath": {
           "order": 0,
-          "markdownDescription": "The relative path (from the workspace folder) to the test runner executable. Used for running and watching tests in the terminal.\n\n- Leave empty to auto-detect supported test runners.\n- If this is set, `testify.entryPointPath` **MUST** be set as well.\n- For Node.js Test Runner, this **MUST** be an absolute path.\n- Prefer forward slashes (`/`) for cross-platform compatibility.",
+          "markdownDescription": "The relative path (from the workspace root) to the test runner executable. Used for running and watching tests in the terminal.\n\n- Leave empty to auto-detect supported test runners.\n- If this is set, `testify.entryPointPath` **MUST** be set as well.\n- For Node.js Test Runner, this **MUST** be an absolute path.\n- Prefer forward slashes (`/`) for cross-platform compatibility.",
           "type": "string",
           "examples": [
             "node_modules/.bin/ava",
@@ -143,6 +143,7 @@
           "order": 4,
           "description": "An array of file or folder names, or path globs, to skip when debugging. Star patterns and negations are allowed",
           "examples": [
+            "<node_internals>/**",
             "**/node_modules/**",
             "!**/node_modules/my-module/**"
           ],
