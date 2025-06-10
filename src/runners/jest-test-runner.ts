@@ -1,25 +1,23 @@
-import {join} from 'path'
 import {debug} from 'vscode'
 import {ConfigurationProvider} from '../providers/configuration-provider'
-import {TestParams} from '../utils/params'
-import {convertFilePathToWindows, escapeQuotesAndSpecialCharacters} from '../utils/utils'
-import {RunParams, TestRunner} from './test-runner'
+import {RunParams, TestParams, TestRunner} from './test-runner'
 
 export class JestTestRunner extends TestRunner {
   constructor(
     readonly configurationProvider: ConfigurationProvider,
-    readonly path: string = join('node_modules', '.bin', 'jest')
+    readonly executablePath: string = 'node_modules/.bin/jest',
+    readonly entryPointPath: string = 'node_modules/jest/bin/jest.js'
   ) {
-    super(configurationProvider, path)
+    super(configurationProvider, executablePath, entryPointPath)
   }
 
   public run({workspaceFolder, fileName, testName, watchOption = ''}: RunParams): void {
     const command = [
-      this.path,
-      convertFilePathToWindows(fileName),
-      `--testNamePattern="${escapeQuotesAndSpecialCharacters(testName)}"`,
+      this.executablePath,
+      fileName,
+      `--testNamePattern="${testName}"`,
       watchOption,
-      this.configurationProvider.additionalArguments
+      this.configurationProvider.args
     ].join(' ')
 
     this.runCommand(workspaceFolder, command)
@@ -31,12 +29,12 @@ export class JestTestRunner extends TestRunner {
 
   public debug({workspaceFolder, fileName, testName}: TestParams): void {
     debug.startDebugging(workspaceFolder, {
-      ...this.getCommonDebugConfig(workspaceFolder),
+      ...this.getCommonDebugConfig(),
       args: [
-        convertFilePathToWindows(fileName),
-        `--testNamePattern="${escapeQuotesAndSpecialCharacters(testName)}"`,
+        fileName,
+        `--testNamePattern="${testName}"`,
         '--runInBand',
-        ...this.configurationProvider.additionalArguments.split(' ')
+        ...this.configurationProvider.args.split(' ')
       ]
     })
   }

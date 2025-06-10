@@ -2,7 +2,7 @@ import picomatch from 'picomatch'
 import {CodeLens, CodeLensProvider, Range, TextDocument, workspace} from 'vscode'
 import {buildTestCommands} from '../commands/commands'
 import {parseSourceCode} from '../parser/parser'
-import {TestParams} from '../utils/params'
+import {TestParams} from '../runners/test-runner'
 import {ConfigurationProvider} from './configuration-provider'
 
 export class TestRunnerCodeLensProvider implements CodeLensProvider {
@@ -13,7 +13,7 @@ export class TestRunnerCodeLensProvider implements CodeLensProvider {
     }
 
     const configurationProvider = new ConfigurationProvider(workspaceFolder)
-    const isExcluded = configurationProvider.excludePatterns.find(pattern =>
+    const isExcluded = configurationProvider.excludeFiles.find(pattern =>
       picomatch.isMatch(document.fileName, pattern)
     )
     if (isExcluded) {

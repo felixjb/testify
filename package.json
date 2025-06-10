@@ -15,12 +15,13 @@
   "keywords": [
     "test",
     "testing",
-    "unit",
+    "javascript",
     "ava",
     "jest",
     "mocha",
     "playwright",
-    "vitest"
+    "vitest",
+    "node"
   ],
   "private": true,
   "preview": false,
@@ -65,54 +66,125 @@
         "title": "Watch Test"
       }
     ],
-    "configuration": [
-      {
-        "properties": {
-          "testify.additionalArgs": {
-            "description": "Specifies arguments to be passed to the test framework command",
-            "scope": "resource",
-            "type": "string",
-            "default": ""
-          },
-          "testify.envVars": {
-            "description": "Specifies environment variables to be exported before running a test",
-            "scope": "resource",
-            "type": "object",
-            "default": {}
-          },
-          "testify.skipFiles": {
-            "description": "Specifies files that should be skipped during debugging",
-            "scope": "resource",
-            "type": "array",
-            "items": {
-              "type": "string"
+    "configuration": {
+      "title": "Testify",
+      "description": "Configuration for Testify extension",
+      "scope": "resource",
+      "type": "object",
+      "properties": {
+        "testify.executablePath": {
+          "order": 0,
+          "markdownDescription": "The relative path (from the workspace folder) to the test runner executable. Used for running and watching tests in the terminal.\n\n- Leave empty to auto-detect supported test runners.\n- If this is set, `testify.entryPointPath` **MUST** be set as well.\n- For Node.js Test Runner, this **MUST** be an absolute path.\n- Prefer forward slashes (`/`) for cross-platform compatibility.",
+          "type": "string",
+          "examples": [
+            "node_modules/.bin/ava",
+            "node_modules/.bin/jest",
+            "node_modules/.bin/mocha",
+            "node_modules/.bin/playwright",
+            "node_modules/.bin/vitest",
+            "/Users/myUser/.nvm/versions/node/v20.18.1/bin/node",
+            "C:/Users/felixjb/.nvs/node/18.17.0/x64/node.exe"
+          ],
+          "default": ""
+        },
+        "testify.entryPointPath": {
+          "order": 1,
+          "markdownDescription": "The relative path (from the workspace root) to the test runner's JavaScript entry point. Used as the program for the VSCode debugger.\n\n- Leave empty to auto-detect for supported test runners.\n- If this is set, `testify.executablePath` _should_ be set as well, otherwise it will not take effect.\n- Not used for Node.js Test Runner.\n- Prefer forward slashes (`/`) for cross-platform compatibility.",
+          "type": "string",
+          "examples": [
+            "node_modules/ava/entrypoints/cli.mjs",
+            "node_modules/jest/bin/jest.js",
+            "node_modules/mocha/bin/mocha.js",
+            "node_modules/@playwright/test/cli.js",
+            "node_modules/vitest/vitest.mjs"
+          ],
+          "default": ""
+        },
+        "testify.args": {
+          "order": 2,
+          "description": "Command line arguments passed to the test framework. Provide all arguments as a single string, separated by spaces.",
+          "type": "string",
+          "examples": [
+            "--require ts-node/register",
+            "--no-timeout",
+            "--experimental-strip-types"
+          ],
+          "default": ""
+        },
+        "testify.env": {
+          "order": 3,
+          "description": "Environment variables to set when running or debugging tests. Specify as key-value pairs.",
+          "type": "object",
+          "examples": [
+            {
+              "NODE_ENV": "development"
             },
-            "default": []
+            {
+              "TOKEN": "test-token"
+            }
+          ],
+          "default": {}
+        },
+        "testify.skipFiles": {
+          "order": 4,
+          "description": "An array of file or folder names, or path globs, to skip when debugging. Star patterns and negations are allowed",
+          "examples": [
+            "**/node_modules/**",
+            "!**/node_modules/my-module/**"
+          ],
+          "type": "array",
+          "items": {
+            "type": "string"
           },
-          "testify.testRunnerPath": {
-            "description": "Specifies a custom path for the test runner executable",
-            "scope": "resource",
-            "type": "string",
-            "default": ""
+          "default": []
+        },
+        "testify.excludeFiles": {
+          "order": 5,
+          "description": "An array of file or folder names, or path globs, to be excluded from test discovery. Star patterns and negations are allowed",
+          "examples": [
+            "**/*.cy.ts"
+          ],
+          "type": "array",
+          "items": {
+            "type": "string"
           },
-          "testify.autoClear": {
-            "description": "When enabled, the output channel will be cleared before running a test",
-            "scope": "resource",
-            "type": "boolean",
-            "default": true
+          "default": []
+        },
+        "testify.autoClear": {
+          "order": 6,
+          "description": "Whether to clear the terminal before running each test",
+          "type": "boolean",
+          "default": true
+        },
+        "testify.testRunnerPath": {
+          "description": "Specifies a custom path for the test runner executable",
+          "type": "string",
+          "default": "",
+          "deprecationMessage": "Deprecated: Please use 'testify.executablePath' instead."
+        },
+        "testify.additionalArgs": {
+          "description": "Specifies arguments to be passed to the test framework command",
+          "type": "string",
+          "default": "",
+          "deprecationMessage": "Deprecated: Please use 'testify.args' instead."
+        },
+        "testify.envVars": {
+          "description": "Specifies environment variables to be exported before running a test",
+          "type": "object",
+          "default": {},
+          "deprecationMessage": "Deprecated: Please use 'testify.env' instead."
+        },
+        "testify.excludePatterns": {
+          "description": "Specifies glob pattern for relative file paths to be excluded from test discovery",
+          "type": "array",
+          "items": {
+            "type": "string"
           },
-          "testify.excludePatterns": {
-            "description": "Specifies glob pattern for relative file paths to be excluded from test discovery",
-            "scope": "resource",
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "default": []
-          }
+          "default": [],
+          "deprecationMessage": "Deprecated: Please use 'testify.excludeFiles' instead."
         }
       }
-    ]
+    }
   },
   "scripts": {
     "contributors:add": "all-contributors add",

@@ -1,26 +1,24 @@
-import {join} from 'path'
 import {debug} from 'vscode'
 import {ConfigurationProvider} from '../providers/configuration-provider'
-import {TestParams} from '../utils/params'
-import {convertFilePathToWindows, escapeQuotesAndSpecialCharacters} from '../utils/utils'
-import {RunParams, TestRunner} from './test-runner'
+import {RunParams, TestParams, TestRunner} from './test-runner'
 
 export class VitestTestRunner extends TestRunner {
   constructor(
     readonly configurationProvider: ConfigurationProvider,
-    readonly path: string = join('node_modules', '.bin', 'vitest')
+    readonly executablePath: string = 'node_modules/.bin/vitest',
+    readonly entryPointPath: string = 'node_modules/vitest/vitest.mjs'
   ) {
-    super(configurationProvider, path)
+    super(configurationProvider, executablePath, entryPointPath)
   }
 
   public run({workspaceFolder, fileName, testName, watchOption}: RunParams): void {
     const mode = watchOption ?? 'run'
     const command = [
-      this.path,
+      this.executablePath,
       mode,
-      convertFilePathToWindows(fileName),
-      `--testNamePattern="${escapeQuotesAndSpecialCharacters(testName)}"`,
-      this.configurationProvider.additionalArguments
+      fileName,
+      `--testNamePattern="${testName}"`,
+      this.configurationProvider.args
     ].join(' ')
 
     this.runCommand(workspaceFolder, command)
@@ -32,13 +30,13 @@ export class VitestTestRunner extends TestRunner {
 
   public debug({workspaceFolder, fileName, testName}: TestParams): void {
     debug.startDebugging(workspaceFolder, {
-      ...this.getCommonDebugConfig(workspaceFolder),
+      ...this.getCommonDebugConfig(),
       args: [
         'run',
-        convertFilePathToWindows(fileName),
-        `--testNamePattern="${escapeQuotesAndSpecialCharacters(testName)}"`,
+        fileName,
+        `--testNamePattern="${testName}"`,
         '--no-file-parallelism',
-        ...this.configurationProvider.additionalArguments.split(' ')
+        ...this.configurationProvider.args.split(' ')
       ]
     })
   }

@@ -1,4 +1,5 @@
 import {workspace, WorkspaceConfiguration, WorkspaceFolder} from 'vscode'
+import {toForwardSlashPath} from '../utils/utils'
 
 export type env = {[key: string]: string | null | undefined}
 
@@ -9,27 +10,43 @@ export class ConfigurationProvider {
     this.configuration = workspace.getConfiguration('testify', workspaceFolder.uri)
   }
 
-  get additionalArguments(): string {
-    return this.configuration.get<string>('additionalArgs', '')
+  get executablePath(): string {
+    const value =
+      this.configuration.get<string>('executablePath') ??
+      this.configuration.get<string>('testRunnerPath') ?? // Legacy support
+      ''
+    return toForwardSlashPath(value.trim())
   }
 
-  get environmentVariables(): env {
-    return this.configuration.get<env>('envVars', {})
+  get entryPointPath(): string {
+    const value = this.configuration.get<string>('entryPointPath', '')
+    return toForwardSlashPath(value.trim())
+  }
+
+  get args(): string {
+    // TODO: Allow array of strings?
+    const value =
+      this.configuration.get<string>('args') ??
+      this.configuration.get<string>('additionalArgs') ?? // Legacy support
+      ''
+    return value.trim()
+  }
+
+  get env(): env {
+    const legacy = this.configuration.get<env>('envVars', {})
+    return this.configuration.get<env>('env', legacy)
   }
 
   get skipFiles(): string[] {
     return this.configuration.get<string[]>('skipFiles', [])
   }
 
-  get testRunnerPath(): string {
-    return this.configuration.get<string>('testRunnerPath', '')
+  get excludeFiles(): string[] {
+    const legacy = this.configuration.get<string[]>('excludePatterns', [])
+    return this.configuration.get<string[]>('excludeFiles', legacy)
   }
 
   get autoClear(): boolean {
     return this.configuration.get<boolean>('autoClear', true)
-  }
-
-  get excludePatterns(): string[] {
-    return this.configuration.get<string[]>('excludePatterns', [])
   }
 }

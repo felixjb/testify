@@ -1,27 +1,25 @@
-import {join} from 'path'
 import {debug} from 'vscode'
 import {ConfigurationProvider} from '../providers/configuration-provider'
-import {TestParams} from '../utils/params'
-import {convertFilePathToWindows, escapeQuotesAndSpecialCharacters} from '../utils/utils'
-import {RunParams, TestRunner} from './test-runner'
+import {RunParams, TestParams, TestRunner} from './test-runner'
 
 export class PlaywrightTestRunner extends TestRunner {
   constructor(
     readonly configurationProvider: ConfigurationProvider,
-    readonly path: string = join('node_modules', '.bin', 'playwright')
+    readonly executablePath: string = 'node_modules/.bin/playwright',
+    readonly entryPointPath: string = 'node_modules/@playwright/test/cli.js'
   ) {
-    super(configurationProvider, path)
+    super(configurationProvider, executablePath, entryPointPath)
   }
 
   public run({workspaceFolder, fileName, testName, watchOption = ''}: RunParams): void {
     const command = [
       watchOption,
-      this.path,
+      this.executablePath,
       'test',
       '-g',
-      `"${escapeQuotesAndSpecialCharacters(testName)}"`,
-      this.configurationProvider.additionalArguments,
-      convertFilePathToWindows(fileName)
+      `"${testName}"`,
+      this.configurationProvider.args,
+      fileName
     ].join(' ')
 
     this.runCommand(workspaceFolder, command)
@@ -39,18 +37,13 @@ export class PlaywrightTestRunner extends TestRunner {
 
   public debug({workspaceFolder, fileName, testName}: TestParams): void {
     debug.startDebugging(workspaceFolder, {
-      ...this.getCommonDebugConfig(workspaceFolder),
+      ...this.getCommonDebugConfig(),
       env: {
-        ...{PLAYWRIGHT_CHROMIUM_DEBUG_PORT: 9222, PWDEBUG: true},
-        ...this.configurationProvider.environmentVariables
+        PLAYWRIGHT_CHROMIUM_DEBUG_PORT: 9222,
+        PWDEBUG: true,
+        ...this.configurationProvider.env
       },
-      args: [
-        'test',
-        '-g',
-        escapeQuotesAndSpecialCharacters(testName),
-        ...this.configurationProvider.additionalArguments.split(' '),
-        convertFilePathToWindows(fileName)
-      ]
+      args: ['test', '-g', testName, ...this.configurationProvider.args.split(' '), fileName]
     })
   }
 }

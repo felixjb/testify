@@ -1,25 +1,23 @@
-import {join} from 'path'
 import {debug} from 'vscode'
 import {ConfigurationProvider} from '../providers/configuration-provider'
-import {TestParams} from '../utils/params'
-import {convertFilePathToWindows, escapeQuotesAndSpecialCharacters} from '../utils/utils'
-import {RunParams, TestRunner} from './test-runner'
+import {RunParams, TestParams, TestRunner} from './test-runner'
 
 export class AvaTestRunner extends TestRunner {
   constructor(
     readonly configurationProvider: ConfigurationProvider,
-    readonly path: string = join('node_modules', '.bin', 'ava')
+    readonly executablePath: string = 'node_modules/.bin/ava',
+    readonly entryPointPath: string = 'node_modules/ava/entrypoints/cli.mjs'
   ) {
-    super(configurationProvider, path)
+    super(configurationProvider, executablePath, entryPointPath)
   }
 
   public run({workspaceFolder, fileName, testName, watchOption = ''}: RunParams): void {
     const command = [
-      this.path,
-      convertFilePathToWindows(fileName),
-      `--match="${escapeQuotesAndSpecialCharacters(testName)}"`,
+      this.executablePath,
+      fileName,
+      `--match="${testName}"`,
       watchOption,
-      this.configurationProvider.additionalArguments
+      this.configurationProvider.args
     ].join(' ')
 
     this.runCommand(workspaceFolder, command)
@@ -31,14 +29,14 @@ export class AvaTestRunner extends TestRunner {
 
   public debug({workspaceFolder, fileName, testName}: TestParams): void {
     debug.startDebugging(workspaceFolder, {
-      ...this.getCommonDebugConfig(workspaceFolder),
+      ...this.getCommonDebugConfig(),
       args: [
         'debug',
         '--break',
         '--serial',
-        convertFilePathToWindows(fileName),
-        `--match="${escapeQuotesAndSpecialCharacters(testName)}"`,
-        ...this.configurationProvider.additionalArguments.split(' ')
+        fileName,
+        `--match="${testName}"`,
+        ...this.configurationProvider.args.split(' ')
       ]
     })
   }

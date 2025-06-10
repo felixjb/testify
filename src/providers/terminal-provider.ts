@@ -17,17 +17,17 @@ export class TerminalProvider {
   public static executeCommand({
     workspaceFolder,
     command,
-    options: {autoClear, environmentVariables}
+    options: {autoClear, env}
   }: {
     workspaceFolder: WorkspaceFolder
     command: string
-    options: {autoClear: boolean; environmentVariables: env}
+    options: {autoClear: boolean; env: env}
   }): void {
     if (autoClear) {
       commands.executeCommand('workbench.action.terminal.clear')
     }
 
-    const terminal = this.get(workspaceFolder, {env: environmentVariables})
+    const terminal = this.get(workspaceFolder, {env: env})
     terminal.sendText(command, true)
     terminal.show(true)
   }

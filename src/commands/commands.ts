@@ -2,6 +2,7 @@ import {relative} from 'path'
 import {Command, WorkspaceFolder} from 'vscode'
 import {ConfigurationProvider} from '../providers/configuration-provider'
 import {getTestRunner} from '../runners/test-runner-factory'
+import {escapeQuotesAndSpecialCharacters, toForwardSlashPath} from '../utils/utils'
 
 enum CommandActionEnum {
   Run = 'run',
@@ -54,9 +55,16 @@ export function executeTestCommand(
 ): void {
   const configurationProvider = new ConfigurationProvider(workspaceFolder)
   const testRunner = getTestRunner(configurationProvider, workspaceFolder)
-  const relativeFileName = relative(workspaceFolder.uri.fsPath, fileName)
+  const forwardSlashRelativeFileName = toForwardSlashPath(
+    relative(workspaceFolder.uri.fsPath, fileName)
+  )
+  const testNameEscaped = escapeQuotesAndSpecialCharacters(testName)
 
-  testRunner[action]({workspaceFolder, testName, fileName: relativeFileName})
+  testRunner[action]({
+    workspaceFolder,
+    testName: testNameEscaped,
+    fileName: forwardSlashRelativeFileName
+  })
 }
 
 export const runTestCallback = (...args: TestCommandArguments): void =>

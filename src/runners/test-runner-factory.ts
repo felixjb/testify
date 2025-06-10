@@ -1,7 +1,9 @@
 import {existsSync} from 'fs'
-import {basename, join} from 'path'
+import {basename, resolve} from 'path'
 import {WorkspaceFolder} from 'vscode'
+import which from 'which'
 import {ConfigurationProvider} from '../providers/configuration-provider'
+import {isNodePath} from '../utils/utils'
 import {AvaTestRunner} from './ava-test-runner'
 import {JestTestRunner} from './jest-test-runner'
 import {MochaTestRunner} from './mocha-test-runner'
@@ -10,53 +12,71 @@ import {PlaywrightTestRunner} from './playwright-test-runner'
 import {TestRunner} from './test-runner'
 import {VitestTestRunner} from './vitest-test-runner'
 
-const TEST_RUNNERS: Record<
-  string,
-  new (configurationProvider: ConfigurationProvider, path?: string) => TestRunner
-> = {
+type TestRunnerImplClass =
+  | typeof AvaTestRunner
+  | typeof JestTestRunner
+  | typeof MochaTestRunner
+  | typeof PlaywrightTestRunner
+  | typeof VitestTestRunner
+
+const TEST_RUNNERS: Record<string, TestRunnerImplClass> = {
   ava: AvaTestRunner,
   jest: JestTestRunner,
   mocha: MochaTestRunner,
-  node: NodeTestRunner,
   playwright: PlaywrightTestRunner,
   vitest: VitestTestRunner
-} as const
+}
 
 function getCustomTestRunner(
   configurationProvider: ConfigurationProvider,
   workspaceFolder: WorkspaceFolder
 ): TestRunner | never {
-  const testRunnerPath = configurationProvider.testRunnerPath
-  const executableRelativePath = join(workspaceFolder.uri.fsPath, testRunnerPath)
-  if (!existsSync(executableRelativePath) && !existsSync(testRunnerPath)) {
-    throw new Error(`No test runner in specified path: ${testRunnerPath}. Please verify it.`)
-  }
-
-  const testRunnerName = basename(testRunnerPath).replace('_', '').toLowerCase()
-  const TestRunner = TEST_RUNNERS[testRunnerName]
-  if (!TestRunner) {
+  const executablePath = configurationProvider.executablePath
+  const executableExists = existsSync(resolve(workspaceFolder.uri.fsPath, executablePath))
+  if (!executableExists) {
     throw new Error(
-      `Unsupported test runner: ${testRunnerName}. Please use one of the supported ones.`
+      `Test runner executable not found at: ${executablePath}. Please verify the \`executablePath\` configuration.`
     )
   }
 
-  return new TestRunner(configurationProvider, testRunnerPath)
+  if (isNodePath(executablePath)) {
+    return new NodeTestRunner(configurationProvider, executablePath)
+  }
+
+  const testRunnerName = basename(executablePath).replace('_', '').toLowerCase()
+  const TestRunner = TEST_RUNNERS[testRunnerName]
+  if (!TestRunner) {
+    throw new Error(
+      `Unsupported test runner: ${testRunnerName}. Please use one of the supported ones: ${Object.keys(TEST_RUNNERS).concat('node').join(', ')}.`
+    )
+  }
+
+  const entryPointPath = configurationProvider.entryPointPath
+  const entryPointExists = existsSync(resolve(workspaceFolder.uri.fsPath, entryPointPath))
+  if (!entryPointExists) {
+    throw new Error(
+      `Test runner entry point not found at: ${entryPointPath}. Please verify the \`entryPointPath\` configuration.`
+    )
+  }
+
+  return new TestRunner(configurationProvider, executablePath, entryPointPath)
 }
 
 function getAvailableTestRunner(
   configurationProvider: ConfigurationProvider,
   workspaceFolder: WorkspaceFolder
-): TestRunner {
+): TestRunner | never {
   for (const TestRunner of Object.values(TEST_RUNNERS)) {
     const runner = new TestRunner(configurationProvider)
-    if (existsSync(join(workspaceFolder.uri.fsPath, runner.path))) {
+    const executableExists = existsSync(resolve(workspaceFolder.uri.fsPath, runner.executablePath))
+    if (executableExists) {
       return runner
     }
   }
 
-  const nodeTestRunner = new NodeTestRunner(configurationProvider)
-  if (existsSync(nodeTestRunner.path)) {
-    return nodeTestRunner
+  const nodePath = which.sync('node', {nothrow: true})
+  if (nodePath !== null) {
+    return new NodeTestRunner(configurationProvider, nodePath)
   }
 
   throw new Error('No supported test runner found. Please install one.')
@@ -65,8 +85,8 @@ function getAvailableTestRunner(
 export function getTestRunner(
   configurationProvider: ConfigurationProvider,
   workspaceFolder: WorkspaceFolder
-): TestRunner {
-  return configurationProvider.testRunnerPath
+): TestRunner | never {
+  return configurationProvider.executablePath
     ? getCustomTestRunner(configurationProvider, workspaceFolder)
     : getAvailableTestRunner(configurationProvider, workspaceFolder)
 }
