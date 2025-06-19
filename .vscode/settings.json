@@ -3,16 +3,10 @@
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "always",
+    "source.fixAll": "always",
     "source.organizeImports": "always"
   },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "files.trimTrailingWhitespace": true,
-  "search.exclude": {
-    "**/.git": true,
-    "**/.vscode-test": true,
-    "**/node_modules": true,
-    "**/out": true
-  },
-  "testify.additionalArgs": "--require ts-node/register --no-timeout"
+  "testify.args": ["--require", "ts-node/register", "--no-timeout"]
 }
