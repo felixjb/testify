@@ -1,4 +1,4 @@
-import {DebugConfiguration, WorkspaceFolder} from 'vscode'
+import {WorkspaceFolder} from 'vscode'
 import {ConfigurationProvider} from '../providers/configuration-provider'
 import {TerminalProvider} from '../providers/terminal-provider'
 
@@ -50,21 +50,5 @@ export abstract class TestRunner {
         env: this.configurationProvider.env
       }
     })
-  }
-
-  protected getCommonDebugConfig(): DebugConfiguration {
-    return {
-      name: 'Testify: Debug Test',
-      type: 'node',
-      request: 'launch',
-      console: 'internalConsole',
-      internalConsoleOptions: 'openOnSessionStart',
-      outputCapture: 'std',
-      autoAttachChildProcesses: true,
-      smartStep: true,
-      env: this.configurationProvider.env,
-      program: `\${workspaceFolder}/${this.entryPointPath}`,
-      skipFiles: this.configurationProvider.skipFiles
-    }
   }
 }

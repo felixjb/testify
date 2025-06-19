@@ -30,14 +30,15 @@ export class VitestTestRunner extends TestRunner {
 
   public debug({workspaceFolder, fileName, testName}: TestParams): void {
     debug.startDebugging(workspaceFolder, {
-      ...this.getCommonDebugConfig(),
+      program: `\${workspaceFolder}/${this.entryPointPath}`,
       args: [
         'run',
         fileName,
         `--testNamePattern="${testName}"`,
         '--no-file-parallelism',
         ...this.configurationProvider.args
-      ]
+      ],
+      ...this.configurationProvider.debugConfiguration
     })
   }
 }

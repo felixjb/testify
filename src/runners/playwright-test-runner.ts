@@ -37,13 +37,14 @@ export class PlaywrightTestRunner extends TestRunner {
 
   public debug({workspaceFolder, fileName, testName}: TestParams): void {
     debug.startDebugging(workspaceFolder, {
-      ...this.getCommonDebugConfig(),
+      program: `\${workspaceFolder}/${this.entryPointPath}`,
       env: {
         PLAYWRIGHT_CHROMIUM_DEBUG_PORT: 9222,
         PWDEBUG: true,
         ...this.configurationProvider.env
       },
-      args: ['test', '-g', testName, ...this.configurationProvider.args, fileName]
+      args: ['test', '-g', testName, ...this.configurationProvider.args, fileName],
+      ...this.configurationProvider.debugConfiguration
     })
   }
 }

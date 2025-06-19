@@ -29,7 +29,7 @@ export class AvaTestRunner extends TestRunner {
 
   public debug({workspaceFolder, fileName, testName}: TestParams): void {
     debug.startDebugging(workspaceFolder, {
-      ...this.getCommonDebugConfig(),
+      program: `\${workspaceFolder}/${this.entryPointPath}`,
       args: [
         'debug',
         '--break',
@@ -37,7 +37,8 @@ export class AvaTestRunner extends TestRunner {
         fileName,
         `--match="${testName}"`,
         ...this.configurationProvider.args
-      ]
+      ],
+      ...this.configurationProvider.debugConfiguration
     })
   }
 }

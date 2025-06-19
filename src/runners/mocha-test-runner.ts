@@ -29,8 +29,9 @@ export class MochaTestRunner extends TestRunner {
 
   public debug({workspaceFolder, fileName, testName}: TestParams): void {
     debug.startDebugging(workspaceFolder, {
-      ...this.getCommonDebugConfig(),
-      args: [fileName, `--fgrep="${testName}"`, ...this.configurationProvider.args]
+      program: `\${workspaceFolder}/${this.entryPointPath}`,
+      args: [fileName, `--fgrep="${testName}"`, ...this.configurationProvider.args],
+      ...this.configurationProvider.debugConfiguration
     })
   }
 }

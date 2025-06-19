@@ -1,5 +1,5 @@
 import shell from 'shell-quote'
-import {workspace, WorkspaceConfiguration, WorkspaceFolder} from 'vscode'
+import {DebugConfiguration, workspace, WorkspaceConfiguration, WorkspaceFolder} from 'vscode'
 import {toForwardSlashPath} from '../utils/utils'
 
 export type env = {[key: string]: string | null | undefined}
@@ -36,6 +36,23 @@ export class ConfigurationProvider {
       .parse(additionalArgs)
       .map(arg => arg.toString().trim())
       .filter(Boolean)
+  }
+
+  get debugConfiguration(): DebugConfiguration {
+    const value = this.configuration.get<DebugConfiguration>('debugConfiguration')
+    return {
+      name: 'Testify: Debug Test',
+      type: 'node',
+      request: 'launch',
+      console: 'internalConsole',
+      internalConsoleOptions: 'openOnSessionStart',
+      outputCapture: 'std',
+      autoAttachChildProcesses: true,
+      smartStep: true,
+      env: this.env,
+      skipFiles: this.skipFiles,
+      ...value
+    }
   }
 
   get env(): env {

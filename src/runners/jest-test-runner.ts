@@ -29,13 +29,14 @@ export class JestTestRunner extends TestRunner {
 
   public debug({workspaceFolder, fileName, testName}: TestParams): void {
     debug.startDebugging(workspaceFolder, {
-      ...this.getCommonDebugConfig(),
+      program: `\${workspaceFolder}/${this.entryPointPath}`,
       args: [
         fileName,
         `--testNamePattern="${testName}"`,
         '--runInBand',
         ...this.configurationProvider.args
-      ]
+      ],
+      ...this.configurationProvider.debugConfiguration
     })
   }
 }

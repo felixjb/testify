@@ -122,8 +122,15 @@
           ],
           "default": []
         },
-        "testify.env": {
+        "testify.debugConfiguration": {
           "order": 3,
+          "markdownDescription": "Debug Configuration",
+          "type": "object",
+          "additionalProperties": true,
+          "default": {}
+        },
+        "testify.env": {
+          "order": 4,
           "description": "Environment variables to set when running or debugging tests. Specify as key-value pairs.",
           "type": "object",
           "additionalProperties": {
@@ -140,7 +147,7 @@
           "default": {}
         },
         "testify.skipFiles": {
-          "order": 4,
+          "order": 5,
           "description": "An array of file or folder names, or path globs, to skip when debugging. Star patterns and negations are allowed",
           "examples": [
             "<node_internals>/**",
@@ -154,7 +161,7 @@
           "default": []
         },
         "testify.excludeFiles": {
-          "order": 5,
+          "order": 6,
           "description": "An array of file or folder names, or path globs, to be excluded from test discovery. Star patterns and negations are allowed",
           "examples": [
             "**/*.cy.ts"
@@ -166,7 +173,7 @@
           "default": []
         },
         "testify.autoClear": {
-          "order": 6,
+          "order": 7,
           "description": "Whether to clear the terminal before running each test",
           "type": "boolean",
           "default": true

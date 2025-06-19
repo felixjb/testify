@@ -47,12 +47,12 @@ export class NodeTestRunner extends TestRunner {
 
   public debug({workspaceFolder, fileName, testName}: TestParams): void {
     debug.startDebugging(workspaceFolder, {
-      ...this.getCommonDebugConfig(),
       // Not needed for Node.js Test Runner since VSCode Debugger is set to `type: 'node'`
       program: null,
       // Needed for specifing the Node.js version as the host may have multiple versions installed
       runtimeExecutable: this.executablePath,
-      args: [...this.configurationProvider.args, fileName, `--test-name-pattern="${testName}"`]
+      args: [...this.configurationProvider.args, fileName, `--test-name-pattern="${testName}"`],
+      ...this.configurationProvider.debugConfiguration
     })
   }
 }
