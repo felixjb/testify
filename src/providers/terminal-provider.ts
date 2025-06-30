@@ -12,8 +12,6 @@ import {env} from './configuration-provider'
 export class TerminalProvider {
   private static activeTerminal: Terminal
 
-  private constructor() {}
-
   public static executeCommand({
     workspaceFolder,
     command,

@@ -2,16 +2,19 @@ import {commands, ExtensionContext, ExtensionMode, languages, Uri, window} from 
 import {version} from '../package.json'
 import {
   debugTestCallback,
+  rerunTestCallback,
   runTestCallback,
+  runTestFileCallback,
   TestifyCommand,
   watchTestCallback
 } from './commands/commands'
 import {FILE_SELECTOR} from './constants/file-selector'
 import {TestRunnerCodeLensProvider} from './providers/code-lens-provider'
-
-const LAST_VERSION_KEY = 'testify.lastVersion'
+import {StateProvider} from './providers/state-provider'
 
 export async function activate(context: ExtensionContext): Promise<void> {
+  StateProvider.setContext(context)
+
   await showUpdateMessage(context)
 
   context.subscriptions.push(
@@ -23,15 +26,18 @@ export async function activate(context: ExtensionContext): Promise<void> {
   commands.registerCommand(TestifyCommand.run, runTestCallback)
   commands.registerCommand(TestifyCommand.watch, watchTestCallback)
   commands.registerCommand(TestifyCommand.debug, debugTestCallback)
+  commands.registerCommand(TestifyCommand.rerun, rerunTestCallback)
+  commands.registerCommand(TestifyCommand.runFile, runTestFileCallback)
 }
 
-async function showUpdateMessage(context: ExtensionContext) {
-  const lastVersion = context.globalState.get<string>(LAST_VERSION_KEY)
+async function showUpdateMessage(context: ExtensionContext): Promise<void> {
+  const lastVersion = StateProvider.lastVersion
   const hasProductionVersionChanged =
     lastVersion !== version && context.extensionMode === ExtensionMode.Production
   if (!hasProductionVersionChanged) {
     return
   }
+  StateProvider.lastVersion = version
 
   const Actions = {
     ViewChangelog: 'View Changelog',
@@ -55,6 +61,4 @@ async function showUpdateMessage(context: ExtensionContext) {
         openUrl(`https://github.com/felixjb/testify/releases/tag/v${version}`)
       }
     })
-
-  await context.globalState.update(LAST_VERSION_KEY, version)
 }
