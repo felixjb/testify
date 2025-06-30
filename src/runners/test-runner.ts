@@ -11,7 +11,9 @@ export type TestParams = {
 
 export type RunParams = TestParams & {watchOption?: string}
 
-export type TestFileParms = Omit<TestParams, 'testName'>
+export type RunFileParms = Omit<RunParams, 'testName'>
+
+export type WatchFileParms = Omit<TestParams, 'testName'>
 
 /**
  * @class TestRunner
@@ -44,7 +46,9 @@ export abstract class TestRunner {
 
   public abstract debug(params: TestParams): void
 
-  public abstract runFile({workspaceFolder, fileName}: TestFileParms): void
+  public abstract runFile(params: RunFileParms): void
+
+  public abstract watchFile(params: WatchFileParms): void
 
   public rerunLastCommand(workspaceFolder: WorkspaceFolder): void {
     const lastCommand = StateProvider.lastCommand

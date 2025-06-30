@@ -72,6 +72,10 @@
       {
         "command": "testify.run.file",
         "title": "Testify: Run Test File"
+      },
+      {
+        "command": "testify.watch.file",
+        "title": "Testify: Watch Test File"
       }
     ],
     "keybindings": [
@@ -84,6 +88,13 @@
       {
         "command": "testify.run.file",
         "key": "ctrl+alt+r",
+        "mac": "ctrl+cmd+r",
+        "when": "editorTextFocus && editorLangId =~ /(javascript|javascriptreact|typescript|typescriptreact|vue)/ "
+      },
+      {
+        "command": "testify.watch.file",
+        "key": "ctrl+alt+w",
+        "mac": "ctrl+cmd+w",
         "when": "editorTextFocus && editorLangId =~ /(javascript|javascriptreact|typescript|typescriptreact|vue)/ "
       }
     ],
@@ -107,6 +118,10 @@
         },
         {
           "command": "testify.run.file",
+          "when": "editorIsOpen && editorLangId =~ /(javascript|javascriptreact|typescript|typescriptreact|vue)/"
+        },
+        {
+          "command": "testify.watch.file",
           "when": "editorIsOpen && editorLangId =~ /(javascript|javascriptreact|typescript|typescriptreact|vue)/"
         }
       ]

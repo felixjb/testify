@@ -1,6 +1,6 @@
 import {debug} from 'vscode'
 import {ConfigurationProvider} from '../providers/configuration-provider'
-import {RunParams, TestFileParms, TestParams, TestRunner} from './test-runner'
+import {RunFileParms, RunParams, TestParams, TestRunner, WatchFileParms} from './test-runner'
 
 export class PlaywrightTestRunner extends TestRunner {
   constructor(
@@ -35,10 +35,25 @@ export class PlaywrightTestRunner extends TestRunner {
     this.run({workspaceFolder, fileName, testName, watchOption: 'PWTEST_WATCH=1'})
   }
 
-  public runFile({workspaceFolder, fileName}: TestFileParms): void {
-    const command = [this.executablePath, ...this.configurationProvider.args, fileName].join(' ')
+  public runFile({workspaceFolder, fileName, watchOption = ''}: RunFileParms): void {
+    const command = [
+      watchOption,
+      this.executablePath,
+      ...this.configurationProvider.args,
+      fileName
+    ].join(' ')
 
     this.runCommand(workspaceFolder, command)
+  }
+
+  /**
+   * Playwright currently does not officially support "watch" yet, so we are using the environment
+   * variable `PWTEST_WATCH=1` to simulate the watch mode.
+   *
+   * @see https://github.com/microsoft/playwright/issues/21960#issuecomment-1483604692
+   */
+  public watchFile({workspaceFolder, fileName}: WatchFileParms): void {
+    this.runFile({workspaceFolder, fileName, watchOption: 'PWTEST_WATCH=1'})
   }
 
   public debug({workspaceFolder, fileName, testName}: TestParams): void {

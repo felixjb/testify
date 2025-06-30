@@ -6,7 +6,8 @@ import {
   runTestCallback,
   runTestFileCallback,
   TestifyCommands,
-  watchTestCallback
+  watchTestCallback,
+  watchTestFileCallback
 } from './commands/commands'
 import {FILE_SELECTOR} from './constants/file-selector'
 import {TestRunnerCodeLensProvider} from './providers/code-lens-provider'
@@ -28,6 +29,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
   commands.registerCommand(TestifyCommands.debug, debugTestCallback)
   commands.registerCommand(TestifyCommands.rerun, rerunTestCallback)
   commands.registerCommand(TestifyCommands.runFile, runTestFileCallback)
+  commands.registerCommand(TestifyCommands.watchFile, watchTestFileCallback)
 }
 
 async function showUpdateMessage(context: ExtensionContext): Promise<void> {
@@ -43,9 +45,7 @@ async function showUpdateMessage(context: ExtensionContext): Promise<void> {
     ViewChangelog: 'View Changelog',
     ViewReleaseNotes: 'View Release Notes'
   }
-  const openUrl = (url: string) => {
-    commands.executeCommand('vscode.open', Uri.parse(url))
-  }
+  const openUrl = (url: string) => commands.executeCommand('vscode.open', Uri.parse(url))
 
   window
     .showInformationMessage(

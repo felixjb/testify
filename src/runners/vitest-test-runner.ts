@@ -1,6 +1,6 @@
 import {debug} from 'vscode'
 import {ConfigurationProvider} from '../providers/configuration-provider'
-import {RunParams, TestFileParms, TestParams, TestRunner} from './test-runner'
+import {RunFileParms, RunParams, TestParams, TestRunner, WatchFileParms} from './test-runner'
 
 export class VitestTestRunner extends TestRunner {
   constructor(
@@ -11,11 +11,10 @@ export class VitestTestRunner extends TestRunner {
     super(configurationProvider, executablePath, entryPointPath)
   }
 
-  public run({workspaceFolder, fileName, testName, watchOption}: RunParams): void {
-    const mode = watchOption ?? 'run'
+  public run({workspaceFolder, fileName, testName, watchOption = 'run'}: RunParams): void {
     const command = [
       this.executablePath,
-      mode,
+      watchOption,
       fileName,
       `--testNamePattern="${testName}"`,
       ...this.configurationProvider.args
@@ -28,12 +27,19 @@ export class VitestTestRunner extends TestRunner {
     this.run({workspaceFolder, fileName, testName, watchOption: 'watch'})
   }
 
-  public runFile({workspaceFolder, fileName}: TestFileParms): void {
-    const command = [this.executablePath, 'run', fileName, ...this.configurationProvider.args].join(
-      ' '
-    )
+  public runFile({workspaceFolder, fileName, watchOption = 'run'}: RunFileParms): void {
+    const command = [
+      this.executablePath,
+      watchOption,
+      fileName,
+      ...this.configurationProvider.args
+    ].join(' ')
 
     this.runCommand(workspaceFolder, command)
+  }
+
+  public watchFile({workspaceFolder, fileName}: WatchFileParms): void {
+    this.runFile({workspaceFolder, fileName, watchOption: 'watch'})
   }
 
   public debug({workspaceFolder, fileName, testName}: TestParams): void {
