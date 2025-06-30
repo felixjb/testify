@@ -41,7 +41,18 @@ export abstract class TestRunner {
 
   public abstract debug(params: TestParams): void
 
+  public rerunLastCommand(workspaceFolder: WorkspaceFolder): void {
+    const lastCommand = StateProvider.lastCommand
+    if (!lastCommand || lastCommand.length === 0) {
+      return
+    }
+
+    this.runCommand(workspaceFolder, lastCommand)
+  }
+
   protected runCommand(workspaceFolder: WorkspaceFolder, command: string): void {
+    StateProvider.lastCommand = command
+
     TerminalProvider.executeCommand({
       workspaceFolder,
       command,

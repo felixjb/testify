@@ -55,17 +55,49 @@
     "commands": [
       {
         "command": "testify.run.test",
-        "title": "Run Test"
-      },
-      {
-        "command": "testify.debug.test",
-        "title": "Debug Test"
+        "title": "Testify: Run Test"
       },
       {
         "command": "testify.watch.test",
-        "title": "Watch Test"
+        "title": "Testify: Watch Test"
+      },
+      {
+        "command": "testify.debug.test",
+        "title": "Testify: Debug Test"
+      },
+      {
+        "command": "testify.run.last",
+        "title": "Testify: Rerun Last Command"
       }
     ],
+    "keybindings": [
+      {
+        "command": "testify.run.last",
+        "key": "ctrl+shift+alt+r",
+        "mac": "ctrl+shift+cmd+r",
+        "when": "workspaceFolderCount != 0"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "testify.run.test",
+          "when": "false"
+        },
+        {
+          "command": "testify.watch.test",
+          "when": "false"
+        },
+        {
+          "command": "testify.debug.test",
+          "when": "false"
+        },
+        {
+          "command": "testify.run.last",
+          "when": "workspaceFolderCount != 0"
+        }
+      ]
+    },
     "configuration": {
       "title": "Testify",
       "description": "Configuration for Testify extension",
