@@ -1,5 +1,6 @@
 import {WorkspaceFolder} from 'vscode'
 import {ConfigurationProvider} from '../providers/configuration-provider'
+import {StateProvider} from '../providers/state-provider'
 import {TerminalProvider} from '../providers/terminal-provider'
 
 export type TestParams = {
@@ -9,6 +10,8 @@ export type TestParams = {
 }
 
 export type RunParams = TestParams & {watchOption?: string}
+
+export type TestFileParms = Omit<TestParams, 'testName'>
 
 /**
  * @class TestRunner
@@ -40,6 +43,8 @@ export abstract class TestRunner {
   public abstract watch(params: TestParams): void
 
   public abstract debug(params: TestParams): void
+
+  public abstract runFile({workspaceFolder, fileName}: TestFileParms): void
 
   public rerunLastCommand(workspaceFolder: WorkspaceFolder): void {
     const lastCommand = StateProvider.lastCommand

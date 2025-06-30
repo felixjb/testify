@@ -1,6 +1,6 @@
 import {debug} from 'vscode'
 import {ConfigurationProvider} from '../providers/configuration-provider'
-import {RunParams, TestParams, TestRunner} from './test-runner'
+import {RunParams, TestFileParms, TestParams, TestRunner} from './test-runner'
 
 export class PlaywrightTestRunner extends TestRunner {
   constructor(
@@ -33,6 +33,12 @@ export class PlaywrightTestRunner extends TestRunner {
    */
   public watch({workspaceFolder, fileName, testName}: TestParams): void {
     this.run({workspaceFolder, fileName, testName, watchOption: 'PWTEST_WATCH=1'})
+  }
+
+  public runFile({workspaceFolder, fileName}: TestFileParms): void {
+    const command = [this.executablePath, ...this.configurationProvider.args, fileName].join(' ')
+
+    this.runCommand(workspaceFolder, command)
   }
 
   public debug({workspaceFolder, fileName, testName}: TestParams): void {

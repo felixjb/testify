@@ -1,5 +1,5 @@
 import {relative} from 'path'
-import {Command, WorkspaceFolder} from 'vscode'
+import {Command, window, workspace, WorkspaceFolder} from 'vscode'
 import {ConfigurationProvider} from '../providers/configuration-provider'
 import {getTestRunner} from '../runners/test-runner-factory'
 import {escapeQuotesAndSpecialCharacters, toForwardSlashPath} from '../utils/utils'
@@ -8,7 +8,8 @@ enum CommandActionEnum {
   Run = 'run',
   Watch = 'watch',
   Debug = 'debug',
-  Rerun = 'rerun'
+  Rerun = 'rerun',
+  RunFile = 'runFile'
 }
 
 type CommandAction = `${CommandActionEnum}`
@@ -21,7 +22,7 @@ export const TestifyCommand: Record<CommandAction, string> = {
   [CommandActionEnum.RunFile]: 'testify.run.file'
 } as const
 
-type CodeLensAction = Exclude<CommandAction, 'rerun'>
+type CodeLensAction = Exclude<CommandAction, 'rerun' | 'runFile'>
 
 type TestCommands = Record<CodeLensAction, Command>
 
@@ -94,4 +95,26 @@ export const rerunTestCallback = (): void => {
   const testRunner = getTestRunner(configurationProvider, workspaceFolder)
 
   testRunner.rerunLastCommand(workspaceFolder)
+}
+
+export const runTestFileCallback = (): void => {
+  const editor = window.activeTextEditor
+  if (!editor) {
+    window.showErrorMessage('No active editor found.')
+    return
+  }
+  const document = editor.document
+  const workspaceFolder = workspace.getWorkspaceFolder(document.uri)
+  if (!workspaceFolder) {
+    window.showErrorMessage('No workspace folder found for this file.')
+    return
+  }
+
+  const configurationProvider = new ConfigurationProvider(workspaceFolder)
+  const testRunner = getTestRunner(configurationProvider, workspaceFolder)
+
+  testRunner.runFile({
+    workspaceFolder,
+    fileName: toForwardSlashPath(workspace.asRelativePath(document.fileName, false))
+  })
 }

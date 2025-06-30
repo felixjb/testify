@@ -1,6 +1,6 @@
 import {debug} from 'vscode'
 import {ConfigurationProvider} from '../providers/configuration-provider'
-import {RunParams, TestParams, TestRunner} from './test-runner'
+import {RunParams, TestFileParms, TestParams, TestRunner} from './test-runner'
 
 const DUMMY_PATH = 'not/used/node-test-runner.js'
 
@@ -43,6 +43,17 @@ export class NodeTestRunner extends TestRunner {
 
   public watch({workspaceFolder, fileName, testName}: TestParams): void {
     this.run({workspaceFolder, fileName, testName, watchOption: '--watch'})
+  }
+
+  public runFile({workspaceFolder, fileName}: TestFileParms): void {
+    const command = [
+      this.executablePath,
+      '--test',
+      fileName,
+      ...this.configurationProvider.args
+    ].join(' ')
+
+    this.runCommand(workspaceFolder, command)
   }
 
   public debug({workspaceFolder, fileName, testName}: TestParams): void {

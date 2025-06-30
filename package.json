@@ -68,6 +68,10 @@
       {
         "command": "testify.run.last",
         "title": "Testify: Rerun Last Command"
+      },
+      {
+        "command": "testify.run.file",
+        "title": "Testify: Run Test File"
       }
     ],
     "keybindings": [
@@ -76,6 +80,11 @@
         "key": "ctrl+shift+alt+r",
         "mac": "ctrl+shift+cmd+r",
         "when": "workspaceFolderCount != 0"
+      },
+      {
+        "command": "testify.run.file",
+        "key": "ctrl+alt+r",
+        "when": "editorTextFocus && editorLangId =~ /(javascript|javascriptreact|typescript|typescriptreact|vue)/ "
       }
     ],
     "menus": {
@@ -95,6 +104,10 @@
         {
           "command": "testify.run.last",
           "when": "workspaceFolderCount != 0"
+        },
+        {
+          "command": "testify.run.file",
+          "when": "editorIsOpen && editorLangId =~ /(javascript|javascriptreact|typescript|typescriptreact|vue)/"
         }
       ]
     },
