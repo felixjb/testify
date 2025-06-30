@@ -5,7 +5,7 @@ import {
   rerunTestCallback,
   runTestCallback,
   runTestFileCallback,
-  TestifyCommand,
+  TestifyCommands,
   watchTestCallback
 } from './commands/commands'
 import {FILE_SELECTOR} from './constants/file-selector'
@@ -23,11 +23,11 @@ export async function activate(context: ExtensionContext): Promise<void> {
 
   window.onDidCloseTerminal(closedTerminal => closedTerminal.dispose())
 
-  commands.registerCommand(TestifyCommand.run, runTestCallback)
-  commands.registerCommand(TestifyCommand.watch, watchTestCallback)
-  commands.registerCommand(TestifyCommand.debug, debugTestCallback)
-  commands.registerCommand(TestifyCommand.rerun, rerunTestCallback)
-  commands.registerCommand(TestifyCommand.runFile, runTestFileCallback)
+  commands.registerCommand(TestifyCommands.run, runTestCallback)
+  commands.registerCommand(TestifyCommands.watch, watchTestCallback)
+  commands.registerCommand(TestifyCommands.debug, debugTestCallback)
+  commands.registerCommand(TestifyCommands.rerun, rerunTestCallback)
+  commands.registerCommand(TestifyCommands.runFile, runTestFileCallback)
 }
 
 async function showUpdateMessage(context: ExtensionContext): Promise<void> {

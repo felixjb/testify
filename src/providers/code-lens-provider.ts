@@ -1,6 +1,6 @@
 import picomatch from 'picomatch'
 import {CodeLens, CodeLensProvider, Range, TextDocument, workspace} from 'vscode'
-import {buildTestCommands} from '../commands/commands'
+import {buildCodeLensCommands} from '../commands/commands'
 import {parseSourceCode} from '../parser/parser'
 import {TestParams} from '../runners/test-runner'
 import {ConfigurationProvider} from './configuration-provider'
@@ -40,7 +40,7 @@ export class TestRunnerCodeLensProvider implements CodeLensProvider {
     testName,
     startPosition
   }: TestParams & {startPosition: Range}): CodeLens[] {
-    const {run, watch, debug} = buildTestCommands(workspaceFolder, fileName, testName)
+    const {run, watch, debug} = buildCodeLensCommands(workspaceFolder, fileName, testName)
     return [
       new CodeLens(startPosition, run),
       new CodeLens(startPosition, watch),
