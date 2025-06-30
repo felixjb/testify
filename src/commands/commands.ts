@@ -7,7 +7,8 @@ import {escapeQuotesAndSpecialCharacters, toForwardSlashPath} from '../utils/uti
 enum CommandActionEnum {
   Run = 'run',
   Watch = 'watch',
-  Debug = 'debug'
+  Debug = 'debug',
+  Rerun = 'rerun'
 }
 
 type CommandAction = `${CommandActionEnum}`
@@ -15,16 +16,16 @@ type CommandAction = `${CommandActionEnum}`
 export const TestifyCommand: Record<CommandAction, string> = {
   [CommandActionEnum.Run]: 'testify.run.test',
   [CommandActionEnum.Watch]: 'testify.watch.test',
-  [CommandActionEnum.Debug]: 'testify.debug.test'
+  [CommandActionEnum.Debug]: 'testify.debug.test',
+  [CommandActionEnum.Rerun]: 'testify.run.last',
+  [CommandActionEnum.RunFile]: 'testify.run.file'
 } as const
 
-type TestCommands = Record<CommandAction, Command>
+type CodeLensAction = Exclude<CommandAction, 'rerun'>
 
-export type TestCommandArguments = [
-  workspaceFolder: WorkspaceFolder,
-  fileName: string,
-  testName: string
-]
+type TestCommands = Record<CodeLensAction, Command>
+
+type TestCommandArguments = [workspaceFolder: WorkspaceFolder, fileName: string, testName: string]
 
 export const buildTestCommands = (...args: TestCommandArguments): TestCommands => ({
   [CommandActionEnum.Run]: {
@@ -47,11 +48,11 @@ export const buildTestCommands = (...args: TestCommandArguments): TestCommands =
   }
 })
 
-export function executeTestCommand(
+function executeTestCommand(
   workspaceFolder: WorkspaceFolder,
   fileName: string,
   testName: string,
-  action: CommandAction
+  action: CodeLensAction
 ): void {
   const configurationProvider = new ConfigurationProvider(workspaceFolder)
   const testRunner = getTestRunner(configurationProvider, workspaceFolder)
@@ -75,3 +76,22 @@ export const watchTestCallback = (...args: TestCommandArguments): void =>
 
 export const debugTestCallback = (...args: TestCommandArguments): void =>
   executeTestCommand(...args, CommandActionEnum.Debug)
+
+function getCurrentWorkspaceFolder(): WorkspaceFolder | undefined {
+  return window.activeTextEditor
+    ? workspace.getWorkspaceFolder(window.activeTextEditor.document.uri)
+    : workspace.workspaceFolders?.[0]
+}
+
+export const rerunTestCallback = (): void => {
+  const workspaceFolder = getCurrentWorkspaceFolder()
+  if (!workspaceFolder) {
+    window.showErrorMessage('No workspace folder found.')
+    return
+  }
+
+  const configurationProvider = new ConfigurationProvider(workspaceFolder)
+  const testRunner = getTestRunner(configurationProvider, workspaceFolder)
+
+  testRunner.rerunLastCommand(workspaceFolder)
+}
