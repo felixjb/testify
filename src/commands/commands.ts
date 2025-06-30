@@ -8,10 +8,11 @@ enum CommandActionEnum {
   Run = 'run',
   Watch = 'watch',
   Debug = 'debug',
-  Rerun = 'rerun',
   RunFile = 'runFile',
   WatchFile = 'watchFile',
-  RunNearest = 'runNearest'
+  RunNearest = 'runNearest',
+  WatchNearest = 'watchNearest',
+  Rerun = 'rerun'
 }
 
 type CommandAction = `${CommandActionEnum}`
@@ -20,10 +21,11 @@ export const TestifyCommands: Record<CommandAction, string> = {
   [CommandActionEnum.Run]: 'testify.run.test',
   [CommandActionEnum.Watch]: 'testify.watch.test',
   [CommandActionEnum.Debug]: 'testify.debug.test',
-  [CommandActionEnum.Rerun]: 'testify.run.last',
   [CommandActionEnum.RunFile]: 'testify.run.file',
   [CommandActionEnum.WatchFile]: 'testify.watch.file',
-  [CommandActionEnum.RunNearest]: 'testify.run.nearest'
+  [CommandActionEnum.RunNearest]: 'testify.run.nearest',
+  [CommandActionEnum.WatchNearest]: 'testify.watch.nearest',
+  [CommandActionEnum.Rerun]: 'testify.run.last'
 }
 
 type CodeLensAction = `${CommandActionEnum.Run | CommandActionEnum.Watch | CommandActionEnum.Debug}`
@@ -153,16 +155,11 @@ function findNearestTest(sourceCode: string, cursorLine: number): string | null 
     return null
   }
 
-  let nearestTest = tests[0]
-  let minDistance = Math.abs(tests[0].loc.start.line - cursorLine)
-
-  for (const test of tests) {
-    const distance = Math.abs(test.loc.start.line - cursorLine)
-    if (distance < minDistance) {
-      minDistance = distance
-      nearestTest = test
-    }
-  }
+  const nearestTest = tests.reduce((nearest, current) => {
+    const currentDistance = Math.abs(current.loc.start.line - cursorLine)
+    const nearestDistance = Math.abs(nearest.loc.start.line - cursorLine)
+    return currentDistance < nearestDistance ? current : nearest
+  })
 
   return nearestTest.title
 }
@@ -197,6 +194,42 @@ export const runNearestTestCallback = (): void => {
   const testNameEscaped = escapeQuotesAndSpecialCharacters(nearestTestName)
 
   testRunner.run({
+    workspaceFolder,
+    testName: testNameEscaped,
+    fileName: forwardSlashRelativeFileName
+  })
+}
+
+export const watchNearestTestCallback = (): void => {
+  const editor = window.activeTextEditor
+  if (!editor) {
+    window.showErrorMessage('No active editor found.')
+    return
+  }
+
+  const document = editor.document
+  const workspaceFolder = workspace.getWorkspaceFolder(document.uri)
+  if (!workspaceFolder) {
+    window.showErrorMessage('No workspace folder found for this file.')
+    return
+  }
+
+  const sourceCode = document.getText()
+  const cursorLine = editor.selection.active.line
+  const nearestTestName = findNearestTest(sourceCode, cursorLine)
+  if (!nearestTestName) {
+    window.showErrorMessage('No tests found in this file.')
+    return
+  }
+
+  const configurationProvider = new ConfigurationProvider(workspaceFolder)
+  const testRunner = getTestRunner(configurationProvider, workspaceFolder)
+  const forwardSlashRelativeFileName = toForwardSlashPath(
+    workspace.asRelativePath(document.fileName, false)
+  )
+  const testNameEscaped = escapeQuotesAndSpecialCharacters(nearestTestName)
+
+  testRunner.watch({
     workspaceFolder,
     testName: testNameEscaped,
     fileName: forwardSlashRelativeFileName
