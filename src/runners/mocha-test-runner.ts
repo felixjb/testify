@@ -1,6 +1,6 @@
 import {debug} from 'vscode'
 import {ConfigurationProvider} from '../providers/configuration-provider'
-import {RunParams, TestFileParms, TestParams, TestRunner} from './test-runner'
+import {RunFileParms, RunParams, TestParams, TestRunner, WatchFileParms} from './test-runner'
 
 export class MochaTestRunner extends TestRunner {
   constructor(
@@ -27,10 +27,19 @@ export class MochaTestRunner extends TestRunner {
     this.run({workspaceFolder, fileName, testName, watchOption: '--watch'})
   }
 
-  public runFile({workspaceFolder, fileName}: TestFileParms): void {
-    const command = [this.executablePath, fileName, ...this.configurationProvider.args].join(' ')
+  public runFile({workspaceFolder, fileName, watchOption = ''}: RunFileParms): void {
+    const command = [
+      this.executablePath,
+      fileName,
+      watchOption,
+      ...this.configurationProvider.args
+    ].join(' ')
 
     this.runCommand(workspaceFolder, command)
+  }
+
+  public watchFile({workspaceFolder, fileName}: WatchFileParms): void {
+    this.runFile({workspaceFolder, fileName, watchOption: '--watch'})
   }
 
   public debug({workspaceFolder, fileName, testName}: TestParams): void {
