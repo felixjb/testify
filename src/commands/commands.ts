@@ -14,37 +14,41 @@ enum CommandActionEnum {
 
 type CommandAction = `${CommandActionEnum}`
 
-export const TestifyCommand: Record<CommandAction, string> = {
+export const TestifyCommands: Record<CommandAction, string> = {
   [CommandActionEnum.Run]: 'testify.run.test',
   [CommandActionEnum.Watch]: 'testify.watch.test',
   [CommandActionEnum.Debug]: 'testify.debug.test',
   [CommandActionEnum.Rerun]: 'testify.run.last',
   [CommandActionEnum.RunFile]: 'testify.run.file'
-} as const
+}
 
 type CodeLensAction = Exclude<CommandAction, 'rerun' | 'runFile'>
 
-type TestCommands = Record<CodeLensAction, Command>
+type CodeLensCommands = Record<CodeLensAction, Command>
 
-type TestCommandArguments = [workspaceFolder: WorkspaceFolder, fileName: string, testName: string]
+type CodeLensCommandArguments = [
+  workspaceFolder: WorkspaceFolder,
+  fileName: string,
+  testName: string
+]
 
-export const buildTestCommands = (...args: TestCommandArguments): TestCommands => ({
+export const buildCodeLensCommands = (...args: CodeLensCommandArguments): CodeLensCommands => ({
   [CommandActionEnum.Run]: {
     title: 'Run',
     tooltip: 'Run test',
-    command: TestifyCommand.run,
+    command: TestifyCommands.run,
     arguments: args
   },
   [CommandActionEnum.Watch]: {
     title: 'Watch',
     tooltip: 'Run test on watch mode',
-    command: TestifyCommand.watch,
+    command: TestifyCommands.watch,
     arguments: args
   },
   [CommandActionEnum.Debug]: {
     title: 'Debug',
     tooltip: 'Debug test on debug console',
-    command: TestifyCommand.debug,
+    command: TestifyCommands.debug,
     arguments: args
   }
 })
@@ -69,13 +73,13 @@ function executeTestCommand(
   })
 }
 
-export const runTestCallback = (...args: TestCommandArguments): void =>
+export const runTestCallback = (...args: CodeLensCommandArguments): void =>
   executeTestCommand(...args, CommandActionEnum.Run)
 
-export const watchTestCallback = (...args: TestCommandArguments): void =>
+export const watchTestCallback = (...args: CodeLensCommandArguments): void =>
   executeTestCommand(...args, CommandActionEnum.Watch)
 
-export const debugTestCallback = (...args: TestCommandArguments): void =>
+export const debugTestCallback = (...args: CodeLensCommandArguments): void =>
   executeTestCommand(...args, CommandActionEnum.Debug)
 
 function getCurrentWorkspaceFolder(): WorkspaceFolder | undefined {
