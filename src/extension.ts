@@ -7,6 +7,7 @@ import {
   runTestCallback,
   runTestFileCallback,
   TestifyCommands,
+  watchNearestTestCallback,
   watchTestCallback,
   watchTestFileCallback
 } from './commands/commands'
@@ -31,6 +32,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
   commands.registerCommand(TestifyCommands.runFile, runTestFileCallback)
   commands.registerCommand(TestifyCommands.watchFile, watchTestFileCallback)
   commands.registerCommand(TestifyCommands.runNearest, runNearestTestCallback)
+  commands.registerCommand(TestifyCommands.watchNearest, watchNearestTestCallback)
   commands.registerCommand(TestifyCommands.rerun, rerunTestCallback)
 }
 
