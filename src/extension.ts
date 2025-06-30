@@ -3,6 +3,7 @@ import {version} from '../package.json'
 import {
   debugTestCallback,
   rerunTestCallback,
+  runNearestTestCallback,
   runTestCallback,
   runTestFileCallback,
   TestifyCommands,
@@ -27,9 +28,10 @@ export async function activate(context: ExtensionContext): Promise<void> {
   commands.registerCommand(TestifyCommands.run, runTestCallback)
   commands.registerCommand(TestifyCommands.watch, watchTestCallback)
   commands.registerCommand(TestifyCommands.debug, debugTestCallback)
-  commands.registerCommand(TestifyCommands.rerun, rerunTestCallback)
   commands.registerCommand(TestifyCommands.runFile, runTestFileCallback)
   commands.registerCommand(TestifyCommands.watchFile, watchTestFileCallback)
+  commands.registerCommand(TestifyCommands.runNearest, runNearestTestCallback)
+  commands.registerCommand(TestifyCommands.rerun, rerunTestCallback)
 }
 
 async function showUpdateMessage(context: ExtensionContext): Promise<void> {

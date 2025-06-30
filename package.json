@@ -66,25 +66,23 @@
         "title": "Testify: Debug Test"
       },
       {
-        "command": "testify.run.last",
-        "title": "Testify: Rerun Last Command"
-      },
-      {
         "command": "testify.run.file",
         "title": "Testify: Run Test File"
       },
       {
         "command": "testify.watch.file",
         "title": "Testify: Watch Test File"
+      },
+      {
+        "command": "testify.run.nearest",
+        "title": "Testify: Run Nearest Test to Cursor"
+      },
+      {
+        "command": "testify.run.last",
+        "title": "Testify: Rerun Last Command"
       }
     ],
     "keybindings": [
-      {
-        "command": "testify.run.last",
-        "key": "ctrl+shift+alt+r",
-        "mac": "ctrl+shift+cmd+r",
-        "when": "workspaceFolderCount != 0"
-      },
       {
         "command": "testify.run.file",
         "key": "ctrl+alt+r",
@@ -96,6 +94,18 @@
         "key": "ctrl+alt+w",
         "mac": "ctrl+cmd+w",
         "when": "editorTextFocus && editorLangId =~ /(javascript|javascriptreact|typescript|typescriptreact|vue)/ "
+      },
+      {
+        "command": "testify.run.nearest",
+        "key": "ctrl+alt+t",
+        "mac": "ctrl+cmd+t",
+        "when": "editorTextFocus && editorLangId =~ /(javascript|javascriptreact|typescript|typescriptreact|vue)/ "
+      },
+      {
+        "command": "testify.run.last",
+        "key": "ctrl+shift+alt+r",
+        "mac": "ctrl+shift+cmd+r",
+        "when": "workspaceFolderCount != 0"
       }
     ],
     "menus": {
@@ -113,16 +123,20 @@
           "when": "false"
         },
         {
-          "command": "testify.run.last",
-          "when": "workspaceFolderCount != 0"
-        },
-        {
           "command": "testify.run.file",
           "when": "editorIsOpen && editorLangId =~ /(javascript|javascriptreact|typescript|typescriptreact|vue)/"
         },
         {
           "command": "testify.watch.file",
           "when": "editorIsOpen && editorLangId =~ /(javascript|javascriptreact|typescript|typescriptreact|vue)/"
+        },
+        {
+          "command": "testify.run.nearest",
+          "when": "editorIsOpen && editorLangId =~ /(javascript|javascriptreact|typescript|typescriptreact|vue)/"
+        },
+        {
+          "command": "testify.run.last",
+          "when": "workspaceFolderCount != 0"
         }
       ]
     },
