@@ -18,8 +18,7 @@ export class JestTestRunner extends TestRunner {
       `--testNamePattern="${testName}"`,
       watchOption,
       ...this.configurationProvider.args
-    ].join(' ')
-
+    ]
     this.runCommand(workspaceFolder, command)
   }
 
@@ -28,13 +27,7 @@ export class JestTestRunner extends TestRunner {
   }
 
   public runFile({workspaceFolder, fileName, watchOption = ''}: RunFileParms): void {
-    const command = [
-      this.executablePath,
-      fileName,
-      watchOption,
-      ...this.configurationProvider.args
-    ].join(' ')
-
+    const command = [this.executablePath, fileName, watchOption, ...this.configurationProvider.args]
     this.runCommand(workspaceFolder, command)
   }
 

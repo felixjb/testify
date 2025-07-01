@@ -15,11 +15,11 @@ export class StateProvider {
     StateProvider.context.globalState.update('testify.lastVersion', version)
   }
 
-  static get lastCommand(): string | undefined {
-    return StateProvider.context.workspaceState.get<string>('testify.lastCommand')
+  static get lastCommand(): string[] | undefined {
+    return StateProvider.context.workspaceState.get<string[]>('testify.lastCommand')
   }
 
-  static set lastCommand(command: string) {
+  static set lastCommand(command: string[]) {
     StateProvider.context.workspaceState.update('testify.lastCommand', command)
   }
 }

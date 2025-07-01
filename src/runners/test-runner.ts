@@ -59,12 +59,12 @@ export abstract class TestRunner {
     this.runCommand(workspaceFolder, lastCommand)
   }
 
-  protected runCommand(workspaceFolder: WorkspaceFolder, command: string): void {
+  protected runCommand(workspaceFolder: WorkspaceFolder, command: string[]): void {
     StateProvider.lastCommand = command
 
     TerminalProvider.executeCommand({
       workspaceFolder,
-      command,
+      command: command.join(' '),
       options: {
         autoClear: this.configurationProvider.autoClear,
         env: this.configurationProvider.env
