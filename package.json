@@ -82,6 +82,10 @@
         "title": "Testify: Watch Nearest Test to Cursor"
       },
       {
+        "command": "testify.debug.nearest",
+        "title": "Testify: Debug Nearest Test to Cursor"
+      },
+      {
         "command": "testify.run.last",
         "title": "Testify: Rerun Last Command"
       }
@@ -109,6 +113,12 @@
         "command": "testify.watch.nearest",
         "key": "ctrl+alt+shift+w",
         "mac": "ctrl+cmd+shift+w",
+        "when": "editorTextFocus && editorLangId =~ /(javascript|javascriptreact|typescript|typescriptreact|vue)/ "
+      },
+      {
+        "command": "testify.debug.nearest",
+        "key": "ctrl+alt+shift+d",
+        "mac": "ctrl+cmd+shift+d",
         "when": "editorTextFocus && editorLangId =~ /(javascript|javascriptreact|typescript|typescriptreact|vue)/ "
       },
       {
@@ -146,6 +156,10 @@
         },
         {
           "command": "testify.watch.nearest",
+          "when": "editorIsOpen && editorLangId =~ /(javascript|javascriptreact|typescript|typescriptreact|vue)/"
+        },
+        {
+          "command": "testify.debug.nearest",
           "when": "editorIsOpen && editorLangId =~ /(javascript|javascriptreact|typescript|typescriptreact|vue)/"
         },
         {

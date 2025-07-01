@@ -12,6 +12,7 @@ enum CommandActionEnum {
   WatchFile = 'watchFile',
   RunNearest = 'runNearest',
   WatchNearest = 'watchNearest',
+  DebugNearest = 'debugNearest',
   Rerun = 'rerun'
 }
 
@@ -25,6 +26,7 @@ export const TestifyCommands: Record<CommandAction, string> = {
   [CommandActionEnum.WatchFile]: 'testify.watch.file',
   [CommandActionEnum.RunNearest]: 'testify.run.nearest',
   [CommandActionEnum.WatchNearest]: 'testify.watch.nearest',
+  [CommandActionEnum.DebugNearest]: 'testify.debug.nearest',
   [CommandActionEnum.Rerun]: 'testify.run.last'
 }
 
@@ -230,6 +232,42 @@ export const watchNearestTestCallback = (): void => {
   const testNameEscaped = escapeQuotesAndSpecialCharacters(nearestTestName)
 
   testRunner.watch({
+    workspaceFolder,
+    testName: testNameEscaped,
+    fileName: forwardSlashRelativeFileName
+  })
+}
+
+export const debugNearestTestCallback = (): void => {
+  const editor = window.activeTextEditor
+  if (!editor) {
+    window.showErrorMessage('No active editor found.')
+    return
+  }
+
+  const document = editor.document
+  const workspaceFolder = workspace.getWorkspaceFolder(document.uri)
+  if (!workspaceFolder) {
+    window.showErrorMessage('No workspace folder found for this file.')
+    return
+  }
+
+  const sourceCode = document.getText()
+  const cursorLine = editor.selection.active.line
+  const nearestTestName = findNearestTest(sourceCode, cursorLine)
+  if (!nearestTestName) {
+    window.showErrorMessage('No tests found in this file.')
+    return
+  }
+
+  const configurationProvider = new ConfigurationProvider(workspaceFolder)
+  const testRunner = getTestRunner(configurationProvider, workspaceFolder)
+  const forwardSlashRelativeFileName = toForwardSlashPath(
+    workspace.asRelativePath(document.fileName, false)
+  )
+  const testNameEscaped = escapeQuotesAndSpecialCharacters(nearestTestName)
+
+  testRunner.debug({
     workspaceFolder,
     testName: testNameEscaped,
     fileName: forwardSlashRelativeFileName
