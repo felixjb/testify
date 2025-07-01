@@ -18,8 +18,7 @@ export class VitestTestRunner extends TestRunner {
       fileName,
       `--testNamePattern="${testName}"`,
       ...this.configurationProvider.args
-    ].join(' ')
-
+    ]
     this.runCommand(workspaceFolder, command)
   }
 
@@ -28,13 +27,7 @@ export class VitestTestRunner extends TestRunner {
   }
 
   public runFile({workspaceFolder, fileName, watchOption = 'run'}: RunFileParms): void {
-    const command = [
-      this.executablePath,
-      watchOption,
-      fileName,
-      ...this.configurationProvider.args
-    ].join(' ')
-
+    const command = [this.executablePath, watchOption, fileName, ...this.configurationProvider.args]
     this.runCommand(workspaceFolder, command)
   }
 

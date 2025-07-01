@@ -20,8 +20,7 @@ export class PlaywrightTestRunner extends TestRunner {
       `"${testName}"`,
       ...this.configurationProvider.args,
       fileName
-    ].join(' ')
-
+    ]
     this.runCommand(workspaceFolder, command)
   }
 
@@ -36,13 +35,7 @@ export class PlaywrightTestRunner extends TestRunner {
   }
 
   public runFile({workspaceFolder, fileName, watchOption = ''}: RunFileParms): void {
-    const command = [
-      watchOption,
-      this.executablePath,
-      ...this.configurationProvider.args,
-      fileName
-    ].join(' ')
-
+    const command = [watchOption, this.executablePath, ...this.configurationProvider.args, fileName]
     this.runCommand(workspaceFolder, command)
   }
 
