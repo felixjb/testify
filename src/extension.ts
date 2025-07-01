@@ -1,6 +1,7 @@
 import {commands, ExtensionContext, ExtensionMode, languages, Uri, window} from 'vscode'
 import {version} from '../package.json'
 import {
+  debugNearestTestCallback,
   debugTestCallback,
   rerunTestCallback,
   runNearestTestCallback,
@@ -33,6 +34,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
   commands.registerCommand(TestifyCommands.watchFile, watchTestFileCallback)
   commands.registerCommand(TestifyCommands.runNearest, runNearestTestCallback)
   commands.registerCommand(TestifyCommands.watchNearest, watchNearestTestCallback)
+  commands.registerCommand(TestifyCommands.debugNearest, debugNearestTestCallback)
   commands.registerCommand(TestifyCommands.rerun, rerunTestCallback)
 }
 
