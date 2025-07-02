@@ -36,7 +36,7 @@ export class JestTestRunner extends TestRunner {
   }
 
   public debug({workspaceFolder, fileName, testName}: TestParams): void {
-    debug.startDebugging(workspaceFolder, {
+    const configuration = {
       program: `\${workspaceFolder}/${this.entryPointPath}`,
       args: [
         fileName,
@@ -45,6 +45,7 @@ export class JestTestRunner extends TestRunner {
         ...this.configurationProvider.args
       ],
       ...this.configurationProvider.debugConfiguration
-    })
+    }
+    debug.startDebugging(workspaceFolder, configuration)
   }
 }

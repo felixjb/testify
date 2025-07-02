@@ -36,10 +36,11 @@ export class MochaTestRunner extends TestRunner {
   }
 
   public debug({workspaceFolder, fileName, testName}: TestParams): void {
-    debug.startDebugging(workspaceFolder, {
+    const configuration = {
       program: `\${workspaceFolder}/${this.entryPointPath}`,
       args: [fileName, `--fgrep="${testName}"`, ...this.configurationProvider.args],
       ...this.configurationProvider.debugConfiguration
-    })
+    }
+    debug.startDebugging(workspaceFolder, configuration)
   }
 }
