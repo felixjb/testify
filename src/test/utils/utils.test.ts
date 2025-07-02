@@ -1,5 +1,5 @@
 import assert from 'assert'
-import {escapeQuotesAndSpecialCharacters, isNodePath, toForwardSlashPath} from './utils'
+import {escapeQuotesAndSpecialCharacters, isNodePath, toForwardSlashPath} from '../../utils/utils'
 
 describe('utils', () => {
   describe('escapeQuotesAndSpecialCharacters', () => {
