@@ -36,7 +36,7 @@ export class VitestTestRunner extends TestRunner {
   }
 
   public debug({workspaceFolder, fileName, testName}: TestParams): void {
-    debug.startDebugging(workspaceFolder, {
+    const configuration = {
       program: `\${workspaceFolder}/${this.entryPointPath}`,
       args: [
         'run',
@@ -46,6 +46,7 @@ export class VitestTestRunner extends TestRunner {
         ...this.configurationProvider.args
       ],
       ...this.configurationProvider.debugConfiguration
-    })
+    }
+    debug.startDebugging(workspaceFolder, configuration)
   }
 }

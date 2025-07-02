@@ -50,7 +50,7 @@ export class PlaywrightTestRunner extends TestRunner {
   }
 
   public debug({workspaceFolder, fileName, testName}: TestParams): void {
-    debug.startDebugging(workspaceFolder, {
+    const configuration = {
       program: `\${workspaceFolder}/${this.entryPointPath}`,
       env: {
         PLAYWRIGHT_CHROMIUM_DEBUG_PORT: 9222,
@@ -59,6 +59,7 @@ export class PlaywrightTestRunner extends TestRunner {
       },
       args: ['test', '-g', testName, ...this.configurationProvider.args, fileName],
       ...this.configurationProvider.debugConfiguration
-    })
+    }
+    debug.startDebugging(workspaceFolder, configuration)
   }
 }
