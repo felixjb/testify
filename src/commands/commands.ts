@@ -1,4 +1,4 @@
-import {Command, window, workspace, WorkspaceFolder} from 'vscode'
+import {Command, TextDocument, TextEditor, window, workspace, WorkspaceFolder} from 'vscode'
 import {parseSourceCode} from '../parser/parser'
 import {ConfigurationProvider} from '../providers/configuration-provider'
 import {getTestRunner} from '../runners/test-runner-factory'
@@ -40,7 +40,7 @@ type CodeLensCommandArguments = [
   testName: string
 ]
 
-export const buildCodeLensCommands = (...args: CodeLensCommandArguments): CodeLensCommands => ({
+export const createCodeLensCommands = (...args: CodeLensCommandArguments): CodeLensCommands => ({
   [CommandActionEnum.Run]: {
     title: 'Run',
     tooltip: 'Run test',
@@ -88,11 +88,122 @@ export const watchTestCallback = (...args: CodeLensCommandArguments): void =>
 export const debugTestCallback = (...args: CodeLensCommandArguments): void =>
   executeTestCommand(...args, CommandActionEnum.Debug)
 
-function getCurrentWorkspaceFolder(): WorkspaceFolder | undefined {
-  return window.activeTextEditor
+type ActiveEditorArgs = [
+  workspaceFolder: WorkspaceFolder,
+  document: TextDocument,
+  editor: TextEditor
+]
+
+const withActiveEditor =
+  <T extends unknown[]>(command: (...args: [...ActiveEditorArgs, ...T]) => void) =>
+  (...args: T): void => {
+    const editor = window.activeTextEditor
+    if (!editor) {
+      window.showErrorMessage('No active editor found.')
+      return
+    }
+    const document = editor.document
+    const workspaceFolder = workspace.getWorkspaceFolder(document.uri)
+    if (!workspaceFolder) {
+      window.showErrorMessage('No workspace folder found for this file.')
+      return
+    }
+
+    command(workspaceFolder, document, editor, ...args)
+  }
+
+type FileAction = `${CommandActionEnum.RunFile | CommandActionEnum.WatchFile}`
+
+function executeFileCommand(
+  workspaceFolder: WorkspaceFolder,
+  document: TextDocument,
+  action: FileAction
+): void {
+  const configurationProvider = new ConfigurationProvider(workspaceFolder)
+  const testRunner = getTestRunner(configurationProvider, workspaceFolder)
+  const forwardSlashRelativeFileName = toForwardSlashPath(
+    workspace.asRelativePath(document.fileName, false)
+  )
+
+  testRunner[action]({workspaceFolder, fileName: forwardSlashRelativeFileName})
+}
+
+const createFileCommand =
+  (action: FileAction) =>
+  (...[workspaceFolder, document]: ActiveEditorArgs) => {
+    executeFileCommand(workspaceFolder, document, action)
+  }
+
+export const runTestFileCallback = withActiveEditor(createFileCommand(CommandActionEnum.RunFile))
+
+export const watchTestFileCallback = withActiveEditor(createFileCommand(CommandActionEnum.WatchFile))
+
+function findNearestTest(sourceCode: string, cursorLine: number): string | null {
+  const tests = parseSourceCode(sourceCode)
+  if (tests.length === 0) {
+    return null
+  }
+
+  const nearestTest = tests.reduce((nearest, current) => {
+    const currentDistance = Math.abs(current.loc.start.line - cursorLine)
+    const nearestDistance = Math.abs(nearest.loc.start.line - cursorLine)
+    return currentDistance < nearestDistance ? current : nearest
+  })
+  return nearestTest.title
+}
+
+type NearestTestAction =
+  `${CommandActionEnum.Run | CommandActionEnum.Watch | CommandActionEnum.Debug}`
+
+function executeNearestTestCommand(
+  workspaceFolder: WorkspaceFolder,
+  document: TextDocument,
+  editor: TextEditor,
+  action: NearestTestAction
+): void {
+  const sourceCode = document.getText()
+  const cursorLine = editor.selection.active.line
+  const nearestTestName = findNearestTest(sourceCode, cursorLine)
+  if (!nearestTestName) {
+    window.showErrorMessage('No tests found in this file.')
+    return
+  }
+
+  const configurationProvider = new ConfigurationProvider(workspaceFolder)
+  const testRunner = getTestRunner(configurationProvider, workspaceFolder)
+  const forwardSlashRelativeFileName = toForwardSlashPath(
+    workspace.asRelativePath(document.fileName, false)
+  )
+  const testNameEscaped = escapeQuotesAndSpecialCharacters(nearestTestName)
+
+  testRunner[action]({
+    workspaceFolder,
+    testName: testNameEscaped,
+    fileName: forwardSlashRelativeFileName
+  })
+}
+
+const createNearestTestCommand =
+  (action: NearestTestAction) =>
+  (...args: ActiveEditorArgs) =>
+    executeNearestTestCommand(...args, action)
+
+export const runNearestTestCallback = withActiveEditor(
+  createNearestTestCommand(CommandActionEnum.Run)
+)
+
+export const watchNearestTestCallback = withActiveEditor(
+  createNearestTestCommand(CommandActionEnum.Watch)
+)
+
+export const debugNearestTestCallback = withActiveEditor(
+  createNearestTestCommand(CommandActionEnum.Debug)
+)
+
+const getCurrentWorkspaceFolder = (): WorkspaceFolder | undefined =>
+  window.activeTextEditor
     ? workspace.getWorkspaceFolder(window.activeTextEditor.document.uri)
     : workspace.workspaceFolders?.[0]
-}
 
 export const rerunTestCallback = (): void => {
   const workspaceFolder = getCurrentWorkspaceFolder()
@@ -107,169 +218,14 @@ export const rerunTestCallback = (): void => {
   testRunner.rerunLastCommand(workspaceFolder)
 }
 
-export const runTestFileCallback = (): void => {
-  const editor = window.activeTextEditor
-  if (!editor) {
-    window.showErrorMessage('No active editor found.')
-    return
-  }
-  const document = editor.document
-  const workspaceFolder = workspace.getWorkspaceFolder(document.uri)
-  if (!workspaceFolder) {
-    window.showErrorMessage('No workspace folder found for this file.')
-    return
-  }
-
-  const configurationProvider = new ConfigurationProvider(workspaceFolder)
-  const testRunner = getTestRunner(configurationProvider, workspaceFolder)
-  const forwardSlashRelativeFileName = toForwardSlashPath(
-    workspace.asRelativePath(document.fileName, false)
-  )
-
-  testRunner.runFile({workspaceFolder, fileName: forwardSlashRelativeFileName})
-}
-
-export const watchTestFileCallback = (): void => {
-  const editor = window.activeTextEditor
-  if (!editor) {
-    window.showErrorMessage('No active editor found.')
-    return
-  }
-  const document = editor.document
-  const workspaceFolder = workspace.getWorkspaceFolder(document.uri)
-  if (!workspaceFolder) {
-    window.showErrorMessage('No workspace folder found for this file.')
-    return
-  }
-
-  const configurationProvider = new ConfigurationProvider(workspaceFolder)
-  const testRunner = getTestRunner(configurationProvider, workspaceFolder)
-  const forwardSlashRelativeFileName = toForwardSlashPath(
-    workspace.asRelativePath(document.fileName, false)
-  )
-
-  testRunner.watchFile({workspaceFolder, fileName: forwardSlashRelativeFileName})
-}
-
-function findNearestTest(sourceCode: string, cursorLine: number): string | null {
-  const tests = parseSourceCode(sourceCode)
-  if (tests.length === 0) {
-    return null
-  }
-
-  const nearestTest = tests.reduce((nearest, current) => {
-    const currentDistance = Math.abs(current.loc.start.line - cursorLine)
-    const nearestDistance = Math.abs(nearest.loc.start.line - cursorLine)
-    return currentDistance < nearestDistance ? current : nearest
-  })
-
-  return nearestTest.title
-}
-
-export const runNearestTestCallback = (): void => {
-  const editor = window.activeTextEditor
-  if (!editor) {
-    window.showErrorMessage('No active editor found.')
-    return
-  }
-
-  const document = editor.document
-  const workspaceFolder = workspace.getWorkspaceFolder(document.uri)
-  if (!workspaceFolder) {
-    window.showErrorMessage('No workspace folder found for this file.')
-    return
-  }
-
-  const sourceCode = document.getText()
-  const cursorLine = editor.selection.active.line
-  const nearestTestName = findNearestTest(sourceCode, cursorLine)
-  if (!nearestTestName) {
-    window.showErrorMessage('No tests found in this file.')
-    return
-  }
-
-  const configurationProvider = new ConfigurationProvider(workspaceFolder)
-  const testRunner = getTestRunner(configurationProvider, workspaceFolder)
-  const forwardSlashRelativeFileName = toForwardSlashPath(
-    workspace.asRelativePath(document.fileName, false)
-  )
-  const testNameEscaped = escapeQuotesAndSpecialCharacters(nearestTestName)
-
-  testRunner.run({
-    workspaceFolder,
-    testName: testNameEscaped,
-    fileName: forwardSlashRelativeFileName
-  })
-}
-
-export const watchNearestTestCallback = (): void => {
-  const editor = window.activeTextEditor
-  if (!editor) {
-    window.showErrorMessage('No active editor found.')
-    return
-  }
-
-  const document = editor.document
-  const workspaceFolder = workspace.getWorkspaceFolder(document.uri)
-  if (!workspaceFolder) {
-    window.showErrorMessage('No workspace folder found for this file.')
-    return
-  }
-
-  const sourceCode = document.getText()
-  const cursorLine = editor.selection.active.line
-  const nearestTestName = findNearestTest(sourceCode, cursorLine)
-  if (!nearestTestName) {
-    window.showErrorMessage('No tests found in this file.')
-    return
-  }
-
-  const configurationProvider = new ConfigurationProvider(workspaceFolder)
-  const testRunner = getTestRunner(configurationProvider, workspaceFolder)
-  const forwardSlashRelativeFileName = toForwardSlashPath(
-    workspace.asRelativePath(document.fileName, false)
-  )
-  const testNameEscaped = escapeQuotesAndSpecialCharacters(nearestTestName)
-
-  testRunner.watch({
-    workspaceFolder,
-    testName: testNameEscaped,
-    fileName: forwardSlashRelativeFileName
-  })
-}
-
-export const debugNearestTestCallback = (): void => {
-  const editor = window.activeTextEditor
-  if (!editor) {
-    window.showErrorMessage('No active editor found.')
-    return
-  }
-
-  const document = editor.document
-  const workspaceFolder = workspace.getWorkspaceFolder(document.uri)
-  if (!workspaceFolder) {
-    window.showErrorMessage('No workspace folder found for this file.')
-    return
-  }
-
-  const sourceCode = document.getText()
-  const cursorLine = editor.selection.active.line
-  const nearestTestName = findNearestTest(sourceCode, cursorLine)
-  if (!nearestTestName) {
-    window.showErrorMessage('No tests found in this file.')
-    return
-  }
-
-  const configurationProvider = new ConfigurationProvider(workspaceFolder)
-  const testRunner = getTestRunner(configurationProvider, workspaceFolder)
-  const forwardSlashRelativeFileName = toForwardSlashPath(
-    workspace.asRelativePath(document.fileName, false)
-  )
-  const testNameEscaped = escapeQuotesAndSpecialCharacters(nearestTestName)
-
-  testRunner.debug({
-    workspaceFolder,
-    testName: testNameEscaped,
-    fileName: forwardSlashRelativeFileName
-  })
+export const CommandCallbackMap = {
+  [TestifyCommands.run]: runTestCallback,
+  [TestifyCommands.watch]: watchTestCallback,
+  [TestifyCommands.debug]: debugTestCallback,
+  [TestifyCommands.runFile]: runTestFileCallback,
+  [TestifyCommands.watchFile]: watchTestFileCallback,
+  [TestifyCommands.runNearest]: runNearestTestCallback,
+  [TestifyCommands.watchNearest]: watchNearestTestCallback,
+  [TestifyCommands.debugNearest]: debugNearestTestCallback,
+  [TestifyCommands.rerun]: rerunTestCallback
 }

@@ -1,17 +1,6 @@
 import {commands, ExtensionContext, ExtensionMode, languages, Uri, window} from 'vscode'
 import {version} from '../package.json'
-import {
-  debugNearestTestCallback,
-  debugTestCallback,
-  rerunTestCallback,
-  runNearestTestCallback,
-  runTestCallback,
-  runTestFileCallback,
-  TestifyCommands,
-  watchNearestTestCallback,
-  watchTestCallback,
-  watchTestFileCallback
-} from './commands/commands'
+import {CommandCallbackMap} from './commands/commands'
 import {FILE_SELECTOR} from './constants/file-selector'
 import {TestRunnerCodeLensProvider} from './providers/code-lens-provider'
 import {StateProvider} from './providers/state-provider'
@@ -27,15 +16,9 @@ export async function activate(context: ExtensionContext): Promise<void> {
 
   window.onDidCloseTerminal(closedTerminal => closedTerminal.dispose())
 
-  commands.registerCommand(TestifyCommands.run, runTestCallback)
-  commands.registerCommand(TestifyCommands.watch, watchTestCallback)
-  commands.registerCommand(TestifyCommands.debug, debugTestCallback)
-  commands.registerCommand(TestifyCommands.runFile, runTestFileCallback)
-  commands.registerCommand(TestifyCommands.watchFile, watchTestFileCallback)
-  commands.registerCommand(TestifyCommands.runNearest, runNearestTestCallback)
-  commands.registerCommand(TestifyCommands.watchNearest, watchNearestTestCallback)
-  commands.registerCommand(TestifyCommands.debugNearest, debugNearestTestCallback)
-  commands.registerCommand(TestifyCommands.rerun, rerunTestCallback)
+  Object.entries(CommandCallbackMap).forEach(([command, callback]) => {
+    context.subscriptions.push(commands.registerCommand(command, callback))
+  })
 }
 
 async function showUpdateMessage(context: ExtensionContext): Promise<void> {
