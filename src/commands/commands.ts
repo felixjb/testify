@@ -1,8 +1,8 @@
-import {Command, TextDocument, TextEditor, window, workspace, WorkspaceFolder} from 'vscode'
-import {parseSourceCode} from '../parser/parser'
+import {Command, workspace, WorkspaceFolder} from 'vscode'
 import {ConfigurationProvider} from '../providers/configuration-provider'
 import {getTestRunner} from '../runners/test-runner-factory'
 import {escapeQuotesAndSpecialCharacters, toForwardSlashPath} from '../utils/utils'
+import {withActiveEditor, withActiveWorkspace, withNearestTest, withTestRunner} from './with'
 
 enum CommandActionEnum {
   Run = 'run',
@@ -16,7 +16,7 @@ enum CommandActionEnum {
   Rerun = 'rerun'
 }
 
-type CommandAction = `${CommandActionEnum}`
+export type CommandAction = `${CommandActionEnum}`
 
 export const TestifyCommands: Record<CommandAction, string> = {
   [CommandActionEnum.Run]: 'testify.run.test',
@@ -30,9 +30,10 @@ export const TestifyCommands: Record<CommandAction, string> = {
   [CommandActionEnum.Rerun]: 'testify.run.last'
 }
 
-type CodeLensAction = `${CommandActionEnum.Run | CommandActionEnum.Watch | CommandActionEnum.Debug}`
+export type TestAction =
+  `${CommandActionEnum.Run | CommandActionEnum.Watch | CommandActionEnum.Debug}`
 
-type CodeLensCommands = Record<CodeLensAction, Command>
+type CodeLensCommands = Record<TestAction, Command>
 
 type CodeLensCommandArguments = [
   workspaceFolder: WorkspaceFolder,
@@ -61,162 +62,64 @@ export const createCodeLensCommands = (...args: CodeLensCommandArguments): CodeL
   }
 })
 
-function executeTestCommand(
-  workspaceFolder: WorkspaceFolder,
-  fileName: string,
-  testName: string,
-  action: CodeLensAction
-): void {
+type TestCommandContext = {
+  action: TestAction
+  workspaceFolder: WorkspaceFolder
+  fileName: string
+  testName: string
+}
+
+export type FileAction = `${CommandActionEnum.RunFile | CommandActionEnum.WatchFile}`
+
+type FileCommandContext = {
+  action: FileAction
+  workspaceFolder: WorkspaceFolder
+  fileName: string
+}
+
+export function executeCommand(context: TestCommandContext | FileCommandContext): void {
+  const {workspaceFolder, fileName} = context
+
   const configurationProvider = new ConfigurationProvider(workspaceFolder)
   const testRunner = getTestRunner(configurationProvider, workspaceFolder)
   const forwardSlashRelativeFileName = toForwardSlashPath(workspace.asRelativePath(fileName, false))
-  const testNameEscaped = escapeQuotesAndSpecialCharacters(testName)
 
-  testRunner[action]({
-    workspaceFolder,
-    testName: testNameEscaped,
-    fileName: forwardSlashRelativeFileName
-  })
+  return 'testName' in context
+    ? testRunner[context.action]({
+        workspaceFolder,
+        fileName: forwardSlashRelativeFileName,
+        testName: escapeQuotesAndSpecialCharacters(context.testName)
+      })
+    : testRunner[context.action]({workspaceFolder, fileName: forwardSlashRelativeFileName})
 }
 
-export const runTestCallback = (...args: CodeLensCommandArguments): void =>
-  executeTestCommand(...args, CommandActionEnum.Run)
+const createTestCommand =
+  (action: TestAction) =>
+  (...[workspaceFolder, fileName, testName]: CodeLensCommandArguments): void =>
+    executeCommand({workspaceFolder, fileName, testName, action})
 
-export const watchTestCallback = (...args: CodeLensCommandArguments): void =>
-  executeTestCommand(...args, CommandActionEnum.Watch)
+export const runTestCallback = createTestCommand(CommandActionEnum.Run)
+export const watchTestCallback = createTestCommand(CommandActionEnum.Watch)
+export const debugTestCallback = createTestCommand(CommandActionEnum.Debug)
 
-export const debugTestCallback = (...args: CodeLensCommandArguments): void =>
-  executeTestCommand(...args, CommandActionEnum.Debug)
-
-type ActiveEditorArgs = [
-  workspaceFolder: WorkspaceFolder,
-  document: TextDocument,
-  editor: TextEditor
-]
-
-const withActiveEditor =
-  <T extends unknown[]>(command: (...args: [...ActiveEditorArgs, ...T]) => void) =>
-  (...args: T): void => {
-    const editor = window.activeTextEditor
-    if (!editor) {
-      window.showErrorMessage('No active editor found.')
-      return
-    }
-    const document = editor.document
-    const workspaceFolder = workspace.getWorkspaceFolder(document.uri)
-    if (!workspaceFolder) {
-      window.showErrorMessage('No workspace folder found for this file.')
-      return
-    }
-
-    command(workspaceFolder, document, editor, ...args)
-  }
-
-type FileAction = `${CommandActionEnum.RunFile | CommandActionEnum.WatchFile}`
-
-function executeFileCommand(
-  workspaceFolder: WorkspaceFolder,
-  document: TextDocument,
-  action: FileAction
-): void {
-  const configurationProvider = new ConfigurationProvider(workspaceFolder)
-  const testRunner = getTestRunner(configurationProvider, workspaceFolder)
-  const forwardSlashRelativeFileName = toForwardSlashPath(
-    workspace.asRelativePath(document.fileName, false)
+const createTestFileCallback = (action: FileAction) =>
+  withActiveEditor(context =>
+    executeCommand({...context, action, fileName: context.document.fileName})
   )
 
-  testRunner[action]({workspaceFolder, fileName: forwardSlashRelativeFileName})
-}
+export const runTestFileCallback = createTestFileCallback(CommandActionEnum.RunFile)
+export const watchTestFileCallback = createTestFileCallback(CommandActionEnum.WatchFile)
 
-const createFileCommand =
-  (action: FileAction) =>
-  (...[workspaceFolder, document]: ActiveEditorArgs) => {
-    executeFileCommand(workspaceFolder, document, action)
-  }
+const createNearestTestCallback = (action: TestAction) =>
+  withActiveEditor(withNearestTest(context => executeCommand({...context, action})))
 
-export const runTestFileCallback = withActiveEditor(createFileCommand(CommandActionEnum.RunFile))
+export const runNearestTestCallback = createNearestTestCallback(CommandActionEnum.Run)
+export const watchNearestTestCallback = createNearestTestCallback(CommandActionEnum.Watch)
+export const debugNearestTestCallback = createNearestTestCallback(CommandActionEnum.Debug)
 
-export const watchTestFileCallback = withActiveEditor(createFileCommand(CommandActionEnum.WatchFile))
-
-function findNearestTest(sourceCode: string, cursorLine: number): string | null {
-  const tests = parseSourceCode(sourceCode)
-  if (tests.length === 0) {
-    return null
-  }
-
-  const nearestTest = tests.reduce((nearest, current) => {
-    const currentDistance = Math.abs(current.loc.start.line - cursorLine)
-    const nearestDistance = Math.abs(nearest.loc.start.line - cursorLine)
-    return currentDistance < nearestDistance ? current : nearest
-  })
-  return nearestTest.title
-}
-
-type NearestTestAction =
-  `${CommandActionEnum.Run | CommandActionEnum.Watch | CommandActionEnum.Debug}`
-
-function executeNearestTestCommand(
-  workspaceFolder: WorkspaceFolder,
-  document: TextDocument,
-  editor: TextEditor,
-  action: NearestTestAction
-): void {
-  const sourceCode = document.getText()
-  const cursorLine = editor.selection.active.line
-  const nearestTestName = findNearestTest(sourceCode, cursorLine)
-  if (!nearestTestName) {
-    window.showErrorMessage('No tests found in this file.')
-    return
-  }
-
-  const configurationProvider = new ConfigurationProvider(workspaceFolder)
-  const testRunner = getTestRunner(configurationProvider, workspaceFolder)
-  const forwardSlashRelativeFileName = toForwardSlashPath(
-    workspace.asRelativePath(document.fileName, false)
-  )
-  const testNameEscaped = escapeQuotesAndSpecialCharacters(nearestTestName)
-
-  testRunner[action]({
-    workspaceFolder,
-    testName: testNameEscaped,
-    fileName: forwardSlashRelativeFileName
-  })
-}
-
-const createNearestTestCommand =
-  (action: NearestTestAction) =>
-  (...args: ActiveEditorArgs) =>
-    executeNearestTestCommand(...args, action)
-
-export const runNearestTestCallback = withActiveEditor(
-  createNearestTestCommand(CommandActionEnum.Run)
+export const rerunTestCallback = withActiveWorkspace(
+  withTestRunner(({workspaceFolder, testRunner}) => testRunner.rerunLastCommand(workspaceFolder))
 )
-
-export const watchNearestTestCallback = withActiveEditor(
-  createNearestTestCommand(CommandActionEnum.Watch)
-)
-
-export const debugNearestTestCallback = withActiveEditor(
-  createNearestTestCommand(CommandActionEnum.Debug)
-)
-
-const getCurrentWorkspaceFolder = (): WorkspaceFolder | undefined =>
-  window.activeTextEditor
-    ? workspace.getWorkspaceFolder(window.activeTextEditor.document.uri)
-    : workspace.workspaceFolders?.[0]
-
-export const rerunTestCallback = (): void => {
-  const workspaceFolder = getCurrentWorkspaceFolder()
-  if (!workspaceFolder) {
-    window.showErrorMessage('No workspace folder found.')
-    return
-  }
-
-  const configurationProvider = new ConfigurationProvider(workspaceFolder)
-  const testRunner = getTestRunner(configurationProvider, workspaceFolder)
-
-  testRunner.rerunLastCommand(workspaceFolder)
-}
 
 export const CommandCallbackMap = {
   [TestifyCommands.run]: runTestCallback,
