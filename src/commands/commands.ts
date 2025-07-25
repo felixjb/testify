@@ -1,37 +1,7 @@
-import {Command, workspace, WorkspaceFolder} from 'vscode'
-import {ConfigurationProvider} from '../providers/configuration-provider'
-import {getTestRunner} from '../runners/test-runner-factory'
-import {escapeQuotesAndSpecialCharacters, toForwardSlashPath} from '../utils/utils'
-import {withActiveEditor, withActiveWorkspace, withNearestTest, withTestRunner} from './with'
-
-enum CommandActionEnum {
-  Run = 'run',
-  Watch = 'watch',
-  Debug = 'debug',
-  RunFile = 'runFile',
-  WatchFile = 'watchFile',
-  RunNearest = 'runNearest',
-  WatchNearest = 'watchNearest',
-  DebugNearest = 'debugNearest',
-  Rerun = 'rerun'
-}
-
-export type CommandAction = `${CommandActionEnum}`
-
-export const TestifyCommands: Record<CommandAction, string> = {
-  [CommandActionEnum.Run]: 'testify.run.test',
-  [CommandActionEnum.Watch]: 'testify.watch.test',
-  [CommandActionEnum.Debug]: 'testify.debug.test',
-  [CommandActionEnum.RunFile]: 'testify.run.file',
-  [CommandActionEnum.WatchFile]: 'testify.watch.file',
-  [CommandActionEnum.RunNearest]: 'testify.run.nearest',
-  [CommandActionEnum.WatchNearest]: 'testify.watch.nearest',
-  [CommandActionEnum.DebugNearest]: 'testify.debug.nearest',
-  [CommandActionEnum.Rerun]: 'testify.run.last'
-}
-
-export type TestAction =
-  `${CommandActionEnum.Run | CommandActionEnum.Watch | CommandActionEnum.Debug}`
+import {Command, WorkspaceFolder} from 'vscode'
+import {CommandActionEnum, FileAction, TestAction, TestifyCommands} from './actions'
+import {withActiveEditor, withActiveWorkspace, withNearestTest, withTestRunner} from './context'
+import {executeCommand} from './execute'
 
 type CodeLensCommands = Record<TestAction, Command>
 
@@ -62,62 +32,50 @@ export const createCodeLensCommands = (...args: CodeLensCommandArguments): CodeL
   }
 })
 
-type TestCommandContext = {
-  action: TestAction
-  workspaceFolder: WorkspaceFolder
-  fileName: string
-  testName: string
-}
-
-export type FileAction = `${CommandActionEnum.RunFile | CommandActionEnum.WatchFile}`
-
-type FileCommandContext = {
-  action: FileAction
-  workspaceFolder: WorkspaceFolder
-  fileName: string
-}
-
-export function executeCommand(context: TestCommandContext | FileCommandContext): void {
-  const {workspaceFolder, fileName} = context
-
-  const configurationProvider = new ConfigurationProvider(workspaceFolder)
-  const testRunner = getTestRunner(configurationProvider, workspaceFolder)
-  const forwardSlashRelativeFileName = toForwardSlashPath(workspace.asRelativePath(fileName, false))
-
-  return 'testName' in context
-    ? testRunner[context.action]({
-        workspaceFolder,
-        fileName: forwardSlashRelativeFileName,
-        testName: escapeQuotesAndSpecialCharacters(context.testName)
-      })
-    : testRunner[context.action]({workspaceFolder, fileName: forwardSlashRelativeFileName})
-}
-
-const createTestCommand =
+const createTestCallback =
   (action: TestAction) =>
   (...[workspaceFolder, fileName, testName]: CodeLensCommandArguments): void =>
-    executeCommand({workspaceFolder, fileName, testName, action})
+    withTestRunner(context =>
+      executeCommand({...context, action, workspaceFolder, fileName, testName})
+    )({workspaceFolder})
 
-export const runTestCallback = createTestCommand(CommandActionEnum.Run)
-export const watchTestCallback = createTestCommand(CommandActionEnum.Watch)
-export const debugTestCallback = createTestCommand(CommandActionEnum.Debug)
+const runTestCallback = createTestCallback(CommandActionEnum.Run)
+const watchTestCallback = createTestCallback(CommandActionEnum.Watch)
+const debugTestCallback = createTestCallback(CommandActionEnum.Debug)
 
 const createTestFileCallback = (action: FileAction) =>
-  withActiveEditor(context =>
-    executeCommand({...context, action, fileName: context.document.fileName})
+  withActiveEditor(activeEditorContext =>
+    withTestRunner(testRunnerContext =>
+      executeCommand({
+        ...testRunnerContext,
+        action,
+        fileName: activeEditorContext.document.fileName,
+        workspaceFolder: activeEditorContext.workspaceFolder
+      })
+    )
   )
 
-export const runTestFileCallback = createTestFileCallback(CommandActionEnum.RunFile)
-export const watchTestFileCallback = createTestFileCallback(CommandActionEnum.WatchFile)
+const runTestFileCallback = createTestFileCallback(CommandActionEnum.RunFile)
+const watchTestFileCallback = createTestFileCallback(CommandActionEnum.WatchFile)
 
 const createNearestTestCallback = (action: TestAction) =>
-  withActiveEditor(withNearestTest(context => executeCommand({...context, action})))
+  withActiveEditor(
+    withNearestTest(nearestTestContext =>
+      withTestRunner(testRunnerContext =>
+        executeCommand({
+          ...nearestTestContext,
+          ...testRunnerContext,
+          action
+        })
+      )
+    )
+  )
 
-export const runNearestTestCallback = createNearestTestCallback(CommandActionEnum.Run)
-export const watchNearestTestCallback = createNearestTestCallback(CommandActionEnum.Watch)
-export const debugNearestTestCallback = createNearestTestCallback(CommandActionEnum.Debug)
+const runNearestTestCallback = createNearestTestCallback(CommandActionEnum.Run)
+const watchNearestTestCallback = createNearestTestCallback(CommandActionEnum.Watch)
+const debugNearestTestCallback = createNearestTestCallback(CommandActionEnum.Debug)
 
-export const rerunTestCallback = withActiveWorkspace(
+const rerunTestCallback = withActiveWorkspace(
   withTestRunner(({workspaceFolder, testRunner}) => testRunner.rerunLastCommand(workspaceFolder))
 )
 

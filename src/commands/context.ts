@@ -27,7 +27,7 @@ export const withActiveEditor = (command: (context: ActiveEditorContext) => void
 }
 
 export const withActiveWorkspace =
-  (command: (workspaceFolder: WorkspaceFolder) => void) => (): void => {
+  (command: ({workspaceFolder}: {workspaceFolder: WorkspaceFolder}) => void) => (): void => {
     const workspaceFolder = window.activeTextEditor
       ? workspace.getWorkspaceFolder(window.activeTextEditor.document.uri)
       : workspace.workspaceFolders?.[0]
@@ -36,19 +36,10 @@ export const withActiveWorkspace =
       return
     }
 
-    command(workspaceFolder)
+    command({workspaceFolder})
   }
 
-export const withTestRunner =
-  (command: (context: {workspaceFolder: WorkspaceFolder; testRunner: TestRunner}) => void) =>
-  (workspaceFolder: WorkspaceFolder): void => {
-    const configurationProvider = new ConfigurationProvider(workspaceFolder)
-    const testRunner = getTestRunner(configurationProvider, workspaceFolder)
-
-    command({workspaceFolder, testRunner})
-  }
-
-export function findNearestTest(sourceCode: string, cursorLine: number): string | null {
+function findNearestTest(sourceCode: string, cursorLine: number): string | null {
   const tests = parseSourceCode(sourceCode)
   if (tests.length === 0) {
     return null
@@ -92,4 +83,13 @@ export const withNearestTest =
       fileName: document.fileName,
       testName: nearestTestName
     })
+  }
+
+export const withTestRunner =
+  (command: (context: {workspaceFolder: WorkspaceFolder; testRunner: TestRunner}) => void) =>
+  ({workspaceFolder}: {workspaceFolder: WorkspaceFolder}): void => {
+    const configurationProvider = new ConfigurationProvider(workspaceFolder)
+    const testRunner = getTestRunner(configurationProvider, workspaceFolder)
+
+    command({workspaceFolder, testRunner})
   }
