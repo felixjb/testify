@@ -2,7 +2,7 @@
   "name": "testify",
   "displayName": "Testify",
   "description": "Run JavaScript tests easily using CodeLens",
-  "version": "1.16.0",
+  "version": "1.17.0",
   "author": {
     "name": "felixjb",
     "email": "felixjbcomp@gmail.com"
