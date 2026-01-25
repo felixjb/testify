@@ -34,8 +34,8 @@ export class NodeTestRunner extends TestRunner {
       '--test',
       watchOption,
       ...this.configurationProvider.args,
-      fileName,
-      `--test-name-pattern="${testName}"`
+      `--test-name-pattern="${testName}"`,
+      fileName
     ]
     this.runCommand(workspaceFolder, command)
   }
