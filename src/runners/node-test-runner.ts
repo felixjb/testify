@@ -64,7 +64,7 @@ export class NodeTestRunner extends TestRunner {
       program: null,
       // Needed for specifing the Node.js version as the host may have multiple versions installed
       runtimeExecutable: this.executablePath,
-      args: [...this.configurationProvider.args, fileName, `--test-name-pattern="${testName}"`],
+      args: [...this.configurationProvider.args, `--test-name-pattern="${testName}"`, fileName],
       ...this.configurationProvider.debugConfiguration
     }
     debug.startDebugging(workspaceFolder, configuration)
