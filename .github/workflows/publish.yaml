@@ -1,0 +1,57 @@
+name: Publish
+
+on:
+  workflow_call:
+    inputs:
+      prerelease:
+        required: true
+        type: boolean
+        description: Whether this is a pre-release version
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+          cache: "npm"
+      - name: Install Dependencies
+        run: npm ci
+      - name: Package Extension
+        run: npm run package${{ inputs.prerelease && ':prerelease' || '' }}
+      - name: Extract Variables
+        id: extract-vars
+        run: |
+          set -euo pipefail
+
+          PACKAGE_VERSION=$(jq -r .version "package.json")
+          PACKAGE_PATH=$(find . -maxdepth 1 -type f -iname "*.vsix" | head -1)
+
+          echo "package_version=$PACKAGE_VERSION" >> $GITHUB_OUTPUT
+          echo "package_path=$PACKAGE_PATH" >> $GITHUB_OUTPUT
+      - name: Generate Changelog
+        id: changelog
+        uses: mindsers/changelog-reader-action@v2
+        with:
+          validation_level: warn
+          version: ${{ steps.extract-vars.outputs.package_version }}
+          path: ./CHANGELOG.md
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          body: ${{ steps.changelog.outputs.changes }}
+          draft: false
+          prerelease: ${{ inputs.prerelease }}
+          files: ${{ steps.extract-vars.outputs.package_path }}
+      - name: Publish Extension to VSCode Marketplace
+        run: npm run publish${{ inputs.prerelease && ':prerelease' || '' }}
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}

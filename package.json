@@ -328,7 +328,9 @@
     "bundle:production": "webpack --mode production --devtool hidden-source-map",
     "vscode:prepublish": "npm run bundle:production",
     "package": "vsce package",
-    "publish": "vsce publish"
+    "package:prerelease": "vsce package --pre-release",
+    "publish": "vsce publish",
+    "publish:prerelease": "vsce publish --pre-release"
   },
   "dependencies": {
     "@babel/core": "^7.24.4",
